@@ -1,3 +1,4 @@
 target/*
 src/main/gwt-unitCache/*
-src/main/webapp/gwtexample/*
+src/main/webapp/FacemeMGwt/*
+src/main/webapp/WEB-INF/deploy/*
