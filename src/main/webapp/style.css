@@ -1,0 +1,15 @@
+/**
+ * CSS style for GamePanel.class
+ */
+.GamePanel {
+	background-color: #FF0000;
+	width: 483px;
+	height: 500px;
+	background: url('images/board/board.png') no-repeat;
+	margin: 0px auto;
+	
+}
+
+img.Chess-Selected {
+	background: url('images/select.png') no-repeat;
+}
