@@ -1,46 +1,37 @@
+/**
+ * Program starts from this class
+ */
 /*
- * Copyright 2010 Daniel Kurka
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+Copyright 2013 heroandtn3 (@sangnd.info)
+
+This file is a part of FacemeGwt
+
+FacemeGwt is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+FacemeGwt is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package mgwt.faceme.client;
 
 import mgwt.faceme.client.core.model.ChessPosition;
-import mgwt.faceme.client.css.AppBundle;
 import mgwt.faceme.client.view.GamePanel;
 
-import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.dom.client.StyleInjector;
-import com.google.gwt.place.shared.PlaceHistoryHandler;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
-import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
-import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
 import com.googlecode.mgwt.mvp.client.Animation;
-import com.googlecode.mgwt.mvp.client.AnimationMapper;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTSettings;
 import com.googlecode.mgwt.ui.client.animation.AnimationHelper;
-import com.googlecode.mgwt.ui.client.dialog.TabletPortraitOverlay;
-import com.googlecode.mgwt.ui.client.layout.MasterRegionHandler;
-import com.googlecode.mgwt.ui.client.layout.OrientationRegionHandler;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.RoundPanel;
 
@@ -53,63 +44,18 @@ public class MgwtAppEntryPoint implements EntryPoint {
 	AnimationHelper animationHelper = new AnimationHelper();
 	RoundPanel roundPanel = new RoundPanel();
 
-
 	@Override
 	public void onModuleLoad() {
-
-		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-
-			@Override
-			public void onUncaughtException(Throwable e) {
-				//TODO put in your own meaninful handler
-				Window.alert("uncaught: " + e.getMessage());
-				e.printStackTrace();
-
-			}
-		});
-		new Timer() {
-			@Override
-			public void run() {
-				start();
-
-			}
-		}.schedule(1);
-
-		// my code -----------------------------------------------------------
-		// add animation
+		// set viewport and other settings for mobile
+		MGWT.applySettings(MGWTSettings.getAppSetting());
+		
+		
 		RootPanel.get().add(animationHelper);
-		
-		// add roundPanel to RootPanel
-		RootPanel.get().add(roundPanel);
-		
-		// add GamePanel to roundPanel
+
 		final GamePanel gamePanel = new GamePanel();
-		roundPanel.add(gamePanel);
 		
-		// set roundPanel
-		roundPanel.setVisible(false);
-		roundPanel.addStyleName("RoundPanel");
-		roundPanel.setWidth("483px");
-		roundPanel.addTapHandler(new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent e) {
-				int x = e.getStartX();
-				int y = e.getStartY();
-				
-				ChessPosition pos = gamePanel.convertToChessPos(x, y);
-				                             
-				// kiem tra tinh hop le
-				// loai bo neu la null
-				if (pos == null) return; 
-				                             
-				gamePanel.getMatch().setPos(pos);
-			}
-		});
-		
-		Button butPlay = new Button("Play");
-		RootPanel.get().add(butPlay);
-		butPlay.addTapHandler(new TapHandler() {
+		Button button = new Button("Play");
+		button.addTapHandler(new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
@@ -118,95 +64,37 @@ public class MgwtAppEntryPoint implements EntryPoint {
 			}
 		});
 		
-		animationHelper.goTo(butPlay, Animation.SLIDE);
+		animationHelper.goTo(button, Animation.FADE);
+
+		
+		roundPanel.add(gamePanel);
+		
+		RootPanel.get().add(roundPanel);
+		
+		roundPanel.setWidth("483px");
+		roundPanel.setVisible(false);
+		
+		roundPanel.addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent e) {
+				int x = e.getStartX();
+				int y = e.getStartY();
+				ChessPosition pos = gamePanel.convertToChessPos(x, y);
+				
+				// kiem tra tinh hop le
+				// loai bo neu la null
+				if (pos == null) return; 
+				
+				gamePanel.getMatch().setPos(pos);
+				
+			}
+		});
 		
 	}
-	
+
 	private void switchToGame() {
+		animationHelper.goTo(roundPanel, Animation.SLIDE);
 		roundPanel.setVisible(true);
-		animationHelper.goTo(roundPanel, Animation.POP);
-	}
-	
-	// essential code ----------------------------------------------------------
-	
-	private void start() {
-		
-		  //set viewport and other settings for mobile
-	    MGWT.applySettings(MGWTSettings.getAppSetting());
-			
-			
-
-		final ClientFactory clientFactory = new ClientFactoryImpl();
-
-		// Start PlaceHistoryHandler with our PlaceHistoryMapper
-		AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
-		final PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
-
-		historyHandler.register(clientFactory.getPlaceController(), clientFactory.getEventBus(), new mgwt.faceme.client.activities.HomePlace());
-
-		if ((MGWT.getOsDetection().isTablet())) {
-			// very nasty workaround because GWT does not corretly support
-			// @media
-			StyleInjector.inject(AppBundle.INSTANCE.css().getText());
-
-			createTabletDisplay(clientFactory);
-		} else {
-			createPhoneDisplay(clientFactory);
-
-		}
-		historyHandler.handleCurrentHistory();
-
-	}
-
-	private void createPhoneDisplay(ClientFactory clientFactory) {
-		AnimatableDisplay display = GWT.create(AnimatableDisplay.class);
-
-		PhoneActivityMapper appActivityMapper = new PhoneActivityMapper(clientFactory);
-
-		PhoneAnimationMapper appAnimationMapper = new PhoneAnimationMapper();
-
-		AnimatingActivityManager activityManager = new AnimatingActivityManager(appActivityMapper, appAnimationMapper, clientFactory.getEventBus());
-
-		activityManager.setDisplay(display);
-
-		//RootPanel.get().add(display);
-
-	}
-
-	private void createTabletDisplay(ClientFactory clientFactory) {
-		SimplePanel navContainer = new SimplePanel();
-		navContainer.getElement().setId("nav");
-		navContainer.getElement().addClassName("landscapeonly");
-		AnimatableDisplay navDisplay = GWT.create(AnimatableDisplay.class);
-
-		final TabletPortraitOverlay tabletPortraitOverlay = new TabletPortraitOverlay();
-
-		new OrientationRegionHandler(navContainer, tabletPortraitOverlay, navDisplay);
-		new MasterRegionHandler(clientFactory.getEventBus(), "nav", tabletPortraitOverlay);
-
-		ActivityMapper navActivityMapper = new TabletNavActivityMapper(clientFactory);
-
-		AnimationMapper navAnimationMapper = new TabletNavAnimationMapper();
-
-		AnimatingActivityManager navActivityManager = new AnimatingActivityManager(navActivityMapper, navAnimationMapper, clientFactory.getEventBus());
-
-		navActivityManager.setDisplay(navDisplay);
-
-		//RootPanel.get().add(navContainer);
-
-		SimplePanel mainContainer = new SimplePanel();
-		mainContainer.getElement().setId("main");
-		AnimatableDisplay mainDisplay = GWT.create(AnimatableDisplay.class);
-
-		TabletMainActivityMapper tabletMainActivityMapper = new TabletMainActivityMapper(clientFactory);
-
-		AnimationMapper tabletMainAnimationMapper = new TabletMainAnimationMapper();
-
-		AnimatingActivityManager mainActivityManager = new AnimatingActivityManager(tabletMainActivityMapper, tabletMainAnimationMapper, clientFactory.getEventBus());
-
-		mainActivityManager.setDisplay(mainDisplay);
-		mainContainer.setWidget(mainDisplay);
-
-		//RootPanel.get().add(mainContainer);
 	}
 }
