@@ -1,11 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-  <classpathentry kind="src" path="src/main/java"/>
-  <classpathentry kind="output" path="target/FacemeMGwt-1.0/WEB-INF/classes"/>
-  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar" sourcepath="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/googlecode/gwtphonegap/gwtphonegap/2.0.0.0/gwtphonegap-2.0.0.0.jar" sourcepath="M2_REPO/com/googlecode/gwtphonegap/gwtphonegap/2.0.0.0/gwtphonegap-2.0.0.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/json/json/20090211/json-20090211.jar"/>
-  <classpathentry kind="var" path="M2_REPO/junit/junit/4.7/junit-4.7.jar" sourcepath="M2_REPO/junit/junit/4.7/junit-4.7-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/googlecode/mgwt/mgwt/1.1.2/mgwt-1.1.2.jar" sourcepath="M2_REPO/com/googlecode/mgwt/mgwt/1.1.2/mgwt-1.1.2-sources.jar"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-  <classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/mgwt/mgwt-1.1.2.jar" sourcepath="lib/mgwt/mgwt-1.1.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/FacemeMGwt/lib/mgwt/mgwt-1.1.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/objectify/objectify-4.0b2.jar" sourcepath="lib/objectify/objectify-4.0b2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/FacemeMGwt/lib/objectify/objectify-4.0b2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/appengine-java-sdk-1.7.7.1"/>
+	<classpathentry kind="output" path="src/main/webapp/WEB-INF/classes"/>
 </classpath>
