@@ -2,22 +2,22 @@
  * Program starts from this class
  */
 /*
-Copyright 2013 heroandtn3 (@sangnd.info)
+ Copyright 2013 heroandtn3 (@sangnd.info)
 
-This file is a part of FacemeGwt
+ This file is a part of FacemeGwt
 
-FacemeGwt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ FacemeGwt is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-FacemeGwt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ FacemeGwt is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package mgwt.faceme.client;
 
@@ -40,61 +40,57 @@ import com.googlecode.mgwt.ui.client.widget.RoundPanel;
  * 
  */
 public class MgwtAppEntryPoint implements EntryPoint {
-	
-	AnimationHelper animationHelper = new AnimationHelper();
-	RoundPanel roundPanel = new RoundPanel();
+
+	private RoundPanel roundPanel;
+	private AnimationHelper animationHelper;
+	private Button butPlay;
+	private GamePanel gamePanel;
 
 	@Override
 	public void onModuleLoad() {
 		// set viewport and other settings for mobile
 		MGWT.applySettings(MGWTSettings.getAppSetting());
-		
-		
+		animationHelper = new AnimationHelper();
 		RootPanel.get().add(animationHelper);
 
-		final GamePanel gamePanel = new GamePanel();
-		
-		Button button = new Button("Play");
-		button.addTapHandler(new TapHandler() {
-			
+		butPlay = new Button("Play");
+		butPlay.addTapHandler(new TapHandler() {
+
 			@Override
 			public void onTap(TapEvent event) {
 				switchToGame();
-				
+
 			}
 		});
-		
-		animationHelper.goTo(button, Animation.FADE);
 
-		
+		animationHelper.goTo(butPlay, Animation.FADE);
+
+		roundPanel = new RoundPanel();
+		gamePanel = new GamePanel();
 		roundPanel.add(gamePanel);
-		
-		RootPanel.get().add(roundPanel);
-		
 		roundPanel.setWidth("483px");
-		roundPanel.setVisible(false);
-		
+
 		roundPanel.addTapHandler(new TapHandler() {
-			
+
 			@Override
 			public void onTap(TapEvent e) {
 				int x = e.getStartX();
 				int y = e.getStartY();
 				ChessPosition pos = gamePanel.convertToChessPos(x, y);
-				
+
 				// kiem tra tinh hop le
 				// loai bo neu la null
-				if (pos == null) return; 
-				
+				if (pos == null)
+					return;
+
 				gamePanel.getMatch().setPos(pos);
-				
+
 			}
 		});
-		
+
 	}
 
 	private void switchToGame() {
 		animationHelper.goTo(roundPanel, Animation.SLIDE);
-		roundPanel.setVisible(true);
 	}
 }
