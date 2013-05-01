@@ -17,12 +17,18 @@
  */
 package mgwt.faceme.client.core.model;
 
+import java.io.Serializable;
+
 /**
  * @author heroandtn3
  * @date Jan 7, 2013
  */
-public class ChessPosition {
+public class ChessPosition implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int row;
 	private int col;
 	private boolean killable = false;

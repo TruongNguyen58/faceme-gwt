@@ -23,7 +23,7 @@ public class User implements Serializable {
 	@Ignore
 	private static final long serialVersionUID = 1L;
 	@Id
-	private String userId;
+	private Long Id;
 	@Index
 	private String fullName;
 	@Index
@@ -48,12 +48,12 @@ public class User implements Serializable {
 		this.playing = false;
 	}
 
-	public String getUserId() {
-		return userId;
+	public Long getId() {
+		return Id;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setId(Long id) {
+		Id = id;
 	}
 
 	public String getFullName() {

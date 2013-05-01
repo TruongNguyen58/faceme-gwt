@@ -240,4 +240,12 @@ public class Match {
 	public void setGamePanel(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
+
+	public Side getCurrentSide() {
+		return currentSide;
+	}
+
+	public void setCurrentSide(Side currentSide) {
+		this.currentSide = currentSide;
+	}
 }

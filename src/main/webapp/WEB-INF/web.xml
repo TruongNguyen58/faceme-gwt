@@ -5,6 +5,24 @@
 
 <web-app>
 	<servlet>
+		<servlet-name>GwtChannelService</servlet-name>
+		<servlet-class>com.google.gwt.channelapi.server.GwtChannelServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GwtChannelService</servlet-name>
+		<url-pattern>/FacemeMGwt/gwtChannelService</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GwtGsonService</servlet-name>
+		<servlet-class>com.example.gwt.gson.server.GwtGsonServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GwtGsonService</servlet-name>
+		<url-pattern>/FacemeMGwt/gwtGsonService</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>SystemServiceServlet</servlet-name>
 		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 		<init-param>

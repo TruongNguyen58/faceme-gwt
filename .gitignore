@@ -1,5 +1,10 @@
 target/*
 src/main/gwt-unitCache/*
 src/main/webapp/FacemeMGwt/*
+src/main/webapp/gsondemo/*
+src/main/webapp/gwtchannelapi/*
 src/main/webapp/WEB-INF/deploy/*
 *.class
+*.swp
+src/main/webapp/WEB-INF/appengine-generated/local_db.bin
+src/main/webapp/WEB-INF/classes/*

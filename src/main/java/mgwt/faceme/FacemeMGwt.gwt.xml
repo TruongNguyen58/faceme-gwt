@@ -8,6 +8,8 @@
 	<inherits name="com.google.gwt.activity.Activity" />
 	<inherits name="com.googlecode.mgwt.MGWT"/>
 	<inherits name="com.googlecode.objectify.Objectify" />
+	<inherits name="com.google.gwt.channelapi.GwtChannelApi" />
+	<inherits name="com.example.gwt.gson.GsonDemo" />
 	
 	<!-- uncomment this if you want to use gwt phonegap -->
 	<!--<inherits name="com.googlecode.gwtphonegap.PhoneGap"/>-->
@@ -30,4 +32,5 @@
 	<entry-point class="mgwt.faceme.client.MgwtAppEntryPoint" />
 	
 	<source path="client"/>
+	<source path="shared"/>
 </module>
