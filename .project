@@ -42,16 +42,4 @@
 		<nature>com.google.gwt.eclipse.core.gwtNature</nature>
 		<nature>com.google.appengine.eclipse.core.gaeNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>channelapi</name>
-			<type>2</type>
-			<location>/home/heroandtn3/Dropbox/stupid/programming/java/google/GwtChannelApi/src</location>
-		</link>
-		<link>
-			<name>gsondemo</name>
-			<type>2</type>
-			<location>/home/heroandtn3/Dropbox/stupid/programming/java/google/GsonDemo/src</location>
-		</link>
-	</linkedResources>
 </projectDescription>

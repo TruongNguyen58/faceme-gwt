@@ -5,11 +5,13 @@ package mgwt.faceme.client.model.entities;
 
 import java.io.Serializable;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * @author heroandtn3
  * 
  */
-public class Message implements Serializable {
+public class Message implements Serializable, IsSerializable {
 	/**
 	 * 
 	 */

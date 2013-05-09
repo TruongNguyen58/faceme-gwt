@@ -21,27 +21,26 @@
  */
 package mgwt.faceme.client;
 
-import java.io.Serializable;
 import java.util.List;
 
 import mgwt.faceme.client.core.model.ChessPosition;
-import mgwt.faceme.client.core.model.Side;
 import mgwt.faceme.client.model.entities.Message;
 import mgwt.faceme.client.model.entities.User;
 import mgwt.faceme.client.view.GamePanel;
 import mgwt.faceme.shared.DatabaseService;
 import mgwt.faceme.shared.DatabaseServiceAsync;
 
-import com.example.gwt.gson.shared.GwtGsonService;
-import com.example.gwt.gson.shared.GwtGsonServiceAsync;
 import com.google.gwt.channelapi.client.Channel;
 import com.google.gwt.channelapi.client.ChannelListener;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.gson.shared.GwtGsonService;
+import com.google.gwt.gson.shared.GwtGsonServiceAsync;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
@@ -430,7 +429,7 @@ public class MgwtAppEntryPoint implements EntryPoint {
 			}
 		} else if (message.getType().equals("move")) {
 			gwtGsonService.fromJson(message.getContent(), new ChessPosition(),
-					new AsyncCallback<Serializable>() {
+					new AsyncCallback<IsSerializable>() {
 
 						@Override
 						public void onFailure(Throwable caught) {
@@ -438,7 +437,7 @@ public class MgwtAppEntryPoint implements EntryPoint {
 						}
 
 						@Override
-						public void onSuccess(Serializable result) {
+						public void onSuccess(IsSerializable result) {
 							if (result instanceof ChessPosition) {
 								receiveMoving((ChessPosition) result);
 							}
@@ -463,7 +462,7 @@ public class MgwtAppEntryPoint implements EntryPoint {
 			public void onMessage(String message) {
 				System.out.println("On message..." + message);
 				gwtGsonService.fromJson(message, new Message(),
-						new AsyncCallback<Serializable>() {
+						new AsyncCallback<IsSerializable>() {
 
 							@Override
 							public void onFailure(Throwable caught) {
@@ -472,7 +471,7 @@ public class MgwtAppEntryPoint implements EntryPoint {
 							}
 
 							@Override
-							public void onSuccess(Serializable result) {
+							public void onSuccess(IsSerializable result) {
 								if (result instanceof Message) {
 									System.out.println("Ok");
 									receiveMessage((Message) result);

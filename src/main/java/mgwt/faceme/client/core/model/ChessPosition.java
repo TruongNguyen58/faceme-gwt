@@ -19,11 +19,13 @@ package mgwt.faceme.client.core.model;
 
 import java.io.Serializable;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * @author heroandtn3
  * @date Jan 7, 2013
  */
-public class ChessPosition implements Serializable {
+public class ChessPosition implements Serializable, IsSerializable {
 
 	/**
 	 * 
