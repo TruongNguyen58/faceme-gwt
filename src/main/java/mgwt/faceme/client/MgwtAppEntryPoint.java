@@ -34,8 +34,6 @@ import com.google.gwt.channelapi.client.Channel;
 import com.google.gwt.channelapi.client.ChannelListener;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.gson.shared.GwtGsonService;
-import com.google.gwt.gson.shared.GwtGsonServiceAsync;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -60,6 +58,8 @@ import com.googlecode.mgwt.ui.client.widget.WidgetList;
 import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
+import com.sangnd.gwt.gson.shared.GwtGsonService;
+import com.sangnd.gwt.gson.shared.GwtGsonServiceAsync;
 
 /**
  * @author heroandtn3
