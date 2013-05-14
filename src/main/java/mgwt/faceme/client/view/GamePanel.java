@@ -10,9 +10,6 @@ import mgwt.faceme.client.core.model.Constant;
 import mgwt.faceme.client.core.model.Match;
 
 import com.google.gwt.animation.client.Animation;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 
@@ -131,8 +128,8 @@ public class GamePanel extends AbsolutePanel {
 	 * 			Neu khong thi tra ve: null
 	 */
 	public ChessPosition convertToChessPos(int x, int y) {
-		int row = (y - 25 + 21) / 50;
-		int col = (x - 30 + 21) / 53;
+		int row = (y + (int)((float) Constant.SCREEN_RATIO *21)) / (int)((float) Constant.SCREEN_RATIO *47);
+		int col = (x + (int)((float) Constant.SCREEN_RATIO *21)) / (int)((float) Constant.SCREEN_RATIO *50);
 		if (row >= 0 && row < 10 && col >= 0 && col < 9) {
 			return (new ChessPosition(row, col));
 		} else {

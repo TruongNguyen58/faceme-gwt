@@ -162,11 +162,16 @@ public class MgwtAppEntryPoint implements EntryPoint {
 
 			@Override
 			public void onTap(TapEvent e) {
-				int x = e.getStartX();
-				int y = e.getStartY();
+				int x = e.getStartX() - (int)((float) Constant.SCREEN_RATIO * 30) - gamePanel.getAbsoluteLeft();
+				int y = e.getStartY() - (int)((float) Constant.SCREEN_RATIO * 24) - gamePanel.getAbsoluteTop();
+				
 				System.out.println(x + " - " + y);
+				System.out.println(gamePanel.getAbsoluteLeft());
+				System.out.println(gamePanel.getAbsoluteTop());
+				if (x < 0) x = 0;
+				if (y < 0) y = 0;
 				ChessPosition pos = gamePanel.convertToChessPos(x, y);
-
+				
 				// kiem tra tinh hop le
 				// loai bo neu la null
 				if (pos == null)
