@@ -6,9 +6,13 @@ package mgwt.faceme.client.view;
 import java.util.List;
 
 import mgwt.faceme.client.core.model.ChessPosition;
+import mgwt.faceme.client.core.model.Constant;
 import mgwt.faceme.client.core.model.Match;
 
 import com.google.gwt.animation.client.Animation;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 
@@ -44,22 +48,6 @@ public class GamePanel extends AbsolutePanel {
 	
 	private void initGUI() {
 		addStyleName("GamePanel");
-		// add click event
-		/*addDomHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				ChessPosition pos = convertToChessPos(x, y);
-				
-				// kiem tra tinh hop le
-				// loai bo neu la null
-				if (pos == null) return; 
-				
-				match.setPos(pos);
-			}
-		}, ClickEvent.getType());*/
 	}
 	
 	private void drawChess() {
@@ -76,6 +64,7 @@ public class GamePanel extends AbsolutePanel {
 						// chuyen sang toa do x, y de ve
 						int[] pos = convertToXY(new ChessPosition(row, col));
 						ChessShape cs = new ChessShape(img);
+						
 						add(cs);
 
 						setWidgetPosition(cs, pos[0] - 21, pos[1] - 21);
@@ -87,6 +76,21 @@ public class GamePanel extends AbsolutePanel {
 				}
 			}
 		}
+	}
+	
+	public void reDrawChess() {
+		int count = 0;
+		for (int row = 0; row < 10; row++) {
+			for (int col = 0; col < 9; col++) {
+				int value = table[row][col];
+				if (value != 0) { // kiem tra xem co quan co khong
+						// chuyen sang toa do x, y
+						int[] pos = convertToXY(new ChessPosition(row, col));
+						setWidgetPosition(chessShapes[count], pos[0] - 21, pos[1] - 21);
+						count++;
+					}
+				}
+			}
 	}
 	
 	public void move(ChessPosition oldPos, ChessPosition newPos) {
@@ -114,8 +118,8 @@ public class GamePanel extends AbsolutePanel {
 	 * [1]: y 
 	 */
 	private int[] convertToXY(ChessPosition pos) {
-		int x = 30 + pos.getCol() * 53;
-		int y = 25 + pos.getRow() * 50;
+		int x = (int)((float) Constant.SCREEN_RATIO *30) + pos.getCol() * (int)((float) Constant.SCREEN_RATIO *50);
+		int y = (int)((float) Constant.SCREEN_RATIO *25) + pos.getRow() * (int)((float) Constant.SCREEN_RATIO *47);
 		return (new int[] { x, y });
 	}
 	

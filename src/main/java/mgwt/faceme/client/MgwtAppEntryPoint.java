@@ -24,6 +24,7 @@ package mgwt.faceme.client;
 import java.util.List;
 
 import mgwt.faceme.client.core.model.ChessPosition;
+import mgwt.faceme.client.core.model.Constant;
 import mgwt.faceme.client.model.entities.Message;
 import mgwt.faceme.client.model.entities.User;
 import mgwt.faceme.client.view.GamePanel;
@@ -32,9 +33,12 @@ import mgwt.faceme.shared.DatabaseServiceAsync;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -97,7 +101,8 @@ public class MgwtAppEntryPoint implements EntryPoint {
 		MGWT.applySettings(MGWTSettings.getAppSetting());
 		animationHelper = new AnimationHelper();
 		RootPanel.get().add(animationHelper);
-
+		RootPanel.getBodyElement().getStyle().setProperty("padding", "0px");
+		RootPanel.getBodyElement().getStyle().setProperty("margin", "0px");
 		initHomePanel();
 		initPlayPanel();
 		initLoginForm();
@@ -133,16 +138,32 @@ public class MgwtAppEntryPoint implements EntryPoint {
 
 	private void initPlayPanel() {
 		playPanel = new RoundPanel();
+		playPanel.getElement().getStyle().setProperty("padding", "10px");
+		playPanel.getElement().getStyle().setProperty("margin", "10px auto");
 		gamePanel = new GamePanel();
+		gamePanel.getElement().getStyle().setProperty("padding", "0px");
+		gamePanel.getElement().getStyle().setProperty("margin", "0px");
+		gamePanel.getElement().getStyle().setProperty("width", "100%");
+		gamePanel.getElement().getStyle().setProperty("height", "100%");
 		playPanel.add(gamePanel);
-		playPanel.setWidth("483px");
+		
+		Window.enableScrolling(false);
+		resizeScreen();
+		
+		Window.addResizeHandler(new ResizeHandler() {
+		    @Override
+		    public void onResize(ResizeEvent event) {
+		    	resizeScreen();
+		    }
+		});
+		
 
 		playPanel.addTapHandler(new TapHandler() {
 
 			@Override
 			public void onTap(TapEvent e) {
-				int x = e.getStartX() - 34;
-				int y = e.getStartY() - 33;
+				int x = e.getStartX();
+				int y = e.getStartY();
 				System.out.println(x + " - " + y);
 				ChessPosition pos = gamePanel.convertToChessPos(x, y);
 
@@ -158,6 +179,24 @@ public class MgwtAppEntryPoint implements EntryPoint {
 				
 			}
 		});
+	}
+	
+	private void resizeScreen() {
+		int w = Window.getClientWidth();
+		int h = Window.getClientHeight();
+		float rw = (float)w/Constant.SCREEN_WIDTH;
+		float rh = (float)h/Constant.SCREEN_HEIGHT;
+		if (rw < rh) {
+			Constant.SCREEN_RATIO = rw;
+		} else {
+			Constant.SCREEN_RATIO = rh;
+		}
+		String width = ((int)((float)Constant.SCREEN_WIDTH*Constant.SCREEN_RATIO) - 40) + "px";
+		String height = ((int)((float)Constant.SCREEN_HEIGHT*Constant.SCREEN_RATIO) - 40) + "px";
+		playPanel.setWidth(width);
+		playPanel.setHeight(height); 
+		gamePanel.getElement().getStyle().setProperty("backgroundSize", width + " " + height);
+		gamePanel.reDrawChess();
 	}
 
 	private void sendMoving(ChessPosition pos) {
