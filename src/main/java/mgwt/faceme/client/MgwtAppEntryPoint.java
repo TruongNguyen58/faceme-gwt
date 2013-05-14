@@ -30,8 +30,6 @@ import mgwt.faceme.client.view.GamePanel;
 import mgwt.faceme.shared.DatabaseService;
 import mgwt.faceme.shared.DatabaseServiceAsync;
 
-import com.google.gwt.channelapi.client.Channel;
-import com.google.gwt.channelapi.client.ChannelListener;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
@@ -58,6 +56,8 @@ import com.googlecode.mgwt.ui.client.widget.WidgetList;
 import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
+import com.sangnd.gwt.channelapi.client.Channel;
+import com.sangnd.gwt.channelapi.client.ChannelListener;
 import com.sangnd.gwt.gson.shared.GwtGsonService;
 import com.sangnd.gwt.gson.shared.GwtGsonServiceAsync;
 
@@ -450,7 +450,7 @@ public class MgwtAppEntryPoint implements EntryPoint {
 
 	private void createChannel(String clientId) {
 		channel = new Channel(clientId);
-		channel.addChannelListener(new ChannelListener() {
+		channel.join(new ChannelListener() {
 
 			@Override
 			public void onOpen() {
@@ -500,7 +500,6 @@ public class MgwtAppEntryPoint implements EntryPoint {
 
 			}
 		});
-		channel.join();
 	}
 
 	private void insertUser(User user) {

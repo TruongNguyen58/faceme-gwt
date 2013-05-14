@@ -14,7 +14,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/appengine-java-sdk-1.7.7.1"/>
-	<classpathentry kind="lib" path="/home/heroandtn3/Desktop/GwtChannelApi.jar"/>
 	<classpathentry kind="lib" path="lib/bGwtGson-0.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/bGwtChannelApi-0.1.1.jar"/>
 	<classpathentry kind="output" path="src/main/webapp/WEB-INF/classes"/>
 </classpath>
