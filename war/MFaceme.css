@@ -1,0 +1,41 @@
+/** Add css rules here for your application. */
+
+
+/** Example rules used by the template application (remove for your app) */
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #777777;
+  margin: 40px 0px 70px;
+  text-align: center;
+}
+
+.GamePanel {
+	background-color: #FF0000;
+	/* width: 483px;
+	height: 500px; */
+	background-image: url('images/board/board.png');
+	background-repeat: no-repeat;
+	margin: 0px auto;
+	-moz-border-radius: 10px; /* Firefox 3.6-, removed in Firefox 13 */
+	-webkit-border-radius: 10px; /* Safari 4-, Chrome 3- */
+	border-radius: 10px;
+	/* Firefox 4+, Safari 5+, Chrome 4+, Opera 10.5+, IE9+ */
+}
+
+img.Chess-Selected {
+	background-image: url('images/select.png');
+	background-repeat: no-repeat;
+	background-size: 42px 42px;
+}
+
+img.Chess-CanMove {
+	background-image: url('images/canmove.png');
+	background-repeat: no-repeat;
+	background-size: 42px 42px;
+}
+
+/* workaround with FormListEntry align*/
+.GOE-WOTBFO .GOE-WOTBGO {
+	-webkit-box-pack: start;
+}

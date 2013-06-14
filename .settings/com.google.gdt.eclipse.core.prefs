@@ -1,5 +1,3 @@
 eclipse.preferences.version=1
-jarsExcludedFromWebInfLib=
-lastWarOutDir=/home/heroandtn3/Dropbox/stupid/programming/java/google/FacemeMGwt/src/main/webapp
-warSrcDir=src/main/webapp
+warSrcDir=war
 warSrcDirIsOutput=true
