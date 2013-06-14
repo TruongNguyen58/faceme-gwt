@@ -60,6 +60,11 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	private MoveAnimation animation;
 	private boolean warnKing;
 	private boolean matchFinish;
+	private int chessRadius;
+	private float leftPadding;
+	private float topPadding;
+	private float boxWidth;
+	private float boxHeight;
 
 	public BoardViewMGwt() {
 		init();
@@ -93,10 +98,10 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 				boardPanel.add(chessShapes[row][col]);
 			}
 		}
-		
-		csTmp= new ChessShape();
+
+		csTmp = new ChessShape();
 		boardPanel.add(csTmp);
-		
+
 		notiShape = new NoticationShape();
 		boardPanel.add(notiShape);
 
@@ -135,6 +140,30 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	}
 
 	private void resizeScreen() {
+		updateScreenRatio();
+
+		reDrawBoard();
+
+		reDrawChess();
+
+	}
+
+	private void reDrawBoard() {
+		int width = ((int) ((float) Constant.SCREEN_WIDTH * Constant.SCREEN_RATIO) - 40);
+		int height = ((int) ((float) Constant.SCREEN_HEIGHT * Constant.SCREEN_RATIO) - 40);
+
+		this.setWidth(width + "px");
+		this.setHeight(height + "px");
+		boardPanel.getElement().getStyle()
+				.setProperty("backgroundSize", width + "px " + height + "px");
+
+		notiShape.getElement().getStyle()
+				.setProperty("left", (width - 200) / 2 + "px");
+		notiShape.getElement().getStyle()
+				.setProperty("top", (height - 40) / 2 + "px");
+	}
+
+	private void updateScreenRatio() {
 		int w = Window.getClientWidth();
 		int h = Window.getClientHeight() - 50;
 		float rw = (float) w / Constant.SCREEN_WIDTH;
@@ -144,23 +173,29 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 		} else {
 			Constant.SCREEN_RATIO = rh;
 		}
-		int width = ((int) ((float) Constant.SCREEN_WIDTH * Constant.SCREEN_RATIO) - 40);
-		int height = ((int) ((float) Constant.SCREEN_HEIGHT * Constant.SCREEN_RATIO) - 40);
-		
-		this.setWidth(width + "px");
-		this.setHeight(height + "px");
-		boardPanel.getElement().getStyle()
-				.setProperty("backgroundSize", width + "px " + height + "px");
-		notiShape.getElement().getStyle().setProperty("left", (width - 200)/2 + "px");
-		notiShape.getElement().getStyle().setProperty("top", (height - 40)/2 + "px");
-		this.reDrawChess();
 	}
 
 	private void reDrawChess() {
+		chessRadius = (int) (Constant.SCREEN_RATIO * 21);
+		leftPadding = Constant.SCREEN_RATIO * 30;
+		topPadding = Constant.SCREEN_RATIO * 25;
+
+		boxWidth = Constant.SCREEN_RATIO * 50;
+		boxHeight = Constant.SCREEN_RATIO * 47;
+
+		if (Constant.SCREEN_RATIO < 1) {
+			boxWidth -= 2;
+			boxHeight -= 2;
+		} else {
+			boxWidth -= 1;
+			boxHeight -= 1;
+		}
+
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 9; col++) {
 				int[] pos = convertToXY(new ChessPosition(row, col));
-				chessShapes[row][col].setPos(pos[0] - 21, pos[1] - 21);
+				chessShapes[row][col].setPos(pos[0] - chessRadius, pos[1]
+						- chessRadius);
 			}
 		}
 
@@ -174,7 +209,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 				int value = table[row][col];
 				chessShapes[row][col].setType(value);
 				int[] pos = convertToXY(new ChessPosition(row, col));
-				chessShapes[row][col].setPos(pos[0] - 21, pos[1] - 21);
+				chessShapes[row][col].setPos(pos[0] - chessRadius, pos[1]
+						- chessRadius);
 			}
 		}
 	}
@@ -187,10 +223,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	 * @return: mang 1 chieu chua 2 phan tu: [0]: x [1]: y
 	 */
 	private int[] convertToXY(ChessPosition pos) {
-		int x = (int) ((float) Constant.SCREEN_RATIO * 30) + pos.getCol()
-				* (int) ((float) Constant.SCREEN_RATIO * 50);
-		int y = (int) ((float) Constant.SCREEN_RATIO * 25) + pos.getRow()
-				* (int) ((float) Constant.SCREEN_RATIO * 47);
+		int x = (int) (leftPadding + pos.getCol() * boxWidth);
+		int y = (int) (topPadding + pos.getRow() * boxHeight);
 		return (new int[] { x, y });
 	}
 
@@ -203,10 +237,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	 *          null
 	 */
 	public ChessPosition convertToChessPos(int x, int y) {
-		int row = (y + (int) ((float) Constant.SCREEN_RATIO * 21))
-				/ (int) ((float) Constant.SCREEN_RATIO * 47);
-		int col = (x + (int) ((float) Constant.SCREEN_RATIO * 21))
-				/ (int) ((float) Constant.SCREEN_RATIO * 50);
+		int row = (int) ((y + chessRadius) / boxHeight);
+		int col = (int) ((x + chessRadius) / boxWidth);
 		if (row >= 0 && row < 10 && col >= 0 && col < 9) {
 			return (new ChessPosition(row, col));
 		} else {
@@ -224,7 +256,7 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 			final ChessPosition newPos) {
 
 		animation.move(oldPos, newPos);
-		
+
 	}
 
 	/* Animation--------------------------------------------------------------- */
@@ -257,12 +289,12 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 
 			int[] pos = convertToXY(oldPos);
 
-			startX = pos[0] - 21;
-			startY = pos[1] - 21;
+			startX = pos[0] - chessRadius;
+			startY = pos[1] - chessRadius;
 
 			pos = convertToXY(newPos);
-			tarrgetX = pos[0] - 21;
-			tarrgetY = pos[1] - 21;
+			tarrgetX = pos[0] - chessRadius;
+			tarrgetY = pos[1] - chessRadius;
 
 			csOld = chessShapes[row1][col1];
 			csNew = chessShapes[row2][col2];
@@ -271,7 +303,7 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 			csTmp.setPos(tarrgetX, tarrgetY);
 			csTmp.setSelected(true);
 			csTmp.setType(csNew.getType());
-			
+
 			csNew.setPos(startX, startY);
 			csNew.setType(csOld.getType());
 			csOld.setType(0);
@@ -291,9 +323,10 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 			} else {
 				notiShape.notice("");
 			}
-			
+
 			if (matchFinish) {
-				Dialogs.alert("Hết cờ!", "Bạn hoặc đối phương đã dành chiến thắng!", null);
+				Dialogs.alert("Hết cờ!",
+						"Bạn hoặc đối phương đã dành chiến thắng!", null);
 			}
 		}
 	}
@@ -354,20 +387,19 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 		if (state == GameState.ENERMY_WON || state == GameState.FRIEND_WON) {
 			matchFinish = true;
 		}
-		
-		
+
 	}
 
 	@Override
 	public void clearContent() {
 		warnKing = false;
 		matchFinish = false;
-		
+
 		markPos(posSelected, false);
 		posSelected = null;
 		markPos(posMovedTo, false);
 		posMovedTo = null;
-		
+
 		notiShape.notice("");
 	}
 

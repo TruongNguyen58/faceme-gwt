@@ -24,6 +24,7 @@ package com.sangnd.gwt.faceme.client.view;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
+import com.sangnd.gwt.faceme.client.core.model.Constant;
 
 /**
  * @author heroandtn3
@@ -69,8 +70,6 @@ public class ChessShape extends Composite {
 		
 		this.getElement().getStyle().setProperty("position", "absolute");
 		this.getElement().getStyle().setProperty("display", "block");
-		this.getElement().getStyle().setProperty("width", "42px");
-		this.getElement().getStyle().setProperty("height", "42px");
 		
 		this.getElement().getStyle().setProperty("border", "1px solid #cccccc"); // for debug
 	}
@@ -79,6 +78,12 @@ public class ChessShape extends Composite {
 		
 		this.getElement().getStyle().setProperty("left", left + "px");
 		this.getElement().getStyle().setProperty("top", top + "px");
+		
+		int size = (int) (Constant.SCREEN_RATIO * 42);
+		
+		this.getElement().getStyle().setProperty("width", size + "px");
+		this.getElement().getStyle().setProperty("height", size + "px");
+		this.getElement().getStyle().setProperty("backgroundSize", size + "px " + size + "px");
 	}
 	
 	public void setReserve(boolean reserve) {
