@@ -80,12 +80,10 @@ public class PlayInitViewMGwt implements PlayInitView {
 		
 		MListBox levelList = new MListBox();
 		list1.add(new FormListEntry("Độ khó", levelList));
-		levelList.addItem("Newbie");
-		levelList.addItem("Experter");
-		levelList.addItem("Pro");
-		
-		butDanCo = new Button("Dàn cờ");
-		list1.add(butDanCo);
+		levelList.addItem("Captain American");
+		levelList.addItem("Thor");
+		levelList.addItem("Iron Man");
+		levelList.addItem("Hulk");
 
 	}
 
