@@ -35,6 +35,8 @@ import com.sangnd.gwt.faceme.client.event.HasChessSelectHandler;
  */
 public interface BoardView extends IsWidget {
 	
+	void clearContent();
+	
 	/**
 	 * Ve ban co
 	 * @param board

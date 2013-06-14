@@ -47,13 +47,12 @@ public class PlayActivity extends MGWTAbstractActivity {
 	 */
 	public PlayActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
-		match = new Match();
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		
+		match = new Match();
 
 		final PlayView view = clientFactory.getPlayView();
 		Place place = clientFactory.getPlaceController().getWhere();

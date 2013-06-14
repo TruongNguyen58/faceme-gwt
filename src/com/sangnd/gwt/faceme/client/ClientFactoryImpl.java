@@ -70,6 +70,7 @@ public class ClientFactoryImpl implements ClientFactory {
 		if (playView == null) {
 			playView = new PlayViewMGwt();
 		}
+		playView.getBoardView().clearContent();
 		return playView;
 	}
 

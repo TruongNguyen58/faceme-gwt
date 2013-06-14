@@ -134,52 +134,31 @@ public class Match {
 		}
 		
 		// het co khi: doi phuong di moi nuoc van khong thoat khoi chieu tuong
-		System.out.println("Nuoc moi:");
+		boolean hasEscapeMove = false;
 		for (ChessPosition[] mv : allPos) {
-			int[][] mt = board.getShortTable();
-			for (int i = 0; i < 32; i++) {
-				System.out.print("(" + mt[i][0] + " ^ " + mt[i][1] + ") " + mt[i][2] + " | ");
-			}
-			System.out.println();
-			
-			
-			// try move
 			board.move(mv[0], mv[1]);
 			
-			mt = board.getShortTable();
-			for (int i = 0; i < 32; i++) {
-				System.out.print("(" + mt[i][0] + " ^ " + mt[i][1] + ") " + mt[i][2] + " | ");
-			}
-			
-			System.out.println("");
-			
 			List<ChessPosition[]> allPosCanMv = moveGenerator.getMoves(board, currentSide);
+			// chi can 1 nuoc di de chong chieu tuong la du
 			if (!checkWarnKing(board.getTable(), allPosCanMv, currentSide)) {
-				
-				// chi can 1 nuoc di de chong chieu tuong la du
-				
-				// undo lai truoc khi thoat
+				hasEscapeMove = true;
 				board.undo(1, false);
-				return GameState.PLAYING;
+				break;
 			}
 			
-			
-			
-			// undo lai nuoc vua di
 			board.undo(1, false);
-			
-			mt = board.getShortTable();
-			for (int i = 0; i < 32; i++) {
-				System.out.print("(" + mt[i][0] + " ^ " + mt[i][1] + ") " + mt[i][2] + " | ");
-			}
-			
-			System.out.println("\n----------------------");
-			System.out.println();
 		}
 		
-		
-		return GameState.PLAYING;
-		
+		if (hasEscapeMove) {
+			return GameState.PLAYING;
+		} else {
+			System.out.println("TH3");
+			if (nextSide == Side.ENERMY) {
+				return GameState.FRIEND_WON;
+			} else {
+				return GameState.ENERMY_WON;
+			}
+		}
 	}
 
 	/**

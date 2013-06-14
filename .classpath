@@ -9,6 +9,5 @@
 			<attribute name="javadoc_location" value="jar:file:/home/heroandtn3/usr/lib/java/google/mgwt/mgwt-1.1.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/v2"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

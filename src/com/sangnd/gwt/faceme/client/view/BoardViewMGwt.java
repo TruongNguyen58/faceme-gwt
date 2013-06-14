@@ -50,7 +50,6 @@ import com.sangnd.gwt.faceme.client.event.HasChessSelectHandler;
 public class BoardViewMGwt extends TouchPanel implements BoardView,
 		HasChessSelectHandler {
 
-	// private int[][] csPos = new int[10][9];
 	private ChessShape[][] chessShapes = new ChessShape[10][9];
 	private AbsolutePanel boardPanel;
 	private ChessPosition posSelected;
@@ -70,6 +69,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	private void init() {
 		oldPosCanMv = new ArrayList<ChessPosition>();
 		animation = new MoveAnimation();
+		warnKing = false;
+		matchFinish = false;
 	}
 
 	private void initGUI() {
@@ -355,6 +356,19 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 		}
 		
 		
+	}
+
+	@Override
+	public void clearContent() {
+		warnKing = false;
+		matchFinish = false;
+		
+		markPos(posSelected, false);
+		posSelected = null;
+		markPos(posMovedTo, false);
+		posMovedTo = null;
+		
+		notiShape.notice("");
 	}
 
 }
