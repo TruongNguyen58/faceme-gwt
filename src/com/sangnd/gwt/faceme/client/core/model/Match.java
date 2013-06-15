@@ -91,8 +91,8 @@ public class Match {
 	
 	private void updateGame() {
 		
-		state = checkFinishMatch();
 		warnKing = checkWarnKing(currentSide);
+		state = checkFinishMatch();
 		
 		// switch player
 		currentSide = (currentSide == Side.ENERMY) ? Side.FRIEND : Side.ENERMY;
@@ -123,31 +123,34 @@ public class Match {
 		}
 		
 		// het co khi: doi phuong di moi nuoc van khong thoat khoi chieu tuong
-		boolean hasEscapeMove = false;
-		for (ChessPosition[] mv : allPos) {
-			board.move(mv[0], mv[1]);
-			
-			List<ChessPosition[]> allPosCanMv = moveGenerator.getMoves(board, currentSide);
-			// chi can 1 nuoc di de chong chieu tuong la du
-			if (!checkWarnKing(board.getTable(), allPosCanMv, currentSide)) {
-				hasEscapeMove = true;
+		if (warnKing) {
+			boolean hasEscapeMove = false;
+			for (ChessPosition[] mv : allPos) {
+				board.move(mv[0], mv[1]);
+				
+				List<ChessPosition[]> allPosCanMv = moveGenerator.getMoves(board, currentSide);
+				// chi can 1 nuoc di de chong chieu tuong la du
+				if (!checkWarnKing(board.getTable(), allPosCanMv, currentSide)) {
+					hasEscapeMove = true;
+					board.undo(1, false);
+					break;
+				}
+				
 				board.undo(1, false);
-				break;
 			}
 			
-			board.undo(1, false);
+			if (!hasEscapeMove) {
+				System.out.println("TH3");
+				if (nextSide == Side.ENERMY) {
+					return GameState.FRIEND_WON;
+				} else {
+					return GameState.ENERMY_WON;
+				}
+			}
 		}
 		
-		if (hasEscapeMove) {
-			return GameState.PLAYING;
-		} else {
-			System.out.println("TH3");
-			if (nextSide == Side.ENERMY) {
-				return GameState.FRIEND_WON;
-			} else {
-				return GameState.ENERMY_WON;
-			}
-		}
+		return GameState.PLAYING;
+		
 	}
 
 	/**
