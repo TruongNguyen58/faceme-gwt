@@ -22,8 +22,10 @@
 package com.sangnd.gwt.faceme.client.activities.playinit;
 
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.googlecode.mgwt.ui.client.widget.MListBox;
 
 /**
  * @author heroandtn3
@@ -40,5 +42,8 @@ public interface PlayInitView extends IsWidget {
 	HasText getPlayButtonText();
 	
 	HasTapHandlers getDancoButton();
-
+	
+	HasValue<Boolean> getPlayWithComCheckbox();
+	
+	MListBox getLevelList();
 }

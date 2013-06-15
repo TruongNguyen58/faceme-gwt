@@ -24,6 +24,7 @@ package com.sangnd.gwt.faceme.client.view;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.Button;
@@ -48,6 +49,8 @@ public class PlayInitViewMGwt implements PlayInitView {
 	private Button butDanCo;
 	private LayoutPanel panel;
 	private FormListEntry formLevelList;
+	private MCheckBox cbPlayWithCom;
+	private MListBox levelList;
 
 	/**
 	 * 
@@ -78,7 +81,7 @@ public class PlayInitViewMGwt implements PlayInitView {
 		container.add(list1);
 		
 		
-		MCheckBox cbPlayWithCom = new MCheckBox();
+		cbPlayWithCom = new MCheckBox();
 		list1.add(new FormListEntry("Chơi với máy?", cbPlayWithCom.asWidget()));
 		
 		cbPlayWithCom.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
@@ -89,7 +92,7 @@ public class PlayInitViewMGwt implements PlayInitView {
 			}
 		});
 		
-		MListBox levelList = new MListBox();
+		levelList = new MListBox();
 		formLevelList = new FormListEntry("Độ khó", levelList); 
 		list1.add(formLevelList);
 		levelList.addItem("Captain American");
@@ -127,6 +130,16 @@ public class PlayInitViewMGwt implements PlayInitView {
 	@Override
 	public HasText getPlayButtonText() {
 		return butPlay;
+	}
+
+	@Override
+	public HasValue<Boolean> getPlayWithComCheckbox() {
+		return cbPlayWithCom;
+	}
+
+	@Override
+	public MListBox getLevelList() {
+		return levelList;
 	}
 
 }
