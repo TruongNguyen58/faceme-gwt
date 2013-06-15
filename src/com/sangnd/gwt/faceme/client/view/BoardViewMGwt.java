@@ -293,6 +293,7 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 			}
 			
 			if (matchFinish) {
+				notiShape.notice("");
 				Dialogs.alert("Hết cờ!", "Bạn hoặc đối phương đã dành chiến thắng!", null);
 			}
 		}
