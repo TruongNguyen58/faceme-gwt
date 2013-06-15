@@ -30,5 +30,5 @@ public class Constant {
 	public final static int SCREEN_WIDTH = 483;
 	public static int SCREEN_X = 0;
 	public static int SCREEN_Y = 0;
-	public static float SCREEN_RATIO = 1.0f;
+	public static double SCREEN_RATIO = 1.0d;
 }

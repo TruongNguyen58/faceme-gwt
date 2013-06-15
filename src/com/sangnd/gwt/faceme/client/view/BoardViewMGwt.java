@@ -61,10 +61,10 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	private boolean warnKing;
 	private boolean matchFinish;
 	private int chessRadius;
-	private float leftPadding;
-	private float topPadding;
-	private float boxWidth;
-	private float boxHeight;
+	private double leftPadding;
+	private double topPadding;
+	private double boxWidth;
+	private double boxHeight;
 
 	public BoardViewMGwt() {
 		init();
@@ -111,10 +111,10 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 			public void onTap(TapEvent e) {
 
 				int x = e.getStartX()
-						- (int) ((float) Constant.SCREEN_RATIO * 30)
+						- (int) (Constant.SCREEN_RATIO * 30)
 						- boardPanel.getAbsoluteLeft();
 				int y = e.getStartY()
-						- (int) ((float) Constant.SCREEN_RATIO * 24)
+						- (int) (Constant.SCREEN_RATIO * 24)
 						- boardPanel.getAbsoluteTop();
 
 				if (x < 0)
@@ -149,8 +149,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	}
 
 	private void reDrawBoard() {
-		int width = ((int) ((float) Constant.SCREEN_WIDTH * Constant.SCREEN_RATIO) - 40);
-		int height = ((int) ((float) Constant.SCREEN_HEIGHT * Constant.SCREEN_RATIO) - 40);
+		int width = ((int) (Constant.SCREEN_WIDTH * Constant.SCREEN_RATIO) - 40);
+		int height = ((int) (Constant.SCREEN_HEIGHT * Constant.SCREEN_RATIO) - 40);
 
 		this.setWidth(width + "px");
 		this.setHeight(height + "px");
@@ -166,8 +166,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	private void updateScreenRatio() {
 		int w = Window.getClientWidth();
 		int h = Window.getClientHeight() - 50;
-		float rw = (float) w / Constant.SCREEN_WIDTH;
-		float rh = (float) h / Constant.SCREEN_HEIGHT;
+		double rw = (double) w / Constant.SCREEN_WIDTH;
+		double rh = (double) h / Constant.SCREEN_HEIGHT;
 		if (rw < rh) {
 			Constant.SCREEN_RATIO = rw;
 		} else {
@@ -183,7 +183,7 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 		boxWidth = Constant.SCREEN_RATIO * 50;
 		boxHeight = Constant.SCREEN_RATIO * 47;
 
-		if (Constant.SCREEN_RATIO < 1) {
+		if (Constant.SCREEN_RATIO < 0.7d) {
 			boxWidth -= 2;
 			boxHeight -= 2;
 		} else {
