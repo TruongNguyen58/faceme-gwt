@@ -21,6 +21,8 @@
  */
 package com.sangnd.gwt.faceme.client.view;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
@@ -45,6 +47,7 @@ public class PlayInitViewMGwt implements PlayInitView {
 	private HeaderButton butPlay;
 	private Button butDanCo;
 	private LayoutPanel panel;
+	private FormListEntry formLevelList;
 
 	/**
 	 * 
@@ -78,8 +81,17 @@ public class PlayInitViewMGwt implements PlayInitView {
 		MCheckBox cbPlayWithCom = new MCheckBox();
 		list1.add(new FormListEntry("Chơi với máy?", cbPlayWithCom.asWidget()));
 		
+		cbPlayWithCom.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				formLevelList.setVisible(event.getValue());
+			}
+		});
+		
 		MListBox levelList = new MListBox();
-		list1.add(new FormListEntry("Độ khó", levelList));
+		formLevelList = new FormListEntry("Độ khó", levelList); 
+		list1.add(formLevelList);
 		levelList.addItem("Captain American");
 		levelList.addItem("Thor");
 		levelList.addItem("Iron Man");
