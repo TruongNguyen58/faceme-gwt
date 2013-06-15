@@ -325,8 +325,7 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 			}
 
 			if (matchFinish) {
-				Dialogs.alert("Hết cờ!",
-						"Bạn hoặc đối phương đã dành chiến thắng!", null);
+				Dialogs.alert("Hết cờ!", "Bạn hoặc đối phương đã dành chiến thắng!", null);
 			}
 		}
 	}
