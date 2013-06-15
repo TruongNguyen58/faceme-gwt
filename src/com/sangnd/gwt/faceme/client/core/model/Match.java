@@ -20,6 +20,8 @@ package com.sangnd.gwt.faceme.client.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sangnd.gwt.faceme.client.core.control.Computer;
+import com.sangnd.gwt.faceme.client.core.control.ComputerMinmax;
 import com.sangnd.gwt.faceme.client.core.control.MoveGeneratorNormal;
 import com.sangnd.gwt.faceme.client.core.model.chess.Advisor;
 import com.sangnd.gwt.faceme.client.core.model.chess.Bishop;
@@ -43,7 +45,7 @@ public class Match {
 	private Side currentSide;
 	private Board board;
 	public final static Chess[] CHESSs =  new Chess[8];
-	private boolean playWithCom = false;
+	private boolean playWithCom = true;
 	
 	// game state attribues
 	private List<ChessPosition> posCanMove;
@@ -51,17 +53,19 @@ public class Match {
 	private ChessPosition oldPos, newPos;
 	private MoveGeneratorNormal moveGenerator = new MoveGeneratorNormal();
 	private boolean warnKing;
+	private Computer computer;
 
 	/**
 	 * 
 	 */
 	public Match() {
 		board = new BoardImpl();
-		initChess();
 		oldPos = newPos = null;
 		posCanMove = new ArrayList<ChessPosition>();
 		state = GameState.PLAYING;
 		currentSide = Side.FRIEND;
+		initChess();
+		initComputer();
 	}
 	
 	private void initChess() {
@@ -75,6 +79,13 @@ public class Match {
 		CHESSs[7] = new Pawn(board);
 		
 		
+	}
+	
+	private void initComputer() {
+		if (playWithCom) {
+			computer = new ComputerMinmax(this,
+					(currentSide == Side.ENERMY) ? Side.FRIEND : Side.ENERMY);
+		}
 	}
 	
 	/**
@@ -307,10 +318,6 @@ public class Match {
 		return currentSide;
 	}
 
-	public void setCurrentSide(Side currentSide) {
-		this.currentSide = currentSide;
-	}
-
 	public boolean isWarnKing() {
 		return warnKing;
 	}
@@ -321,5 +328,9 @@ public class Match {
 
 	public void setPlayWithCom(boolean playWithCom) {
 		this.playWithCom = playWithCom;
+	}
+
+	public Computer getComputer() {
+		return computer;
 	}
 }

@@ -17,8 +17,11 @@
  */
 package com.sangnd.gwt.faceme.client.core.control;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
 import com.sangnd.gwt.faceme.client.core.model.Level;
+import com.sangnd.gwt.faceme.client.core.model.Side;
+import com.sangnd.gwt.faceme.client.event.ChessSelectHandler;
 
 /**
  * @author heroandtn3
@@ -33,4 +36,10 @@ public interface Computer {
 	 * [1]: newPos
 	 */
 	public ChessPosition[] getBestMove(Level level);
+	
+	public Side getSide();
+	
+	public void move();
+	
+	public HandlerRegistration addChessSelectHandler(ChessSelectHandler handler);
 }

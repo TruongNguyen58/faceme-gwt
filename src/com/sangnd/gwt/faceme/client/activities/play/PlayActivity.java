@@ -70,28 +70,40 @@ public class PlayActivity extends MGWTAbstractActivity {
 					}));
 
 			view.getBoardView().renderBoard(match.getBoard());
+			
+			ChessSelectHandler handler = new ChessSelectHandler() {
 
-			addHandlerRegistration(view.getBoardView().getWidgetSelectChess()
-					.addChessSelectHandler(new ChessSelectHandler() {
-
-						@Override
-						public void onSelect(ChessSelectEvent event) {
-							match.setPos(event.getPos());
-							
-							// This must be before moving chess!!!
-							view.getBoardView().renderWarnKing(match.isWarnKing());
-							view.getBoardView().renderMatchFinish(match.getState());
-							
-							if (match.getNewPos() != null) {
-								view.getBoardView().renderMoveChess(match.getOldPos(), match.getNewPos());
-								match.clearAfterMove();
-							} else {
-								view.getBoardView().renderChessSelect(match.getOldPos());
-								view.getBoardView().renderPosCanMove(match.getPosCanMove());
+				@Override
+				public void onSelect(ChessSelectEvent event) {
+					match.setPos(event.getPos());
+					
+					// This must be before moving chess!!!
+					view.getBoardView().renderWarnKing(match.isWarnKing());
+					view.getBoardView().renderMatchFinish(match.getState());
+					
+					if (match.getNewPos() != null) {
+						view.getBoardView().renderMoveChess(match.getOldPos(), match.getNewPos());
+						match.clearAfterMove();
+						
+						if (match.isPlayWithCom()) {
+							if (match.getComputer().getSide() == match.getCurrentSide()) {
+								match.getComputer().move();
+								System.out.println("Moving...");
 							}
 							
 						}
-					}));
+					} else {
+						view.getBoardView().renderChessSelect(match.getOldPos());
+						view.getBoardView().renderPosCanMove(match.getPosCanMove());
+					}
+					
+				}
+			
+			};
+
+			addHandlerRegistration(view.getBoardView().getWidgetSelectChess()
+					.addChessSelectHandler(handler));
+			addHandlerRegistration(match.getComputer().addChessSelectHandler(handler));
 
 		}
 
