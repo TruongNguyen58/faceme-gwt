@@ -28,6 +28,7 @@ import com.sangnd.gwt.faceme.client.core.model.Board;
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
 import com.sangnd.gwt.faceme.client.core.model.GameState;
 import com.sangnd.gwt.faceme.client.event.HasChessSelectHandler;
+import com.sangnd.gwt.faceme.client.event.HasMoveCompleteHandler;
 
 /**
  * @author heroandtn3
@@ -63,6 +64,8 @@ public interface BoardView extends IsWidget {
 	void renderPosCanMove(final List<ChessPosition> posCanMv);
 	
 	HasChessSelectHandler getWidgetSelectChess();
+	
+	HasMoveCompleteHandler getWidgetMoveChess();
 
 	void renderWarnKing(boolean warning);
 	

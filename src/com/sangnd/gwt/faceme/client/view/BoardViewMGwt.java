@@ -42,13 +42,16 @@ import com.sangnd.gwt.faceme.client.core.model.GameState;
 import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
 import com.sangnd.gwt.faceme.client.event.ChessSelectHandler;
 import com.sangnd.gwt.faceme.client.event.HasChessSelectHandler;
+import com.sangnd.gwt.faceme.client.event.HasMoveCompleteHandler;
+import com.sangnd.gwt.faceme.client.event.MoveCompleteEvent;
+import com.sangnd.gwt.faceme.client.event.MoveCompleteHandler;
 
 /**
  * @author heroandtn3
  * 
  */
 public class BoardViewMGwt extends TouchPanel implements BoardView,
-		HasChessSelectHandler {
+		HasChessSelectHandler, HasMoveCompleteHandler {
 
 	private ChessShape[][] chessShapes = new ChessShape[10][9];
 	private AbsolutePanel boardPanel;
@@ -296,6 +299,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 				notiShape.notice("");
 				Dialogs.alert("Hết cờ!", "Bạn hoặc đối phương đã dành chiến thắng!", null);
 			}
+			
+			fireEvent(new MoveCompleteEvent());
 		}
 	}
 
@@ -370,6 +375,17 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 		posMovedTo = null;
 		
 		notiShape.notice("");
+	}
+
+	@Override
+	public HandlerRegistration addMoveCompleteHandler(
+			MoveCompleteHandler handler) {
+		return addHandler(handler, MoveCompleteEvent.TYPE);
+	}
+
+	@Override
+	public HasMoveCompleteHandler getWidgetMoveChess() {
+		return this;
 	}
 
 }

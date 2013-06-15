@@ -32,6 +32,8 @@ import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.core.model.Match;
 import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
 import com.sangnd.gwt.faceme.client.event.ChessSelectHandler;
+import com.sangnd.gwt.faceme.client.event.MoveCompleteEvent;
+import com.sangnd.gwt.faceme.client.event.MoveCompleteHandler;
 
 /**
  * @author heroandtn3
@@ -85,13 +87,6 @@ public class PlayActivity extends MGWTAbstractActivity {
 						view.getBoardView().renderMoveChess(match.getOldPos(), match.getNewPos());
 						match.clearAfterMove();
 						
-						if (match.isPlayWithCom()) {
-							if (match.getComputer().getSide() == match.getCurrentSide()) {
-								match.getComputer().move();
-								System.out.println("Moving...");
-							}
-							
-						}
 					} else {
 						view.getBoardView().renderChessSelect(match.getOldPos());
 						view.getBoardView().renderPosCanMove(match.getPosCanMove());
@@ -104,6 +99,19 @@ public class PlayActivity extends MGWTAbstractActivity {
 			addHandlerRegistration(view.getBoardView().getWidgetSelectChess()
 					.addChessSelectHandler(handler));
 			addHandlerRegistration(match.getComputer().addChessSelectHandler(handler));
+			
+			addHandlerRegistration(view.getBoardView().getWidgetMoveChess().addMoveCompleteHandler(new MoveCompleteHandler() {
+				
+				@Override
+				public void onComplete(MoveCompleteEvent event) {
+					if (match.isPlayWithCom()) {
+						if (match.getComputer().getSide() == match.getCurrentSide()) {
+							match.getComputer().move();
+							System.out.println("Moving...");
+						}
+					}
+				}
+			}));
 
 		}
 
