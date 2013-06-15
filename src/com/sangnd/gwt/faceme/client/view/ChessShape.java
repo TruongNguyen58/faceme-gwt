@@ -71,7 +71,7 @@ public class ChessShape extends Composite {
 		this.getElement().getStyle().setProperty("position", "absolute");
 		this.getElement().getStyle().setProperty("display", "block");
 		
-		this.getElement().getStyle().setProperty("border", "1px solid #cccccc"); // for debug
+		//this.getElement().getStyle().setProperty("border", "1px solid #cccccc"); // for debug
 	}
 	
 	public void setPos(int left, int top) {
