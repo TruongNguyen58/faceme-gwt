@@ -28,10 +28,10 @@ import com.sangnd.gwt.faceme.client.ClientFactory;
 
 /**
  * @author heroandtn3
- *
+ * 
  */
 public class SettingActivity extends MGWTAbstractActivity {
-	
+
 	private ClientFactory clientFactory;
 
 	/**
@@ -44,10 +44,7 @@ public class SettingActivity extends MGWTAbstractActivity {
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		
-		
-	}
 
-	
+	}
 
 }

@@ -21,7 +21,6 @@
  */
 package com.sangnd.gwt.faceme.client.activities.home;
 
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 

@@ -20,8 +20,6 @@ package com.sangnd.gwt.faceme.client.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sangnd.gwt.faceme.client.core.control.Computer;
-import com.sangnd.gwt.faceme.client.core.control.ComputerMinmax;
 import com.sangnd.gwt.faceme.client.core.control.MoveGeneratorNormal;
 import com.sangnd.gwt.faceme.client.core.model.chess.Advisor;
 import com.sangnd.gwt.faceme.client.core.model.chess.Bishop;
@@ -45,8 +43,7 @@ public class Match {
 	private Side currentSide;
 	private Board board;
 	public final static Chess[] CHESSs =  new Chess[8];
-	private Computer computer;
-	private final boolean playWithCom = false; // co dinh
+	private boolean playWithCom = false;
 	
 	// game state attribues
 	private List<ChessPosition> posCanMove;
@@ -65,7 +62,6 @@ public class Match {
 		posCanMove = new ArrayList<ChessPosition>();
 		state = GameState.PLAYING;
 		currentSide = Side.FRIEND;
-		initComputer();
 	}
 	
 	private void initChess() {
@@ -79,13 +75,6 @@ public class Match {
 		CHESSs[7] = new Pawn(board);
 		
 		
-	}
-	
-	private void initComputer() {
-		if (playWithCom) {
-			computer = new ComputerMinmax(this,
-					(currentSide == Side.ENERMY) ? Side.FRIEND : Side.ENERMY);
-		}
 	}
 	
 	/**
@@ -265,14 +254,6 @@ public class Match {
 			// vi tri hop le thi tien hanh di chuyen
 			newPos = pos;
 			this.move(oldPos, newPos);
-			
-			// may tinh di chuyen
-			if (playWithCom) {
-				// ai thread
-				synchronized (computer) {
-/*					computer.notify();*/
-				}
-			}
 		}
 		
 	}
@@ -329,5 +310,13 @@ public class Match {
 
 	public boolean isWarnKing() {
 		return warnKing;
+	}
+
+	public boolean isPlayWithCom() {
+		return playWithCom;
+	}
+
+	public void setPlayWithCom(boolean playWithCom) {
+		this.playWithCom = playWithCom;
 	}
 }
