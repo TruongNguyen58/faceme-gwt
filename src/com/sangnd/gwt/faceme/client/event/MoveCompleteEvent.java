@@ -19,25 +19,33 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.home;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * @author heroandtn3
  *
  */
-public interface HomeView extends IsWidget {
-	
-	HasTapHandlers getPlayButton();
-	
-	HasTapHandlers getCotheButton();
-	
-	HasTapHandlers getPlayOnlineButton();
-	
-	HasTapHandlers getSettingButton();
-	
-	HasTapHandlers getAboutButton();
+public class MoveCompleteEvent extends GwtEvent<MoveCompleteHandler> {
+	public static final Type<MoveCompleteHandler> TYPE = new Type<MoveCompleteHandler>();
+
+	/**
+	 * 
+	 */
+	public MoveCompleteEvent() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public Type<MoveCompleteHandler> getAssociatedType() {
+		return TYPE;
+	}
+
+	@Override
+	protected void dispatch(MoveCompleteHandler handler) {
+		handler.onComplete(this);
+		
+	}
 
 }

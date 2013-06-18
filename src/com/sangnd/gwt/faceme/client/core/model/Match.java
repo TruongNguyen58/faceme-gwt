@@ -45,7 +45,6 @@ public class Match {
 	private Side currentSide;
 	private Board board;
 	public final static Chess[] CHESSs =  new Chess[8];
-	private Computer computer;
 	private boolean playWithCom = false;
 	
 	// game state attribues
@@ -54,17 +53,18 @@ public class Match {
 	private ChessPosition oldPos, newPos;
 	private MoveGeneratorNormal moveGenerator = new MoveGeneratorNormal();
 	private boolean warnKing;
+	private Computer computer;
 
 	/**
 	 * 
 	 */
 	public Match() {
 		board = new BoardImpl();
-		initChess();
 		oldPos = newPos = null;
 		posCanMove = new ArrayList<ChessPosition>();
 		state = GameState.PLAYING;
 		currentSide = Side.FRIEND;
+		initChess();
 		initComputer();
 	}
 	
@@ -268,8 +268,6 @@ public class Match {
 			// vi tri hop le thi tien hanh di chuyen
 			newPos = pos;
 			this.move(oldPos, newPos);
-			
-
 		}
 		
 	}
@@ -320,15 +318,19 @@ public class Match {
 		return currentSide;
 	}
 
-	public void setCurrentSide(Side currentSide) {
-		this.currentSide = currentSide;
-	}
-
 	public boolean isWarnKing() {
 		return warnKing;
+	}
+	
+	public boolean isPlayWithCom() {
+		return playWithCom;
 	}
 
 	public void setPlayWithCom(boolean playWithCom) {
 		this.playWithCom = playWithCom;
+	}
+
+	public Computer getComputer() {
+		return computer;
 	}
 }

@@ -19,10 +19,16 @@ package com.sangnd.gwt.faceme.client.core.control;
 
 import java.util.List;
 
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.HasHandlers;
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
 import com.sangnd.gwt.faceme.client.core.model.Level;
 import com.sangnd.gwt.faceme.client.core.model.Match;
 import com.sangnd.gwt.faceme.client.core.model.Side;
+import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
+import com.sangnd.gwt.faceme.client.event.ChessSelectHandler;
 
 
 
@@ -31,11 +37,12 @@ import com.sangnd.gwt.faceme.client.core.model.Side;
  * @author heroandtn3
  * @date Jan 7, 2013
  */
-public class ComputerMinmax implements Computer {
+public class ComputerMinmax implements Computer, HasHandlers {
 
 	private Match match;
 	private Side side;
 	private MoveGenerator moveGenerator;
+	private HandlerManager handlerManager;
 	/**
 	 * 
 	 */
@@ -43,6 +50,7 @@ public class ComputerMinmax implements Computer {
 		this.match = match;
 		this.side = side;
 		moveGenerator = new MoveGeneratorNormal();
+		handlerManager = new HandlerManager(this);
 	}
 
 	@Override
@@ -50,6 +58,29 @@ public class ComputerMinmax implements Computer {
 		List<ChessPosition[]> allMoves = moveGenerator.getMoves(match.getBoard(), side);
 		int x = (int) (Math.random() * allMoves.size());  
 		return moveGenerator.getMoves(match.getBoard(), side).get(x);
+	}
+
+	@Override
+	public Side getSide() {
+		return this.side;
+	}
+
+	@Override
+	public void fireEvent(GwtEvent<?> event) {
+		 handlerManager.fireEvent(event);
+		
+	}
+
+	@Override
+	public void move() {
+		ChessPosition[] mv = getBestMove(null);
+		fireEvent(new ChessSelectEvent(mv[0]));
+		fireEvent(new ChessSelectEvent(mv[1]));
+	}
+
+	@Override
+	public HandlerRegistration addChessSelectHandler(ChessSelectHandler handler) {
+		return handlerManager.addHandler(ChessSelectEvent.TYPE, handler);
 	}
 
 }
