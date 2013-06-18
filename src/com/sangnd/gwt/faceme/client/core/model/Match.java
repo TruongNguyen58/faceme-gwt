@@ -46,7 +46,7 @@ public class Match {
 	private Board board;
 	public final static Chess[] CHESSs =  new Chess[8];
 	private Computer computer;
-	private final boolean playWithCom = false; // co dinh
+	private boolean playWithCom = false;
 	
 	// game state attribues
 	private List<ChessPosition> posCanMove;
@@ -269,13 +269,7 @@ public class Match {
 			newPos = pos;
 			this.move(oldPos, newPos);
 			
-			// may tinh di chuyen
-			if (playWithCom) {
-				// ai thread
-				synchronized (computer) {
-/*					computer.notify();*/
-				}
-			}
+
 		}
 		
 	}
@@ -332,5 +326,9 @@ public class Match {
 
 	public boolean isWarnKing() {
 		return warnKing;
+	}
+
+	public void setPlayWithCom(boolean playWithCom) {
+		this.playWithCom = playWithCom;
 	}
 }

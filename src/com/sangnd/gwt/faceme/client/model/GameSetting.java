@@ -16,31 +16,44 @@
  * along with mFaceme.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.sangnd.gwt.faceme.client;
+/**
+ * 
+ */
+package com.sangnd.gwt.faceme.client.model;
 
-import com.google.gwt.place.shared.PlaceController;
-import com.google.web.bindery.event.shared.EventBus;
-import com.sangnd.gwt.faceme.client.activities.home.HomeView;
-import com.sangnd.gwt.faceme.client.activities.play.PlayView;
-import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
-import com.sangnd.gwt.faceme.client.model.GameSetting;
+import com.sangnd.gwt.faceme.client.core.model.Level;
 
 /**
  * @author heroandtn3
- * 
+ *
  */
-public interface ClientFactory {
-
-	public EventBus getEventBus();
-
-	public PlaceController getPlaceController();
-
-	public HomeView getHomeView();
-
-	public PlayView getPlayView();
-
-	public PlayInitView getPlayInitView();
+public class GameSetting {
 	
-	public GameSetting getGameSetting();
+	private boolean playWithCom;
+	private Level level;
+
+	/**
+	 * 
+	 */
+	public GameSetting() {
+		playWithCom = false;
+		level = new Level();
+	}
+
+	public boolean isPlayWithCom() {
+		return playWithCom;
+	}
+
+	public void setPlayWithCom(boolean playWithCom) {
+		this.playWithCom = playWithCom;
+	}
+
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
 
 }

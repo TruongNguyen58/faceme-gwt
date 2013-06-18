@@ -29,6 +29,7 @@ import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
+import com.sangnd.gwt.faceme.client.core.model.Level;
 
 /**
  * @author heroandtn3
@@ -49,7 +50,7 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
 		
-		PlayInitView view = clientFactory.getPlayInitView();
+		final PlayInitView view = clientFactory.getPlayInitView();
 		view.getBackButtonText().setText("Home");
 		view.getPlayButtonText().setText("Play");
 		
@@ -65,6 +66,12 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
+				boolean playWithCom = view.getPlayWithComCheckbox().getValue();
+				clientFactory.getGameSetting().setPlayWithCom(playWithCom);
+				
+				int levelIndex = view.getLevelList().getSelectedIndex();
+				clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
+				
 				clientFactory.getPlaceController().goTo(new PlayPlace());
 				
 			}

@@ -26,12 +26,50 @@ public class Level {
 	private int attack; // tan cong
 	private int defence; // phong thu
 	private int experience; // kinh nghiem
+	private String name;
 
 	/**
 	 * 
 	 */
 	public Level() {
+		defaultInit();
+	}
+	
+	public Level(int level) {
+		switch (level) {
+			case 1:
+				name = "American Captain";
+				attack = 20;
+				defence = 50;
+				experience = 60;
+				break;
+			case 2:
+				name = "Thor";
+				attack = 63;
+				defence = 47;
+				experience = 55;
+			case 3:
+				name = "Iron man";
+				attack = 72;
+				defence = 59;
+				experience = 86;
+				break;
+			case 4:
+				name = "Hulk";
+				attack = 91;
+				defence = 89;
+				experience = 62;
+				break;
+			default:
+				defaultInit();
+		}
+	}
 
+	private void defaultInit() {
+		name = "Computer";
+		attack = 50;
+		defence = 50;
+		experience = 50;
 	}
 
 	public int getAttack() {
@@ -56,6 +94,14 @@ public class Level {
 
 	public void setExperience(int experience) {
 		this.experience = experience;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

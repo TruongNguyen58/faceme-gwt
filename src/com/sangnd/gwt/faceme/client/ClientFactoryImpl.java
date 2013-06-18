@@ -24,6 +24,7 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.sangnd.gwt.faceme.client.activities.home.HomeView;
 import com.sangnd.gwt.faceme.client.activities.play.PlayView;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
+import com.sangnd.gwt.faceme.client.model.GameSetting;
 import com.sangnd.gwt.faceme.client.view.HomeViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayInitViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayViewMGwt;
@@ -39,6 +40,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private HomeView homeView;
 	private PlayView playView;
 	private PlayInitView playInitView;
+	private GameSetting gameSetting;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -80,6 +82,14 @@ public class ClientFactoryImpl implements ClientFactory {
 			playInitView = new PlayInitViewMGwt();
 		}
 		return playInitView;
+	}
+
+	@Override
+	public GameSetting getGameSetting() {
+		if (gameSetting == null) {
+			gameSetting = new GameSetting();
+		}
+		return gameSetting;
 	}
 
 }

@@ -53,6 +53,8 @@ public class PlayActivity extends MGWTAbstractActivity {
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
 		match = new Match();
+		match.setPlayWithCom(clientFactory.getGameSetting().isPlayWithCom());
+		match.setLevel(clientFactory.getGameSetting().getLevel());
 
 		final PlayView view = clientFactory.getPlayView();
 		Place place = clientFactory.getPlaceController().getWhere();
