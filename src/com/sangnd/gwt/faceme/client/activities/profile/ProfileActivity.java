@@ -19,60 +19,66 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.home;
+package com.sangnd.gwt.faceme.client.activities.profile;
 
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
-import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
-import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitPlace;
-import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
+import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
  * 
  */
-public class HomeActivity extends MGWTAbstractActivity {
+public class ProfileActivity extends MGWTAbstractActivity {
 
 	private ClientFactory clientFactory;
 
-	public HomeActivity(ClientFactory clientFactory) {
+	/**
+	 * 
+	 */
+	public ProfileActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		HomeView view = clientFactory.getHomeView();
 		
-		addHandlerRegistration(view.getPlayButton().addTapHandler(new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent event) {
-				clientFactory.getPlaceController().goTo(new PlayInitPlace());
-				
-			}
-		}));
-		
-		addHandlerRegistration(view.getPlayOnlineButton().addTapHandler(new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent event) {
-				User user = clientFactory.getGameSession().getUser();
-				if (user == null) {
-					clientFactory.getPlaceController().goTo(new LoginPlace());
-				} else {
-					clientFactory.getPlaceController().goTo(new ProfilePlace(user.getEmail()));
-				}
-				
-			}
-		}));
-
+		ProfileView view = clientFactory.getProfileView();
 		panel.setWidget(view.asWidget());
+		
+		addHandlerRegistration(view.getBackButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				clientFactory.getPlaceController().goTo(new HomePlace());
+			}
+		}));
+		
+		Place place = clientFactory.getPlaceController().getWhere();
+		
+		if (place instanceof ProfilePlace) {
+			ProfilePlace profilePlace = (ProfilePlace) place;
+			
+			User user = clientFactory.getGameSession().getUser();
+			
+			if (user == null) {
+				return;
+			}
+			
+			view.getTitle().setText(user.getName());
+			
+			view.getName().setText(user.getName() + " - ID: " + profilePlace.getId());
+			
+			
+			
+		}
 	}
 
 }

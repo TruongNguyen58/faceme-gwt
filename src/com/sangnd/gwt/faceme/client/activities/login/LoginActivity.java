@@ -19,7 +19,7 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.home;
+package com.sangnd.gwt.faceme.client.activities.login;
 
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -27,52 +27,64 @@ import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
-import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
-import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitPlace;
+import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
- * 
+ *
  */
-public class HomeActivity extends MGWTAbstractActivity {
+public class LoginActivity extends MGWTAbstractActivity {
 
 	private ClientFactory clientFactory;
 
-	public HomeActivity(ClientFactory clientFactory) {
+	/**
+	 * 
+	 */
+	public LoginActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		HomeView view = clientFactory.getHomeView();
+		final LoginView view = clientFactory.getLoginView();
+		panel.setWidget(view.asWidget());
 		
-		addHandlerRegistration(view.getPlayButton().addTapHandler(new TapHandler() {
+		view.getTitle().setText("Login");
+		
+		addHandlerRegistration(view.getBackButton().addTapHandler(new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				clientFactory.getPlaceController().goTo(new PlayInitPlace());
-				
+				clientFactory.getPlaceController().goTo(new HomePlace());
 			}
 		}));
 		
-		addHandlerRegistration(view.getPlayOnlineButton().addTapHandler(new TapHandler() {
+		addHandlerRegistration(view.getLoginButton().addTapHandler(new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				User user = clientFactory.getGameSession().getUser();
-				if (user == null) {
-					clientFactory.getPlaceController().goTo(new LoginPlace());
-				} else {
-					clientFactory.getPlaceController().goTo(new ProfilePlace(user.getEmail()));
+				String email = view.getEmail().getText();
+				String pass = view.getPass().getText();
+				
+				if (email.length() == 0 || pass.length() == 0) {
+					return;
 				}
 				
+				if (email.equals(pass)) {
+					User user = new User();
+					user.setName("Sang");
+					user.setEmail(email);
+					user.setPass(pass);
+					clientFactory.getGameSession().setUser(user);
+					clientFactory.getPlaceController().goTo(new ProfilePlace(email));
+				}
 			}
 		}));
-
-		panel.setWidget(view.asWidget());
 	}
+	
+	
 
 }

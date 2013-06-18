@@ -20,14 +20,18 @@ package com.sangnd.gwt.faceme.client.activities;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
+import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitPlace;
+import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
 import com.sangnd.gwt.faceme.client.activities.setting.SettingPlace;
 
 /**
  * @author heroandtn3
  * 
  */
-@WithTokenizers({ HomePlace.Tokenizer.class, PlayPlace.Tokenizer.class, SettingPlace.Tokenizer.class, PlayInitPlace.Tokenizer.class })
+@WithTokenizers({ HomePlace.Tokenizer.class, PlayPlace.Tokenizer.class,
+		SettingPlace.Tokenizer.class, PlayInitPlace.Tokenizer.class,
+		LoginPlace.Tokenizer.class, ProfilePlace.Tokenizer.class })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }

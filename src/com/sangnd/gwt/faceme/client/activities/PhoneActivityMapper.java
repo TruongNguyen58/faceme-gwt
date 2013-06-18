@@ -24,10 +24,14 @@ import com.google.gwt.place.shared.Place;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomeActivity;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
+import com.sangnd.gwt.faceme.client.activities.login.LoginActivity;
+import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayActivity;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitActivity;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitPlace;
+import com.sangnd.gwt.faceme.client.activities.profile.ProfileActivity;
+import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
 import com.sangnd.gwt.faceme.client.activities.setting.SettingActivity;
 import com.sangnd.gwt.faceme.client.activities.setting.SettingPlace;
 
@@ -53,6 +57,10 @@ public class PhoneActivityMapper implements ActivityMapper {
 			return new SettingActivity(clientFactory);
 		} else if (place instanceof PlayInitPlace) {
 			return new PlayInitActivity(clientFactory);
+		} else if (place instanceof LoginPlace) {
+			return new LoginActivity(clientFactory);
+		} else if (place instanceof ProfilePlace) {
+			return new ProfileActivity(clientFactory);
 		}
 		
 		return null;

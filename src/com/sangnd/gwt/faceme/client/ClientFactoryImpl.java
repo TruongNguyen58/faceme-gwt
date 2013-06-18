@@ -22,12 +22,17 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.sangnd.gwt.faceme.client.activities.home.HomeView;
+import com.sangnd.gwt.faceme.client.activities.login.LoginView;
 import com.sangnd.gwt.faceme.client.activities.play.PlayView;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
+import com.sangnd.gwt.faceme.client.activities.profile.ProfileView;
+import com.sangnd.gwt.faceme.client.model.GameSession;
 import com.sangnd.gwt.faceme.client.model.GameSetting;
 import com.sangnd.gwt.faceme.client.view.HomeViewMGwt;
+import com.sangnd.gwt.faceme.client.view.LoginViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayInitViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayViewMGwt;
+import com.sangnd.gwt.faceme.client.view.ProfileViewMGwt;
 
 /**
  * @author heroandtn3
@@ -41,6 +46,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	private PlayView playView;
 	private PlayInitView playInitView;
 	private GameSetting gameSetting;
+	private LoginView loginView;
+	private ProfileView profileView;
+	private GameSession gameSession;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -90,6 +98,30 @@ public class ClientFactoryImpl implements ClientFactory {
 			gameSetting = new GameSetting();
 		}
 		return gameSetting;
+	}
+
+	@Override
+	public LoginView getLoginView() {
+		if (loginView == null) {
+			loginView = new LoginViewMGwt();
+		}
+		return loginView;
+	}
+
+	@Override
+	public ProfileView getProfileView() {
+		if (profileView == null) {
+			profileView = new ProfileViewMGwt();
+		}
+		return profileView;
+	}
+
+	@Override
+	public GameSession getGameSession() {
+		if (gameSession == null) {
+			gameSession = new GameSession();
+		}
+		return gameSession;
 	}
 
 }
