@@ -32,7 +32,6 @@ import com.sangnd.gwt.faceme.client.core.model.chess.Knight;
 import com.sangnd.gwt.faceme.client.core.model.chess.Pawn;
 import com.sangnd.gwt.faceme.client.core.model.chess.Rook;
 
-
 /**
  * @author heroandtn3
  * @date Jan 7, 2013
@@ -44,9 +43,9 @@ public class Match {
 	private GameState state;
 	private Side currentSide;
 	private Board board;
-	public final static Chess[] CHESSs =  new Chess[8];
+	public final static Chess[] CHESSs = new Chess[8];
 	private boolean playWithCom = false;
-	
+
 	// game state attribues
 	private List<ChessPosition> posCanMove;
 	// vi tri cu va moi, dung de luu vet, undo,redo,...
@@ -67,7 +66,7 @@ public class Match {
 		initChess();
 		initComputer();
 	}
-	
+
 	private void initChess() {
 		CHESSs[0] = null;
 		CHESSs[1] = new King(board);
@@ -77,19 +76,17 @@ public class Match {
 		CHESSs[5] = new Cannon(board);
 		CHESSs[6] = new Knight(board);
 		CHESSs[7] = new Pawn(board);
-		
-		
+
 	}
-	
+
 	private void initComputer() {
-		if (playWithCom) {
-			computer = new ComputerMinmax(this,
-					(currentSide == Side.ENERMY) ? Side.FRIEND : Side.ENERMY);
-		}
+		computer = new ComputerMinmax(this,
+				(currentSide == Side.ENERMY) ? Side.FRIEND : Side.ENERMY);
 	}
-	
+
 	/**
 	 * Ham thuc hien di chuyen quan co tu vi tri cu sang vi tri moi
+	 * 
 	 * @param oldPos
 	 * @param newPos
 	 */
@@ -99,19 +96,20 @@ public class Match {
 
 		updateGame();
 	}
-	
+
 	private void updateGame() {
-		
+
 		warnKing = checkWarnKing(currentSide);
 		state = checkFinishMatch();
-		
+
 		// switch player
 		currentSide = (currentSide == Side.ENERMY) ? Side.FRIEND : Side.ENERMY;
 	}
 
 	private GameState checkFinishMatch() {
-		Side nextSide =  (currentSide == Side.ENERMY) ? Side.FRIEND : Side.ENERMY;
-		
+		Side nextSide = (currentSide == Side.ENERMY) ? Side.FRIEND
+				: Side.ENERMY;
+
 		// het co khi: sau khi di chuyen ma tuong van bi chieu
 		if (checkWarnKing(nextSide)) {
 			System.out.println("TH1");
@@ -121,7 +119,7 @@ public class Match {
 				return GameState.FRIEND_WON;
 			}
 		}
-		
+
 		// het co khi: doi phuong khong co nuoc nao de di
 		List<ChessPosition[]> allPos = moveGenerator.getMoves(board, nextSide);
 		if (allPos.size() == 0) {
@@ -132,24 +130,25 @@ public class Match {
 				return GameState.ENERMY_WON;
 			}
 		}
-		
+
 		// het co khi: doi phuong di moi nuoc van khong thoat khoi chieu tuong
 		if (warnKing) {
 			boolean hasEscapeMove = false;
 			for (ChessPosition[] mv : allPos) {
 				board.move(mv[0], mv[1]);
-				
-				List<ChessPosition[]> allPosCanMv = moveGenerator.getMoves(board, currentSide);
+
+				List<ChessPosition[]> allPosCanMv = moveGenerator.getMoves(
+						board, currentSide);
 				// chi can 1 nuoc di de chong chieu tuong la du
 				if (!checkWarnKing(board.getTable(), allPosCanMv, currentSide)) {
 					hasEscapeMove = true;
 					board.undo(1, false);
 					break;
 				}
-				
+
 				board.undo(1, false);
 			}
-			
+
 			if (!hasEscapeMove) {
 				System.out.println("TH3");
 				if (nextSide == Side.ENERMY) {
@@ -159,50 +158,53 @@ public class Match {
 				}
 			}
 		}
-		
+
 		return GameState.PLAYING;
-		
+
 	}
 
 	/**
 	 * Kiem tra xem `side` co dang chieu tuong khong
-	 * @param side side kiem tra
+	 * 
+	 * @param side
+	 *            side kiem tra
 	 * @return
 	 */
 	private boolean checkWarnKing(Side side) {
 		return checkWarnKing(null, null, side);
 	}
-	
-	private boolean checkWarnKing(int[][] table, List<ChessPosition[]> allPos, Side side) {
+
+	private boolean checkWarnKing(int[][] table, List<ChessPosition[]> allPos,
+			Side side) {
 		if (table == null) {
 			table = board.getTable();
 		}
-		
+
 		if (allPos == null) {
 			allPos = moveGenerator.getMoves(board, side);
 		}
-		
-		
+
 		// tim vi tri tuong cua doi phuong
-		int startRow = 0, endRow = 2; 
+		int startRow = 0, endRow = 2;
 		int startCol = 3, endCol = 5;
 		int kingCode = -1;
 		int kingRow = -1, kingCol = -1;
-		
-		if (side== Side.ENERMY) {
-			startRow = 7; endRow = 9;
+
+		if (side == Side.ENERMY) {
+			startRow = 7;
+			endRow = 9;
 			kingCode = 1;
 		}
 		for (int row = startRow; row <= endRow; row++) {
 			for (int col = startCol; col <= endCol; col++) {
 				if (kingCode == table[row][col]) {
-					kingRow = row; kingCol = col;
+					kingRow = row;
+					kingCol = col;
 					break;
 				}
 			}
 		}
-		
-		
+
 		if (kingRow != -1) {
 			for (ChessPosition[] pos : allPos) {
 				if (pos[1].getRow() == kingRow && pos[1].getCol() == kingCol) {
@@ -210,9 +212,9 @@ public class Match {
 				}
 			}
 		}
-		
+
 		return false;
-	
+
 	}
 
 	private void updatePosCanMove() {
@@ -222,22 +224,21 @@ public class Match {
 			int row = oldPos.getRow();
 			int col = oldPos.getCol();
 			int value = Math.abs(board.getPiece(oldPos));
-			ChessPosition currentPos = 
-					new ChessPosition(row, col);
+			ChessPosition currentPos = new ChessPosition(row, col);
 			posCanMove = CHESSs[value].getPosCanMove(currentPos);
 		}
 	}
-	
+
 	private boolean isChooseForMove(ChessPosition pos) {
 		int piece = board.getPiece(pos);
-		if ((currentSide == Side.FRIEND && piece > 0) ||
-			(currentSide == Side.ENERMY && piece < 0)) {
+		if ((currentSide == Side.FRIEND && piece > 0)
+				|| (currentSide == Side.ENERMY && piece < 0)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public void setPos(ChessPosition pos) {
 		if (state != GameState.PLAYING) {
 			System.out.println("finish game: " + state);
@@ -245,34 +246,36 @@ public class Match {
 		}
 		if (isChooseForMove(pos)) { // chon quan de di chuyen
 			// loai bo pos khong hop le
-			if (board.getPiece(pos) == 0) return;
-			
+			if (board.getPiece(pos) == 0)
+				return;
+
 			oldPos = pos; // neu hop le thi danh dau oldPos da chon
 			newPos = null;
 			updatePosCanMove();
-			
-		} else if (oldPos != null){ // neu da co pos duoc chon
+
+		} else if (oldPos != null) { // neu da co pos duoc chon
 			// thi di chuyen quan den vi tri moi
-			
+
 			// vi tri di chuyen den phai nam trong posCanMove
 			boolean validPos = false;
 			for (ChessPosition posCM : posCanMove) {
-				if (posCM.getRow() == pos.getRow() &&
-					posCM.getCol() == pos.getCol()) {
+				if (posCM.getRow() == pos.getRow()
+						&& posCM.getCol() == pos.getCol()) {
 					validPos = true;
 					break;
 				}
 			}
-			if (validPos == false) return;
-		
+			if (validPos == false)
+				return;
+
 			// vi tri hop le thi tien hanh di chuyen
 			newPos = pos;
 			this.move(oldPos, newPos);
 		}
-		
+
 	}
 
-	/* get, set -------------------------------------------------------------*/
+	/* get, set ------------------------------------------------------------- */
 	public Level getLevel() {
 		return level;
 	}
@@ -308,7 +311,7 @@ public class Match {
 	public ChessPosition getNewPos() {
 		return newPos;
 	}
-	
+
 	public void clearAfterMove() {
 		oldPos = null;
 		newPos = null;
@@ -321,7 +324,7 @@ public class Match {
 	public boolean isWarnKing() {
 		return warnKing;
 	}
-	
+
 	public boolean isPlayWithCom() {
 		return playWithCom;
 	}

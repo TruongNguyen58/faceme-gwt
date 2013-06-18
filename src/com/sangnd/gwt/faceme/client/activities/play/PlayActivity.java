@@ -109,7 +109,6 @@ public class PlayActivity extends MGWTAbstractActivity {
 					if (match.isPlayWithCom()) {
 						if (match.getComputer().getSide() == match.getCurrentSide()) {
 							match.getComputer().move();
-							System.out.println("Moving...");
 						}
 					}
 				}
