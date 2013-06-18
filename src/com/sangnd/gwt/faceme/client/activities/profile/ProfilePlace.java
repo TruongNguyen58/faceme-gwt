@@ -35,6 +35,10 @@ public class ProfilePlace extends Place {
 	/**
 	 * 
 	 */
+	public ProfilePlace() {
+		
+	}
+	
 	public ProfilePlace(String id) {
 		this.id = id;
 	}

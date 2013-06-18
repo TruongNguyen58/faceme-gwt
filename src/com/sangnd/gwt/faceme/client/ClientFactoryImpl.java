@@ -26,13 +26,16 @@ import com.sangnd.gwt.faceme.client.activities.login.LoginView;
 import com.sangnd.gwt.faceme.client.activities.play.PlayView;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfileView;
+import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailView;
 import com.sangnd.gwt.faceme.client.model.GameSession;
 import com.sangnd.gwt.faceme.client.model.GameSetting;
+import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 import com.sangnd.gwt.faceme.client.view.HomeViewMGwt;
 import com.sangnd.gwt.faceme.client.view.LoginViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayInitViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayViewMGwt;
 import com.sangnd.gwt.faceme.client.view.ProfileViewMGwt;
+import com.sangnd.gwt.faceme.client.view.UserDetailViewMGwt;
 
 /**
  * @author heroandtn3
@@ -49,6 +52,8 @@ public class ClientFactoryImpl implements ClientFactory {
 	private LoginView loginView;
 	private ProfileView profileView;
 	private GameSession gameSession;
+	private UserDb userDb;
+	private UserDetailView userDetailView;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -122,6 +127,22 @@ public class ClientFactoryImpl implements ClientFactory {
 			gameSession = new GameSession();
 		}
 		return gameSession;
+	}
+
+	@Override
+	public UserDb getUserDb() {
+		if (userDb == null) {
+			userDb = new UserDb();
+		}
+		return userDb;
+	}
+
+	@Override
+	public UserDetailView getUserDetailView() {
+		if (userDetailView == null) {
+			userDetailView = new UserDetailViewMGwt();
+		}
+		return userDetailView;
 	}
 
 }

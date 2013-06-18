@@ -34,6 +34,8 @@ import com.sangnd.gwt.faceme.client.activities.profile.ProfileActivity;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
 import com.sangnd.gwt.faceme.client.activities.setting.SettingActivity;
 import com.sangnd.gwt.faceme.client.activities.setting.SettingPlace;
+import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailActivity;
+import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailPlace;
 
 
 /**
@@ -61,6 +63,8 @@ public class PhoneActivityMapper implements ActivityMapper {
 			return new LoginActivity(clientFactory);
 		} else if (place instanceof ProfilePlace) {
 			return new ProfileActivity(clientFactory);
+		} else if (place instanceof UserDetailPlace) {
+			return new UserDetailActivity(clientFactory);
 		}
 		
 		return null;

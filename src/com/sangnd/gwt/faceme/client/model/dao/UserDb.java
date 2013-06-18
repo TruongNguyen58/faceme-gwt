@@ -19,32 +19,44 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.profile;
+package com.sangnd.gwt.faceme.client.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ProfileView extends IsWidget {
+public class UserDb {
 
-	HasText getTitle();
+	/**
+	 * 
+	 */
+	public UserDb() {
+		// TODO Auto-generated constructor stub
+	}
 	
-	HasTapHandlers getBackButton();
-	
-	HasText getName();
-	
-	void renderUserList(List<User> users);
-	
-	HasCellSelectedHandler getUserList();
+	public List<User> getAllUser() {
+		List<User> list = new ArrayList<User>();
+		for (int i = 0; i < 10; i++) {
+			User user = new User();
+			user.setName("Player " + i);
+			user.setEmail("user" + i + "@gmail.com");
+			user.setAge(i);
+			list.add(user);
+		}
+		return list;
+	}
 
-	void renderSelectUser(int index);
+	public User getUserById(String id) {
+		User user = new User();
+		user.setName("Player " + id);
+		user.setEmail("user" + id + "@gmail.com");
+		user.setAge(99);
+		return user;
+	}
 
 }

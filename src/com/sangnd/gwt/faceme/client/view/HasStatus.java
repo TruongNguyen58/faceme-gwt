@@ -19,32 +19,17 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.profile;
+package com.sangnd.gwt.faceme.client.view;
 
-import java.util.List;
-
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
-import com.sangnd.gwt.faceme.client.model.User;
+import com.sangnd.gwt.faceme.client.model.Status;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ProfileView extends IsWidget {
+public interface HasStatus {
 
-	HasText getTitle();
+	public Status getStatus();
 	
-	HasTapHandlers getBackButton();
-	
-	HasText getName();
-	
-	void renderUserList(List<User> users);
-	
-	HasCellSelectedHandler getUserList();
-
-	void renderSelectUser(int index);
-
+	public void setStatus(Status status);
 }

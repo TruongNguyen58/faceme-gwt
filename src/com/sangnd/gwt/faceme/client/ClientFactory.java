@@ -25,8 +25,10 @@ import com.sangnd.gwt.faceme.client.activities.login.LoginView;
 import com.sangnd.gwt.faceme.client.activities.play.PlayView;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfileView;
+import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailView;
 import com.sangnd.gwt.faceme.client.model.GameSession;
 import com.sangnd.gwt.faceme.client.model.GameSetting;
+import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 
 /**
  * @author heroandtn3
@@ -51,5 +53,9 @@ public interface ClientFactory {
 	public ProfileView getProfileView();
 
 	public GameSession getGameSession();
+	
+	public UserDb getUserDb();
+
+	public UserDetailView getUserDetailView();
 
 }

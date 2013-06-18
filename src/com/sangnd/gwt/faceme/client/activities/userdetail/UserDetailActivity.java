@@ -19,7 +19,7 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.profile;
+package com.sangnd.gwt.faceme.client.activities.userdetail;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -27,70 +27,75 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
-import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
 import com.sangnd.gwt.faceme.client.ClientFactory;
-import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
+import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
+import com.sangnd.gwt.faceme.client.model.Status;
 import com.sangnd.gwt.faceme.client.model.User;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 
 /**
  * @author heroandtn3
- * 
+ *
  */
-public class ProfileActivity extends MGWTAbstractActivity {
+public class UserDetailActivity extends MGWTAbstractActivity {
 
 	private ClientFactory clientFactory;
 
 	/**
 	 * 
 	 */
-	public ProfileActivity(ClientFactory clientFactory) {
+	public UserDetailActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		
-		final ProfileView view = clientFactory.getProfileView();
+		UserDetailView view = clientFactory.getUserDetailView();
 		panel.setWidget(view.asWidget());
 		
 		addHandlerRegistration(view.getBackButton().addTapHandler(new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				clientFactory.getPlaceController().goTo(new HomePlace());
+				clientFactory.getPlaceController().goTo(new ProfilePlace());
 			}
 		}));
 		
 		Place place = clientFactory.getPlaceController().getWhere();
 		
-		if (place instanceof ProfilePlace) {
-			ProfilePlace profilePlace = (ProfilePlace) place;
-			
-			User user = clientFactory.getGameSession().getUser();
-			
-			if (user == null) {
-				return;
+		if (place instanceof UserDetailPlace) {
+			UserDetailPlace userDetailPlace = (UserDetailPlace) place;
+			UserDb udb = clientFactory.getUserDb();
+			final User user = udb.getUserById(userDetailPlace.getId());
+			view.getTitle().setText(user.getName());
+			view.getName().setText(user.getName());
+			view.getAge().setText("" + user.getAge());
+			if (user.isLogon()) {
+				if (user.isPlaying()) {
+					view.getStatusWidget().setStatus(Status.BUSY);
+				} else {
+					view.getStatusWidget().setStatus(Status.AVAI);
+				}
+			} else {
+				view.getStatusWidget().setStatus(Status.OFFLINE);
 			}
 			
-			view.getTitle().setText(user.getName());
-			
-			view.getName().setText(user.getName() + " - ID: " + profilePlace.getId());
-			
-			UserDb udb = clientFactory.getUserDb();
-			
-			view.renderUserList(udb.getAllUser());
-			
-			addHandlerRegistration(view.getUserList().addCellSelectedHandler(new CellSelectedHandler() {
+			addHandlerRegistration(view.getInviteButton().addTapHandler(new TapHandler() {
 				
 				@Override
-				public void onCellSelected(CellSelectedEvent event) {
-					view.renderSelectUser(event.getIndex());
+				public void onTap(TapEvent event) {
+					invitePlay(user);
 				}
 			}));
 		}
 	}
+
+	private void invitePlay(User user) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 }

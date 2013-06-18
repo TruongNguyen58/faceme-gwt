@@ -19,32 +19,42 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.profile;
+package com.sangnd.gwt.faceme.client.activities.userdetail;
 
-import java.util.List;
-
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceTokenizer;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ProfileView extends IsWidget {
+public class UserDetailPlace extends Place {
 
-	HasText getTitle();
-	
-	HasTapHandlers getBackButton();
-	
-	HasText getName();
-	
-	void renderUserList(List<User> users);
-	
-	HasCellSelectedHandler getUserList();
+	private String id;
 
-	void renderSelectUser(int index);
+	/**
+	 * 
+	 */
+	public UserDetailPlace(String id) {
+		this.id = id;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public static class Tokenizer implements PlaceTokenizer<UserDetailPlace> {
+
+		@Override
+		public UserDetailPlace getPlace(String token) {
+			return new UserDetailPlace(token);
+		}
+
+		@Override
+		public String getToken(UserDetailPlace place) {
+			return place.getId();
+		}
+		
+	}
 
 }

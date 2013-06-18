@@ -25,6 +25,7 @@ import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitPlace;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
 import com.sangnd.gwt.faceme.client.activities.setting.SettingPlace;
+import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailPlace;
 
 /**
  * @author heroandtn3
@@ -32,6 +33,6 @@ import com.sangnd.gwt.faceme.client.activities.setting.SettingPlace;
  */
 @WithTokenizers({ HomePlace.Tokenizer.class, PlayPlace.Tokenizer.class,
 		SettingPlace.Tokenizer.class, PlayInitPlace.Tokenizer.class,
-		LoginPlace.Tokenizer.class, ProfilePlace.Tokenizer.class })
+		LoginPlace.Tokenizer.class, ProfilePlace.Tokenizer.class, UserDetailPlace.Tokenizer.class })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }
