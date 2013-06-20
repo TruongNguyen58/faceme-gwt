@@ -21,17 +21,12 @@
  */
 package com.sangnd.gwt.faceme.client.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs.ButtonType;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs.OptionCallback;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs.OptionsDialogEntry;
 import com.googlecode.mgwt.ui.client.widget.CellList;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
@@ -43,7 +38,7 @@ import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
- *
+ * 
  */
 public class ProfileViewMGwt implements ProfileView {
 
@@ -52,36 +47,35 @@ public class ProfileViewMGwt implements ProfileView {
 	private HTML title;
 	private HTML name;
 	private CellList<User> userCell;
-	private int selectedIndex = 0;
 
 	/**
 	 * 
 	 */
 	public ProfileViewMGwt() {
 		panel = new LayoutPanel();
-		
+
 		HeaderPanel headerPanel = new HeaderPanel();
 		panel.add(headerPanel);
-		
+
 		butBack = new HeaderButton();
 		butBack.setText("Home");
 		butBack.setBackButton(true);
 		headerPanel.setLeftWidget(butBack);
-		
+
 		title = new HTML();
 		headerPanel.setCenterWidget(title);
-		
+
 		name = new HTML();
 		panel.add(name);
-		
+
 		ScrollPanel scrollPanel = new ScrollPanel();
 		panel.add(scrollPanel);
-		
+
 		userCell = new CellList<User>(new UserCell());
 		userCell.setRound(true);
 		userCell.setGroup(false);
 		scrollPanel.setWidget(userCell);
-		
+
 	}
 
 	@Override
@@ -99,7 +93,6 @@ public class ProfileViewMGwt implements ProfileView {
 		return butBack;
 	}
 
-
 	@Override
 	public HasText getName() {
 		return name;
@@ -113,26 +106,6 @@ public class ProfileViewMGwt implements ProfileView {
 	@Override
 	public HasCellSelectedHandler getUserList() {
 		return userCell;
-	}
-
-	@Override
-	public void renderSelectUser(int index) {
-		userCell.setSelectedIndex(selectedIndex, false);
-		userCell.setSelectedIndex(index, true);
-		selectedIndex = index;
-		
-		List<OptionsDialogEntry> list = new ArrayList<OptionsDialogEntry>();
-		list.add(new OptionsDialogEntry("Invite", ButtonType.NORMAL));
-		list.add(new OptionsDialogEntry("Detail", ButtonType.NORMAL));
-		list.add(new OptionsDialogEntry("Chat", ButtonType.NORMAL));
-		
-		Dialogs.options(list, new OptionCallback() {
-			
-			@Override
-			public void onOptionSelected(int index) {
-				
-			}
-		});
 	}
 
 }

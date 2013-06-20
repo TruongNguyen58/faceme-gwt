@@ -68,6 +68,7 @@ public class UserDetailViewMGwt implements UserDetailView {
 		headerPanel.setCenterWidget(title);
 		
 		WidgetList infoList = new WidgetList();
+		panel.add(infoList);
 		
 		name = new HTML();
 		infoList.add(name);

@@ -45,6 +45,4 @@ public interface ProfileView extends IsWidget {
 	
 	HasCellSelectedHandler getUserList();
 
-	void renderSelectUser(int index);
-
 }

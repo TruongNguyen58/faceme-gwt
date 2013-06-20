@@ -31,6 +31,7 @@ import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
+import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailPlace;
 import com.sangnd.gwt.faceme.client.model.User;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 
@@ -87,7 +88,7 @@ public class ProfileActivity extends MGWTAbstractActivity {
 				
 				@Override
 				public void onCellSelected(CellSelectedEvent event) {
-					view.renderSelectUser(event.getIndex());
+					clientFactory.getPlaceController().goTo(new UserDetailPlace("" + event.getIndex()));
 				}
 			}));
 		}

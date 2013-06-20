@@ -25,10 +25,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
 import com.sangnd.gwt.faceme.client.core.model.Constant;
-import com.sangnd.gwt.faceme.client.model.Status;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
