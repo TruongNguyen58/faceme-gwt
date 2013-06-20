@@ -40,7 +40,6 @@ import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfileView;
 import com.sangnd.gwt.faceme.client.model.User;
-import com.sangnd.gwt.faceme.client.model.UserCell;
 
 /**
  * @author heroandtn3
@@ -80,6 +79,7 @@ public class ProfileViewMGwt implements ProfileView {
 		
 		userCell = new CellList<User>(new UserCell());
 		userCell.setRound(true);
+		userCell.setGroup(false);
 		scrollPanel.setWidget(userCell);
 		
 	}

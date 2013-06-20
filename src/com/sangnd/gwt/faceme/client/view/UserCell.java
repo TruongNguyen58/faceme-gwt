@@ -19,13 +19,17 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.model;
+package com.sangnd.gwt.faceme.client.view;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
+import com.sangnd.gwt.faceme.client.core.model.Constant;
+import com.sangnd.gwt.faceme.client.model.Status;
+import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
@@ -36,8 +40,8 @@ public class UserCell implements Cell<User> {
 	private static Template TEMPLATE = GWT.create(Template.class);
 	
 	public interface Template extends SafeHtmlTemplates {
-		 @SafeHtmlTemplates.Template("<div>{0}</div>")
-		 SafeHtml content(String name);
+		 @SafeHtmlTemplates.Template("<div>{0}</div> <img style=\"float: right;\" src=\"{1}\" />")
+		 SafeHtml content(String name, String statusImgUrl);
 	}
 
 	/**
@@ -49,7 +53,17 @@ public class UserCell implements Cell<User> {
 	@Override
 	public void render(SafeHtmlBuilder safeHtmlBuilder, User model) {
 		if (model == null) return;
-		SafeHtml content = TEMPLATE.content(model.getName());
+		String statusImgUrl;
+		if (model.isLogon()) {
+			if (model.isPlaying()) {
+				statusImgUrl = Constant.STATUS_DIR + "busy.png";
+			} else {
+				statusImgUrl = Constant.STATUS_DIR + "avai.png";
+			}
+		} else {
+			statusImgUrl = Constant.STATUS_DIR + "offline.png";
+		}
+		SafeHtml content = TEMPLATE.content(model.getName(), statusImgUrl);
 		safeHtmlBuilder.append(content);
 	}
 

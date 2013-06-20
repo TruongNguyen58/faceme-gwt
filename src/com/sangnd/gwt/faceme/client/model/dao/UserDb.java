@@ -24,6 +24,7 @@ package com.sangnd.gwt.faceme.client.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.Random;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
@@ -46,6 +47,8 @@ public class UserDb {
 			user.setName("Player " + i);
 			user.setEmail("user" + i + "@gmail.com");
 			user.setAge(i);
+			user.setLogon(Random.nextBoolean());
+			user.setPlaying(Random.nextBoolean());
 			list.add(user);
 		}
 		return list;
