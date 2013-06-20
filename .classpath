@@ -9,5 +9,6 @@
 			<attribute name="javadoc_location" value="jar:file:/home/heroandtn3/usr/lib/java/google/mgwt/mgwt-1.1.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/heroandtn3/stupid/programming/java/google/mFaceme/lib/bGwtChannelApi-0.1.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
