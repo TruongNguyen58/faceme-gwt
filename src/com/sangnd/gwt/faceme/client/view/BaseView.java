@@ -19,33 +19,28 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.profile;
-
-import java.util.List;
+package com.sangnd.gwt.faceme.client.view;
 
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
-import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
-import com.sangnd.gwt.faceme.client.model.User;
-import com.sangnd.gwt.faceme.client.view.BaseView;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ProfileView extends BaseView {
-
-	HasText getTitle();
+public interface BaseView extends IsWidget {
 	
-	HasTapHandlers getBackButton();
+	public HasText getTitle();
 	
-	HasText getName();
+	public HasTapHandlers getNotiWidget();
 	
-	void renderUserList(List<User> users);
+	public HasText getNotiText();
 	
-	HasCellSelectedHandler getUserList();
+	public HasTapHandlers getBackButton();
 	
-	void confirmSomeStuff(String title, String message, ConfirmCallback callback);
+	public HasText getBackButtonText();
+	
+	public NotiDialogView getNotiDialogView();
 
 }

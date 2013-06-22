@@ -31,6 +31,7 @@ public class User {
 	private String name;
 	private String pass;
 	private String email;
+	private int notiNumber;
 	private int age;
 	private boolean playing;
 	private boolean logon;
@@ -95,6 +96,14 @@ public class User {
 
 	public void setLogon(boolean logon) {
 		this.logon = logon;
+	}
+
+	public int getNotiNumber() {
+		return notiNumber;
+	}
+
+	public void setNotiNumber(int notiNumber) {
+		this.notiNumber = notiNumber;
 	}
 
 }

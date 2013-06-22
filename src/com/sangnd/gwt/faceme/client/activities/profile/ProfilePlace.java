@@ -56,7 +56,7 @@ public class ProfilePlace extends Place {
 
 		@Override
 		public String getToken(ProfilePlace place) {
-			return place.getId();
+			return "index";
 		}
 		
 	}

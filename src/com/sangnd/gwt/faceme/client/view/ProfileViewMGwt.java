@@ -25,15 +25,9 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.Widget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import com.googlecode.mgwt.ui.client.widget.CellList;
-import com.googlecode.mgwt.ui.client.widget.HeaderButton;
-import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
-import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
-import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfileView;
 import com.sangnd.gwt.faceme.client.model.User;
@@ -42,11 +36,8 @@ import com.sangnd.gwt.faceme.client.model.User;
  * @author heroandtn3
  * 
  */
-public class ProfileViewMGwt implements ProfileView {
+public class ProfileViewMGwt extends BaseViewMGwt implements ProfileView {
 
-	private LayoutPanel panel;
-	private HeaderButton butBack;
-	private HTML title;
 	private HTML name;
 	private CellList<User> userCell;
 
@@ -54,45 +45,14 @@ public class ProfileViewMGwt implements ProfileView {
 	 * 
 	 */
 	public ProfileViewMGwt() {
-		panel = new LayoutPanel();
 
-		HeaderPanel headerPanel = new HeaderPanel();
-		panel.add(headerPanel);
-
-		butBack = new HeaderButton();
 		butBack.setText("Home");
-		butBack.setBackButton(true);
-		headerPanel.setLeftWidget(butBack);
-
-		title = new HTML();
-		headerPanel.setCenterWidget(title);
-
-		name = new HTML();
-		panel.add(name);
-
-		ScrollPanel scrollPanel = new ScrollPanel();
-		panel.add(scrollPanel);
 
 		userCell = new CellList<User>(new UserCell());
 		userCell.setRound(true);
 		userCell.setGroup(false);
 		scrollPanel.setWidget(userCell);
 
-	}
-
-	@Override
-	public Widget asWidget() {
-		return panel;
-	}
-
-	@Override
-	public HasText getTitle() {
-		return title;
-	}
-
-	@Override
-	public HasTapHandlers getBackButton() {
-		return butBack;
 	}
 
 	@Override
@@ -114,7 +74,7 @@ public class ProfileViewMGwt implements ProfileView {
 	public void confirmSomeStuff(String title, String message,
 			ConfirmCallback callback) {
 		Dialogs.confirm(title, message, callback);
-		
+
 	}
 
 }
