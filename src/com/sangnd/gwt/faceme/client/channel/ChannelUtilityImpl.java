@@ -49,6 +49,8 @@ public class ChannelUtilityImpl implements ChannelUtility {
 
 	@Override
 	public void initChannel(final User user) {
+		// workaround: avoid being multiple event firing
+		if (channel != null) return;
 		channel = new Channel(user.getId());
 		channel.join(new ChannelListener() {
 			
@@ -62,9 +64,9 @@ public class ChannelUtilityImpl implements ChannelUtility {
 			public void onMessage(String message) {
 				System.out.println("Receive: " + message);
 				try {
-				ChannelMessage channelMessage = ChannelMessage.fromJson(message);
-				eventBus.fireEvent(new ChannelEvent(channelMessage));
-				System.out.println("Receive: " + channelMessage.getContent());
+					ChannelMessage channelMessage = ChannelMessage
+							.fromJson(message);
+					eventBus.fireEvent(new ChannelEvent(channelMessage));
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

@@ -96,8 +96,7 @@ public class ProfileActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onMessage(ChannelEvent event) {
-				view.confirmSomeStuff("New message", event.getMessage().getContent(), null);
-				System.out.println("Fire");
+				view.confirmSomeStuff(event.getMessage().getSenderId(), event.getMessage().getContent(), null);
 			}
 		}));
 		
