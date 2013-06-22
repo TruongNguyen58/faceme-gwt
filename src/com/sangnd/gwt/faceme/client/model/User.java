@@ -23,10 +23,11 @@ package com.sangnd.gwt.faceme.client.model;
 
 /**
  * @author heroandtn3
- *
+ * 
  */
 public class User {
 
+	private String id;
 	private String name;
 	private String pass;
 	private String email;
@@ -38,6 +39,14 @@ public class User {
 	 * 
 	 */
 	public User() {
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -87,7 +96,5 @@ public class User {
 	public void setLogon(boolean logon) {
 		this.logon = logon;
 	}
-	
-	
 
 }

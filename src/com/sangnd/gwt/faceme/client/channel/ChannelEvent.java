@@ -19,33 +19,40 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.profile;
+package com.sangnd.gwt.faceme.client.channel;
 
-import java.util.List;
+import com.google.gwt.event.shared.GwtEvent;
 
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
-import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
-import com.sangnd.gwt.faceme.client.model.User;
+
 
 /**
  * @author heroandtn3
- *
+ * 
  */
-public interface ProfileView extends IsWidget {
+public class ChannelEvent extends GwtEvent<ChannelEventHandler> {
+	
+	public final static Type<ChannelEventHandler> TYPE = new Type<ChannelEventHandler>();
+	private ChannelMessage message;
+	
+	public ChannelEvent(ChannelMessage message) {
+		this.message = message;
+	}
+	
+	public ChannelMessage getMessage() {
+		return message;
+	}
 
-	HasText getTitle();
-	
-	HasTapHandlers getBackButton();
-	
-	HasText getName();
-	
-	void renderUserList(List<User> users);
-	
-	HasCellSelectedHandler getUserList();
-	
-	void confirmSomeStuff(String title, String message, ConfirmCallback callback);
+	@Override
+	public com.google.gwt.event.shared.GwtEvent.Type<ChannelEventHandler> getAssociatedType() {
+		return TYPE;
+	}
+
+	@Override
+	protected void dispatch(ChannelEventHandler handler) {
+		handler.onMessage(this);
+		
+	}
+
+
 
 }

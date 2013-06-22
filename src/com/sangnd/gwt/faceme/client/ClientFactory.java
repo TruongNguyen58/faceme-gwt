@@ -26,6 +26,7 @@ import com.sangnd.gwt.faceme.client.activities.play.PlayView;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfileView;
 import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailView;
+import com.sangnd.gwt.faceme.client.channel.ChannelUtility;
 import com.sangnd.gwt.faceme.client.model.GameSession;
 import com.sangnd.gwt.faceme.client.model.GameSetting;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
@@ -57,5 +58,7 @@ public interface ClientFactory {
 	public UserDb getUserDb();
 
 	public UserDetailView getUserDetailView();
+	
+	public ChannelUtility getChannelUtility();
 
 }

@@ -21,9 +21,9 @@
  */
 package com.sangnd.gwt.faceme.client.activities.profile;
 
-import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
@@ -32,6 +32,8 @@ import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailPlace;
+import com.sangnd.gwt.faceme.client.channel.ChannelEvent;
+import com.sangnd.gwt.faceme.client.channel.ChannelEventHandler;
 import com.sangnd.gwt.faceme.client.model.User;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 
@@ -65,33 +67,39 @@ public class ProfileActivity extends MGWTAbstractActivity {
 			}
 		}));
 		
-		Place place = clientFactory.getPlaceController().getWhere();
+			
+		User user = clientFactory.getGameSession().getUser();
 		
-		if (place instanceof ProfilePlace) {
-			ProfilePlace profilePlace = (ProfilePlace) place;
-			
-			User user = clientFactory.getGameSession().getUser();
-			
-			if (user == null) {
-				return;
-			}
-			
-			view.getTitle().setText(user.getName());
-			
-			view.getName().setText(user.getName() + " - ID: " + profilePlace.getId());
-			
-			UserDb udb = clientFactory.getUserDb();
-			
-			view.renderUserList(udb.getAllUser());
-			
-			addHandlerRegistration(view.getUserList().addCellSelectedHandler(new CellSelectedHandler() {
-				
-				@Override
-				public void onCellSelected(CellSelectedEvent event) {
-					clientFactory.getPlaceController().goTo(new UserDetailPlace("" + event.getIndex()));
-				}
-			}));
+		if (user == null) {
+			return;
 		}
+		
+		clientFactory.getChannelUtility().initChannel(user);
+		
+		view.getTitle().setText(user.getName());
+		
+		view.getName().setText(user.getName());
+		
+		UserDb udb = clientFactory.getUserDb();
+		
+		view.renderUserList(udb.getAllUser());
+		
+		addHandlerRegistration(view.getUserList().addCellSelectedHandler(new CellSelectedHandler() {
+			
+			@Override
+			public void onCellSelected(CellSelectedEvent event) {
+				clientFactory.getPlaceController().goTo(new UserDetailPlace("" + event.getIndex()));
+			}
+		}));
+		
+		addHandlerRegistration(eventBus.addHandler(ChannelEvent.TYPE, new ChannelEventHandler() {
+			
+			@Override
+			public void onMessage(ChannelEvent event) {
+				view.confirmSomeStuff("New message", event.getMessage().getContent(), null);
+				System.out.println("Fire");
+			}
+		}));
+		
 	}
-
 }

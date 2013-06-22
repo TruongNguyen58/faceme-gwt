@@ -56,6 +56,7 @@ public class UserDb {
 
 	public User getUserById(String id) {
 		User user = new User();
+		user.setId("user" + id + "@gmail.com");
 		user.setName("Player " + id);
 		user.setEmail("user" + id + "@gmail.com");
 		user.setAge(99);

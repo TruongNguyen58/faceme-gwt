@@ -19,33 +19,43 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.profile;
+package com.sangnd.gwt.faceme.client.channel;
 
-import java.util.List;
-
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
-import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.json.client.JSONObject;
 
 /**
  * @author heroandtn3
- *
+ * 
  */
-public interface ProfileView extends IsWidget {
+public class ChannelMessage extends JavaScriptObject {
 
-	HasText getTitle();
+	/**
+	 * 
+	 */
+	protected ChannelMessage() {
+	}
+
+	public final native String getSenderId() /*-{
+		return this.senderId;
+	}-*/;
+
+	public final native String getContent() /*-{
+		return this.content;
+	}-*/;
 	
-	HasTapHandlers getBackButton();
+	public static final native ChannelMessage fromJson(String json) /*-{
+		return JSON.parse(json, function(key, value) {
+			return value;
+		});
+	}-*/;
+
+	public final String toJson() {
+		return new JSONObject(this).toString();
+	}
 	
-	HasText getName();
-	
-	void renderUserList(List<User> users);
-	
-	HasCellSelectedHandler getUserList();
-	
-	void confirmSomeStuff(String title, String message, ConfirmCallback callback);
+	public static final ChannelMessage create(String senderId, String content) {
+		return fromJson("{\"senderId\":\""+senderId+"\",\"content\":\""+content+"\"}");
+	}
 
 }

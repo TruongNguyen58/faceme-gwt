@@ -75,8 +75,9 @@ public class LoginActivity extends MGWTAbstractActivity {
 				
 				if (email.equals(pass)) {
 					User user = new User();
-					user.setName("Sang");
+					user.setName(email);
 					user.setEmail(email);
+					user.setId(email);
 					user.setPass(pass);
 					clientFactory.getGameSession().setUser(user);
 					clientFactory.getPlaceController().goTo(new ProfilePlace(email));

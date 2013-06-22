@@ -27,6 +27,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import com.googlecode.mgwt.ui.client.widget.CellList;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
@@ -106,6 +108,13 @@ public class ProfileViewMGwt implements ProfileView {
 	@Override
 	public HasCellSelectedHandler getUserList() {
 		return userCell;
+	}
+
+	@Override
+	public void confirmSomeStuff(String title, String message,
+			ConfirmCallback callback) {
+		Dialogs.confirm(title, message, callback);
+		
 	}
 
 }
