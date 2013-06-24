@@ -38,7 +38,7 @@ public class UserCell implements Cell<User> {
 	private static Template TEMPLATE = GWT.create(Template.class);
 	
 	public interface Template extends SafeHtmlTemplates {
-		 @SafeHtmlTemplates.Template("<div>{0}</div> <img style=\"float: right;\" src=\"{1}\" />")
+		 @SafeHtmlTemplates.Template("{0} <img style=\"float: right;\" src=\"{1}\" />")
 		 SafeHtml content(String name, String statusImgUrl);
 	}
 

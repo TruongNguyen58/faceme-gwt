@@ -44,7 +44,7 @@ public class Match {
 	private Side currentSide;
 	private Board board;
 	public final static Chess[] CHESSs = new Chess[8];
-	private boolean playWithCom = false;
+	private GameMode gameMode;
 
 	// game state attribues
 	private List<ChessPosition> posCanMove;
@@ -63,6 +63,7 @@ public class Match {
 		posCanMove = new ArrayList<ChessPosition>();
 		state = GameState.PLAYING;
 		currentSide = Side.FRIEND;
+		gameMode = GameMode.TWO_PLAYER_OFFLINE;
 		initChess();
 		initComputer();
 	}
@@ -325,15 +326,16 @@ public class Match {
 		return warnKing;
 	}
 
-	public boolean isPlayWithCom() {
-		return playWithCom;
-	}
-
-	public void setPlayWithCom(boolean playWithCom) {
-		this.playWithCom = playWithCom;
-	}
-
 	public Computer getComputer() {
 		return computer;
 	}
+
+	public GameMode getGameMode() {
+		return gameMode;
+	}
+
+	public void setGameMode(GameMode gameMode) {
+		this.gameMode = gameMode;
+	}
+
 }

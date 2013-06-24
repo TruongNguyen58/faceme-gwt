@@ -19,19 +19,38 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.channel;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.event.shared.GwtEvent;
+import com.sangnd.gwt.faceme.client.core.model.GameMode;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ChannelUtility {
-	
-	void initChannel(User user);
+public class SelectGameModeEvent extends GwtEvent<SelectGameModeHandler> {
 
-	void sendMessage(User receiver, ChannelMessage message);
+	public final static Type<SelectGameModeHandler> TYPE = new Type<SelectGameModeHandler>();
+	private GameMode mode;
+	/**
+	 * 
+	 */
+	public SelectGameModeEvent(GameMode mode) {
+		this.mode = mode;
+	}
 	
-	void sendMessage(String receiverId, ChannelMessage message);
+	public GameMode getMode() {
+		return mode;
+	}
+
+	@Override
+	public Type<SelectGameModeHandler> getAssociatedType() {
+		return TYPE;
+	}
+
+	@Override
+	protected void dispatch(SelectGameModeHandler handler) {
+		handler.onSelect(this);
+	}
+
 }

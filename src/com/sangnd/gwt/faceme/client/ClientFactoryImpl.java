@@ -31,6 +31,8 @@ import com.sangnd.gwt.faceme.client.channel.ChannelUtility;
 import com.sangnd.gwt.faceme.client.channel.ChannelUtilityImpl;
 import com.sangnd.gwt.faceme.client.model.GameSession;
 import com.sangnd.gwt.faceme.client.model.GameSetting;
+import com.sangnd.gwt.faceme.client.model.Room;
+import com.sangnd.gwt.faceme.client.model.RoomImpl;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 import com.sangnd.gwt.faceme.client.view.HomeViewMGwt;
 import com.sangnd.gwt.faceme.client.view.LoginViewMGwt;
@@ -57,6 +59,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private UserDb userDb;
 	private UserDetailView userDetailView;
 	private ChannelUtility channelUtility;
+	private Room room;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -154,6 +157,14 @@ public class ClientFactoryImpl implements ClientFactory {
 			channelUtility = new ChannelUtilityImpl(eventBus);
 		}
 		return channelUtility;
+	}
+
+	@Override
+	public Room getRoom() {
+		if (room == null) {
+			room = new RoomImpl(this);
+		}
+		return room;
 	}
 
 }

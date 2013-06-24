@@ -21,31 +21,31 @@
  */
 package com.sangnd.gwt.faceme.client.model;
 
+import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Level;
 
 /**
  * @author heroandtn3
- *
+ * 
  */
 public class GameSetting {
-	
-	private boolean playWithCom;
+
 	private Level level;
+	private GameMode gameMode;
 
 	/**
 	 * 
 	 */
 	public GameSetting() {
-		playWithCom = false;
 		level = new Level();
 	}
 
-	public boolean isPlayWithCom() {
-		return playWithCom;
+	public GameMode getGameMode() {
+		return gameMode;
 	}
 
-	public void setPlayWithCom(boolean playWithCom) {
-		this.playWithCom = playWithCom;
+	public void setGameMode(GameMode gameMode) {
+		this.gameMode = gameMode;
 	}
 
 	public Level getLevel() {

@@ -19,19 +19,39 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.channel;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ChannelUtility {
+public class InviteUserEvent extends GwtEvent<InviteUserHandler> {
 	
-	void initChannel(User user);
+	public final static Type<InviteUserHandler> TYPE = new Type<InviteUserHandler>();
 
-	void sendMessage(User receiver, ChannelMessage message);
+	private int selectedIndex;
+
+	/**
+	 * 
+	 */
+	public InviteUserEvent(int selectedIndex) {
+		this.selectedIndex = selectedIndex;
+	}
 	
-	void sendMessage(String receiverId, ChannelMessage message);
+	public int getSelectedIndex() {
+		return selectedIndex;
+	}
+
+	@Override
+	public Type<InviteUserHandler> getAssociatedType() {
+		return TYPE;
+	}
+
+	@Override
+	protected void dispatch(InviteUserHandler handler) {
+		handler.onInvite(this);
+	}
+
 }

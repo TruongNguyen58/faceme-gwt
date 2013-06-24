@@ -29,6 +29,7 @@ import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailView;
 import com.sangnd.gwt.faceme.client.channel.ChannelUtility;
 import com.sangnd.gwt.faceme.client.model.GameSession;
 import com.sangnd.gwt.faceme.client.model.GameSetting;
+import com.sangnd.gwt.faceme.client.model.Room;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 
 /**
@@ -60,5 +61,7 @@ public interface ClientFactory {
 	public UserDetailView getUserDetailView();
 	
 	public ChannelUtility getChannelUtility();
+
+	public Room getRoom();
 
 }

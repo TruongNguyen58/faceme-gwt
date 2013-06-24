@@ -21,7 +21,6 @@
  */
 package com.sangnd.gwt.faceme.client.activities.play;
 
-import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -29,11 +28,15 @@ import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
+import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Match;
+import com.sangnd.gwt.faceme.client.core.model.Side;
 import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
 import com.sangnd.gwt.faceme.client.event.ChessSelectHandler;
 import com.sangnd.gwt.faceme.client.event.MoveCompleteEvent;
 import com.sangnd.gwt.faceme.client.event.MoveCompleteHandler;
+import com.sangnd.gwt.faceme.client.event.StartPlayEvent;
+import com.sangnd.gwt.faceme.client.event.StartPlayHandler;
 
 /**
  * @author heroandtn3
@@ -54,69 +57,90 @@ public class PlayActivity extends MGWTAbstractActivity {
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		match = new Match();
-		match.setPlayWithCom(clientFactory.getGameSetting().isPlayWithCom());
-		match.setLevel(clientFactory.getGameSetting().getLevel());
-
 		final PlayView view = clientFactory.getPlayView();
-		Place place = clientFactory.getPlaceController().getWhere();
+		view.getBackButtonText().setText("Home");
+		
+		
+		
+		addHandlerRegistration(view.getBackButton().addTapHandler(
+				new TapHandler() {
 
-		if (place instanceof PlayPlace) {
-			view.getBackButtonText().setText("Home");
-			addHandlerRegistration(view.getBackButton().addTapHandler(
-					new TapHandler() {
-
-						@Override
-						public void onTap(TapEvent event) {
-							clientFactory.getPlaceController().goTo(
-									new HomePlace());
-						}
-					}));
-
-			view.getBoardView().renderBoard(match.getBoard());
-			
-			ChessSelectHandler handler = new ChessSelectHandler() {
-
-				@Override
-				public void onSelect(ChessSelectEvent event) {
-					match.setPos(event.getPos());
-					
-					// This must be before moving chess!!!
-					view.getBoardView().renderWarnKing(match.isWarnKing());
-					view.getBoardView().renderMatchFinish(match.getState());
-					
-					if (match.getNewPos() != null) {
-						view.getBoardView().renderMoveChess(match.getOldPos(), match.getNewPos());
-						match.clearAfterMove();
-						
-					} else {
-						view.getBoardView().renderChessSelect(match.getOldPos());
-						view.getBoardView().renderPosCanMove(match.getPosCanMove());
+					@Override
+					public void onTap(TapEvent event) {
+						clientFactory.getPlaceController().goTo(
+								new HomePlace());
 					}
-					
-				}
-			
-			};
+				}));
+		
+		System.out.println("Start PlayActivity");
 
-			addHandlerRegistration(view.getBoardView().getWidgetSelectChess()
-					.addChessSelectHandler(handler));
-			addHandlerRegistration(match.getComputer().addChessSelectHandler(handler));
+		addHandlerRegistration(eventBus.addHandler(StartPlayEvent.TYPE, new StartPlayHandler() {
 			
-			addHandlerRegistration(view.getBoardView().getWidgetMoveChess().addMoveCompleteHandler(new MoveCompleteHandler() {
-				
-				@Override
-				public void onComplete(MoveCompleteEvent event) {
-					if (match.isPlayWithCom()) {
-						if (match.getComputer().getSide() == match.getCurrentSide()) {
-							match.getComputer().move();
-						}
-					}
-				}
-			}));
-
-		}
+			@Override
+			public void onStart(StartPlayEvent event) {
+				match = event.getMatch();
+				System.out.println("start");
+				doStartPlay(match, view);
+			}
+		}));
 
 		panel.setWidget(view.asWidget());
+	}
+	
+	private void doStartPlay(final Match match, final PlayView view) {
+		view.getBoardView().renderBoard(match.getBoard());
+
+		addHandlerRegistration(view.getBoardView().getWidgetSelectChess()
+				.addChessSelectHandler(new ChessSelectHandler() {
+					
+					@Override
+					public void onSelect(ChessSelectEvent event) {
+						if (match.getGameMode() == GameMode.PLAY_WITH_COMPUTER ||
+								match.getGameMode() == GameMode.TWO_PLAYER_ONLINE) {
+								if (match.getCurrentSide() == Side.ENERMY) {
+									return;
+								}
+							}
+						doChessSelectEvent(event, view);
+					}
+				}));
+		
+		addHandlerRegistration(match.getComputer().addChessSelectHandler(new ChessSelectHandler() {
+			
+			@Override
+			public void onSelect(ChessSelectEvent event) {
+				doChessSelectEvent(event, view);
+			}
+		}));
+		
+		addHandlerRegistration(view.getBoardView().getWidgetMoveChess().addMoveCompleteHandler(new MoveCompleteHandler() {
+			
+			@Override
+			public void onComplete(MoveCompleteEvent event) {
+				if (match.getGameMode() == GameMode.PLAY_WITH_COMPUTER) {
+					if (match.getComputer().getSide() == match.getCurrentSide()) {
+						match.getComputer().move();
+					}
+				}
+			}
+		}));
+	}
+	
+	private void doChessSelectEvent(ChessSelectEvent event, PlayView view) {
+		match.setPos(event.getPos());
+		
+		// This must be before moving chess!!!
+		view.getBoardView().renderWarnKing(match.isWarnKing());
+		view.getBoardView().renderMatchFinish(match.getState());
+		
+		if (match.getNewPos() != null) {
+			view.getBoardView().renderMoveChess(match.getOldPos(), match.getNewPos());
+			match.clearAfterMove();
+			
+		} else {
+			view.getBoardView().renderChessSelect(match.getOldPos());
+			view.getBoardView().renderPosCanMove(match.getPosCanMove());
+		}
 	}
 
 }

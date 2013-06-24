@@ -19,19 +19,17 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.channel;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.HasHandlers;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ChannelUtility {
+public interface HasInviteUserHandler extends HasHandlers {
 	
-	void initChannel(User user);
+	HandlerRegistration addInviteUserHandler(InviteUserHandler handler);
 
-	void sendMessage(User receiver, ChannelMessage message);
-	
-	void sendMessage(String receiverId, ChannelMessage message);
 }

@@ -19,19 +19,17 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.channel;
-
-import com.sangnd.gwt.faceme.client.model.User;
+package com.sangnd.gwt.faceme.client.model;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ChannelUtility {
+public interface RoomListener {
 	
-	void initChannel(User user);
-
-	void sendMessage(User receiver, ChannelMessage message);
+	void onInvited(String userId);
 	
-	void sendMessage(String receiverId, ChannelMessage message);
+	void onAgree();
+	
+	void onRefuse();
 }

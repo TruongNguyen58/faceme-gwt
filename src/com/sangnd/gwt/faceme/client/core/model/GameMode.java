@@ -19,19 +19,12 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.channel;
-
-import com.sangnd.gwt.faceme.client.model.User;
+package com.sangnd.gwt.faceme.client.core.model;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ChannelUtility {
-	
-	void initChannel(User user);
-
-	void sendMessage(User receiver, ChannelMessage message);
-	
-	void sendMessage(String receiverId, ChannelMessage message);
+public enum GameMode {
+	TWO_PLAYER_OFFLINE, TWO_PLAYER_ONLINE,  PLAY_WITH_COMPUTER
 }

@@ -19,19 +19,15 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.channel;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.event.shared.EventHandler;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ChannelUtility {
-	
-	void initChannel(User user);
+public interface SelectGameModeHandler extends EventHandler {
 
-	void sendMessage(User receiver, ChannelMessage message);
-	
-	void sendMessage(String receiverId, ChannelMessage message);
+	void onSelect(SelectGameModeEvent event);
 }
