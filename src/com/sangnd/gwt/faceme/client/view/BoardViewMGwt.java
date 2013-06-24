@@ -63,8 +63,6 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	private int chessRadius;
 	private double leftPadding;
 	private double topPadding;
-	private double boxWidth;
-	private double boxHeight;
 	private double boardWidth;
 	private double boardHeight;
 
@@ -113,16 +111,11 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 			public void onTap(TapEvent e) {
 
 				int x = e.getStartX()
-						- (int) (Constant.SCREEN_RATIO * 30)
+						- (int)leftPadding
 						- boardPanel.getAbsoluteLeft();
 				int y = e.getStartY()
-						- (int) (Constant.SCREEN_RATIO * 24)
+						- (int)topPadding
 						- boardPanel.getAbsoluteTop();
-
-				if (x < 0)
-					x = 0;
-				if (y < 0)
-					y = 0;
 				ChessPosition pos = convertToChessPos(x, y);
 
 				if (pos != null) {
@@ -164,13 +157,9 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 		// 21 la ban kinh chuan cua quan co
 		chessRadius = (int) (Constant.SCREEN_RATIO * 21);
 		
-		// 30 va 25 lan luot la padding chuan cua ban co
-		leftPadding = Constant.SCREEN_RATIO * 30;
+		// 31 va 25 lan luot la padding chuan cua ban co
+		leftPadding = Constant.SCREEN_RATIO * 31;
 		topPadding = Constant.SCREEN_RATIO * 25;
-
-		// 50 va 47 lan luot la kich thuoc chuan cua o co
-		boxWidth = Constant.SCREEN_RATIO * 50;
-		boxHeight = Constant.SCREEN_RATIO * 47;
 	}
 	
 	private void reDrawBoard() {
@@ -232,8 +221,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	 * Neu khong thi tra ve: null
 	 */
 	public ChessPosition convertToChessPos(int x, int y) {
-		int row = (int) ((y + chessRadius) / boxHeight);
-		int col = (int) ((x + chessRadius) / boxWidth);
+		int row = (int) ((y + chessRadius) / (boardHeight - 2*topPadding + 2) * 9);
+		int col = (int) ((x + chessRadius) / (boardWidth - 2*leftPadding + 2) * 8);
 		if (row >= 0 && row < 10 && col >= 0 && col < 9) {
 			return (new ChessPosition(row, col));
 		} else {
