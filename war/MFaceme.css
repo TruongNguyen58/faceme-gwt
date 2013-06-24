@@ -39,3 +39,10 @@ img.Chess-CanMove {
 .GOE-WOTBFO .GOE-WOTBGO {
 	-webkit-box-pack: start;
 }
+
+/* workaround with ProgressBar*/
+div.GOE-WOTBFP {
+	margin-top: 5px;
+	width: auto;
+	min-width: 100px;
+}

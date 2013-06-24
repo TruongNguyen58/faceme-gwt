@@ -21,6 +21,8 @@
  */
 package com.sangnd.gwt.faceme.client.activities.playinit;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -29,8 +31,12 @@ import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
-import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Level;
+import com.sangnd.gwt.faceme.client.event.InviteUserEvent;
+import com.sangnd.gwt.faceme.client.event.InviteUserHandler;
+import com.sangnd.gwt.faceme.client.event.SelectGameModeEvent;
+import com.sangnd.gwt.faceme.client.event.SelectGameModeHandler;
+import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
@@ -67,16 +73,46 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				boolean playWithCom = view.getPlayWithComCheckbox().getValue();
-				if (playWithCom) {
-					clientFactory.getGameSetting().setGameMode(GameMode.PLAY_WITH_COMPUTER);
-				}
 				
 				int levelIndex = view.getLevelList().getSelectedIndex();
 				clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
 				
 				clientFactory.getPlaceController().goTo(new PlayPlace());
 				
+			}
+		}));
+		
+		addHandlerRegistration(view.getGameModeList().addSelectGameModeHanlder(new SelectGameModeHandler() {
+			
+			@Override
+			public void onSelect(SelectGameModeEvent event) {
+				switch (event.getMode()) {
+					case PLAY_WITH_COMPUTER:
+						break;
+					case TWO_PLAYER_OFFLINE:
+						break;
+					case TWO_PLAYER_ONLINE:
+						break;
+					default:
+						break;
+				}
+			}
+		}));
+		
+		addHandlerRegistration(view.getSelectOpponentButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				view.renderUserList(clientFactory.getUserDb().getAllUser());
+			}
+		}));
+		
+		addHandlerRegistration(view.getInviteUserWidget().addInviteUserHandler(new InviteUserHandler() {
+			
+			@Override
+			public void onInvite(InviteUserEvent event) {
+				List<User> users = clientFactory.getUserDb().getAllUser();
+				view.renderOpponent(users.get(event.getSelectedIndex()));
 			}
 		}));
 		
