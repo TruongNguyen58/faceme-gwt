@@ -65,6 +65,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	private double topPadding;
 	private double boxWidth;
 	private double boxHeight;
+	private double boardWidth;
+	private double boardHeight;
 
 	public BoardViewMGwt() {
 		init();
@@ -141,31 +143,13 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 
 	private void resizeScreen() {
 		updateScreenRatio();
-
 		reDrawBoard();
-
 		reDrawChess();
-
-	}
-
-	private void reDrawBoard() {
-		int width = ((int) (Constant.SCREEN_WIDTH * Constant.SCREEN_RATIO) - 40);
-		int height = ((int) (Constant.SCREEN_HEIGHT * Constant.SCREEN_RATIO) - 40);
-
-		this.setWidth(width + "px");
-		this.setHeight(height + "px");
-		boardPanel.getElement().getStyle()
-				.setProperty("backgroundSize", width + "px " + height + "px");
-
-		notiShape.getElement().getStyle()
-				.setProperty("left", (width - 200) / 2 + "px");
-		notiShape.getElement().getStyle()
-				.setProperty("top", (height - 40) / 2 + "px");
 	}
 
 	private void updateScreenRatio() {
 		int w = Window.getClientWidth();
-		int h = Window.getClientHeight() - 50;
+		int h = Window.getClientHeight() - 80;
 		double rw = (double) w / Constant.SCREEN_WIDTH;
 		double rh = (double) h / Constant.SCREEN_HEIGHT;
 		if (rw < rh) {
@@ -173,24 +157,35 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 		} else {
 			Constant.SCREEN_RATIO = rh;
 		}
-	}
-
-	private void reDrawChess() {
+		
+		boardWidth = Constant.SCREEN_WIDTH * Constant.SCREEN_RATIO;
+		boardHeight = Constant.SCREEN_HEIGHT * Constant.SCREEN_RATIO;
+		
+		// 21 la ban kinh chuan cua quan co
 		chessRadius = (int) (Constant.SCREEN_RATIO * 21);
+		
+		// 30 va 25 lan luot la padding chuan cua ban co
 		leftPadding = Constant.SCREEN_RATIO * 30;
 		topPadding = Constant.SCREEN_RATIO * 25;
 
+		// 50 va 47 lan luot la kich thuoc chuan cua o co
 		boxWidth = Constant.SCREEN_RATIO * 50;
 		boxHeight = Constant.SCREEN_RATIO * 47;
+	}
+	
+	private void reDrawBoard() {
+		this.setWidth(boardWidth + "px");
+		this.setHeight(boardHeight + "px");
+		boardPanel.getElement().getStyle()
+				.setProperty("backgroundSize", boardWidth + "px " + boardHeight + "px");
 
-		if (Constant.SCREEN_RATIO < 0.7d) {
-			boxWidth -= 2;
-			boxHeight -= 2;
-		} else {
-			boxWidth -= 1;
-			boxHeight -= 1;
-		}
+		notiShape.getElement().getStyle()
+				.setProperty("left", (boardWidth - 200) / 2 + "px");
+		notiShape.getElement().getStyle()
+				.setProperty("top", (boardHeight - 40) / 2 + "px");
+	}
 
+	private void reDrawChess() {
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 9; col++) {
 				int[] pos = convertToXY(new ChessPosition(row, col));
@@ -223,8 +218,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	 * @return: mang 1 chieu chua 2 phan tu: [0]: x [1]: y
 	 */
 	private int[] convertToXY(ChessPosition pos) {
-		int x = (int) (leftPadding + pos.getCol() * boxWidth);
-		int y = (int) (topPadding + pos.getRow() * boxHeight);
+		int x = (int)((boardWidth - 2*leftPadding + 2) * pos.getCol()/8 + leftPadding);
+		int y = (int)((boardHeight - 2*topPadding + 2) * pos.getRow()/9 + topPadding);
 		return (new int[] { x, y });
 	}
 
@@ -233,8 +228,8 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	 * 
 	 * @param x
 	 * @param y
-	 * @return: Neu x, y hop le thi tra ve 1 ChessPosition Neu khong thi tra ve:
-	 *          null
+	 * @return: Neu x, y hop le thi tra ve 1 ChessPosition 
+	 * Neu khong thi tra ve: null
 	 */
 	public ChessPosition convertToChessPos(int x, int y) {
 		int row = (int) ((y + chessRadius) / boxHeight);
