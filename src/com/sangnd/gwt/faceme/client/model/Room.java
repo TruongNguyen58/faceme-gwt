@@ -19,19 +19,30 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.channel;
+package com.sangnd.gwt.faceme.client.model;
 
-import com.sangnd.gwt.faceme.client.model.User;
+import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
+import com.sangnd.gwt.faceme.client.core.model.Match;
+
 
 /**
  * @author heroandtn3
- *
+ * 
  */
-public interface ChannelUtility {
+public interface Room {
 	
-	void initChannel(User user);
-
-	void sendMessage(User receiver, ChannelMessage message);
+	public void setCurrentId(String currentId, RoomListener roomListener);
 	
-	void sendMessage(String receiverId, ChannelMessage message);
+	void sendPos(ChessPosition pos);
+	
+	void inviteOpponent(String opId);
+	
+	void cancelInvitation();
+	
+	void agreeInvitationFrom(String userId);
+	
+	void refuseInvitationFrom(String userId);
+	
+	Match getMatch();
+	
 }

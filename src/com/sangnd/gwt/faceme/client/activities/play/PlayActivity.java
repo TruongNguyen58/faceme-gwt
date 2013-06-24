@@ -35,6 +35,8 @@ import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
 import com.sangnd.gwt.faceme.client.event.ChessSelectHandler;
 import com.sangnd.gwt.faceme.client.event.MoveCompleteEvent;
 import com.sangnd.gwt.faceme.client.event.MoveCompleteHandler;
+import com.sangnd.gwt.faceme.client.event.StartPlayEvent;
+import com.sangnd.gwt.faceme.client.event.StartPlayHandler;
 
 /**
  * @author heroandtn3
@@ -55,14 +57,10 @@ public class PlayActivity extends MGWTAbstractActivity {
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		match = new Match();
-		if(clientFactory.getGameSetting().isPlayWithCom()) {
-			match.setGameMode(GameMode.PLAY_WITH_COMPUTER);
-		}
-		match.setLevel(clientFactory.getGameSetting().getLevel());
-
 		final PlayView view = clientFactory.getPlayView();
 		view.getBackButtonText().setText("Home");
+		
+		
 		
 		addHandlerRegistration(view.getBackButton().addTapHandler(
 				new TapHandler() {
@@ -73,7 +71,23 @@ public class PlayActivity extends MGWTAbstractActivity {
 								new HomePlace());
 					}
 				}));
+		
+		System.out.println("Start PlayActivity");
 
+		addHandlerRegistration(eventBus.addHandler(StartPlayEvent.TYPE, new StartPlayHandler() {
+			
+			@Override
+			public void onStart(StartPlayEvent event) {
+				match = event.getMatch();
+				System.out.println("start");
+				doStartPlay(match, view);
+			}
+		}));
+
+		panel.setWidget(view.asWidget());
+	}
+	
+	private void doStartPlay(final Match match, final PlayView view) {
 		view.getBoardView().renderBoard(match.getBoard());
 
 		addHandlerRegistration(view.getBoardView().getWidgetSelectChess()
@@ -110,8 +124,6 @@ public class PlayActivity extends MGWTAbstractActivity {
 				}
 			}
 		}));
-
-		panel.setWidget(view.asWidget());
 	}
 	
 	private void doChessSelectEvent(ChessSelectEvent event, PlayView view) {

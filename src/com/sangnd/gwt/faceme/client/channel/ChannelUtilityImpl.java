@@ -87,4 +87,9 @@ public class ChannelUtilityImpl implements ChannelUtility {
 		});
 	}
 
+	@Override
+	public void sendMessage(String receiverId, ChannelMessage message) {
+		channel.sendMessage(receiverId, message.toJson());
+	}
+
 }

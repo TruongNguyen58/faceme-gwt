@@ -19,19 +19,41 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.channel;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.event.shared.GwtEvent;
+import com.sangnd.gwt.faceme.client.core.model.Match;
 
 /**
  * @author heroandtn3
  *
  */
-public interface ChannelUtility {
+public class StartPlayEvent extends GwtEvent<StartPlayHandler>{
 	
-	void initChannel(User user);
+	public final static Type<StartPlayHandler> TYPE = new Type<StartPlayHandler>();
 
-	void sendMessage(User receiver, ChannelMessage message);
+	private Match match;
+
+	/**
+	 * 
+	 */
+	public StartPlayEvent(Match match) {
+		this.match = match;
+	}
 	
-	void sendMessage(String receiverId, ChannelMessage message);
+	public Match getMatch() {
+		return match;
+	}
+
+	@Override
+	public Type<StartPlayHandler> getAssociatedType() {
+		return TYPE;
+	}
+
+	@Override
+	protected void dispatch(StartPlayHandler handler) {
+		handler.onStart(this);
+		
+	}
+
 }

@@ -29,7 +29,6 @@ import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
-import com.sangnd.gwt.faceme.client.channel.ChannelMessage;
 import com.sangnd.gwt.faceme.client.model.Status;
 import com.sangnd.gwt.faceme.client.model.User;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
@@ -93,10 +92,7 @@ public class UserDetailActivity extends MGWTAbstractActivity {
 	}
 
 	private void invitePlay(User user) {
-		String senderId = clientFactory.getGameSession().getUser().getId();
-		String content = "Hello";
-		ChannelMessage message = ChannelMessage.create(senderId, content);
-		clientFactory.getChannelUtility().sendMessage(user, message);
+		clientFactory.getRoom().inviteOpponent(user.getId());
 		
 	}
 	

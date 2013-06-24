@@ -29,6 +29,7 @@ import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
+import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Level;
 
 /**
@@ -67,7 +68,9 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			@Override
 			public void onTap(TapEvent event) {
 				boolean playWithCom = view.getPlayWithComCheckbox().getValue();
-				clientFactory.getGameSetting().setPlayWithCom(playWithCom);
+				if (playWithCom) {
+					clientFactory.getGameSetting().setGameMode(GameMode.PLAY_WITH_COMPUTER);
+				}
 				
 				int levelIndex = view.getLevelList().getSelectedIndex();
 				clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
