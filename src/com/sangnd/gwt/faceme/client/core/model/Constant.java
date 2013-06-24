@@ -28,7 +28,5 @@ public class Constant {
 	public final static String CHESS_DIR = IMAGE_DIR + "chess/";
 	public final static int SCREEN_HEIGHT = 500;
 	public final static int SCREEN_WIDTH = 483;
-	public static int SCREEN_X = 0;
-	public static int SCREEN_Y = 0;
 	public static double SCREEN_RATIO = 1.0d;
 }
