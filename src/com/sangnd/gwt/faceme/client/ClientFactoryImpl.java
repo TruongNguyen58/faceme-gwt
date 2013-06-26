@@ -36,10 +36,14 @@ import com.sangnd.gwt.faceme.client.model.RoomImpl;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 import com.sangnd.gwt.faceme.client.view.HomeViewMGwt;
 import com.sangnd.gwt.faceme.client.view.LoginViewMGwt;
+import com.sangnd.gwt.faceme.client.view.NotiDialogView;
+import com.sangnd.gwt.faceme.client.view.NotiDialogViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayInitViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayViewMGwt;
 import com.sangnd.gwt.faceme.client.view.ProfileViewMGwt;
 import com.sangnd.gwt.faceme.client.view.UserDetailViewMGwt;
+import com.sangnd.gwt.faceme.client.view.UserListDialog;
+import com.sangnd.gwt.faceme.client.view.UserListDialogMGwt;
 
 /**
  * @author heroandtn3
@@ -60,6 +64,8 @@ public class ClientFactoryImpl implements ClientFactory {
 	private UserDetailView userDetailView;
 	private ChannelUtility channelUtility;
 	private Room room;
+	private NotiDialogView notiDialogView;
+	private UserListDialog userListDialog;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -165,6 +171,22 @@ public class ClientFactoryImpl implements ClientFactory {
 			room = new RoomImpl(this);
 		}
 		return room;
+	}
+
+	@Override
+	public NotiDialogView getNotiDialogView() {
+		if (notiDialogView == null) {
+			notiDialogView = new NotiDialogViewMGwt();
+		}
+		return notiDialogView;
+	}
+
+	@Override
+	public UserListDialog getUserListDialog() {
+		if (userListDialog == null) {
+			userListDialog = new UserListDialogMGwt();
+		}
+		return userListDialog;
 	}
 
 }

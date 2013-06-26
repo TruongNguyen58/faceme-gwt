@@ -19,36 +19,32 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.playinit;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.MListBox;
-import com.sangnd.gwt.faceme.client.event.HasSelectGameModeHandler;
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * @author heroandtn3
  *
  */
-public interface PlayInitView extends IsWidget {
+public class NewInvitationEvent extends GwtEvent<NewInvitationHandler>{
 	
-	HasTapHandlers getBackButton();
-	
-	HasText getBackButtonText();
-	
-	HasTapHandlers getPlayButton();
-	
-	HasText getPlayButtonText();
-	
-	HasTapHandlers getDancoButton();
-	
-	HasSelectGameModeHandler getGameModeList();
-	
-	void renderOpponent(User opponent);
-	
-	HasTapHandlers getSelectOpponentButton();
-	
-	MListBox getLevelList();
+	public final static Type<NewInvitationHandler> TYPE = new Type<NewInvitationHandler>();
+
+	/**
+	 * 
+	 */
+	public NewInvitationEvent() {
+	}
+
+	@Override
+	public Type<NewInvitationHandler> getAssociatedType() {
+		return TYPE;
+	}
+
+	@Override
+	protected void dispatch(NewInvitationHandler handler) {
+		handler.onNew(this);
+	}
+
 }

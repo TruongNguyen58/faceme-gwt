@@ -80,12 +80,9 @@ public class LoginActivity extends MGWTAbstractActivity {
 					user.setId(email);
 					user.setPass(pass);
 					clientFactory.getGameSession().setUser(user);
-					if (clientFactory == null)  throw new NullPointerException();
-					if (clientFactory.getPlaceController() == null) {
-						System.out.println("Null Place!");
-					}
-					System.out.println(email);
-					clientFactory.getPlaceController().goTo(new ProfilePlace("abc"));
+					clientFactory.getChannelUtility().initChannel(user);
+					clientFactory.getRoom().createRoom(user.getId());
+					clientFactory.getPlaceController().goTo(new ProfilePlace());
 				}
 			}
 		}));

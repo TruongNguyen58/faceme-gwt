@@ -19,36 +19,44 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.playinit;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.MListBox;
-import com.sangnd.gwt.faceme.client.event.HasSelectGameModeHandler;
-import com.sangnd.gwt.faceme.client.model.User;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * @author heroandtn3
- *
+ * 
  */
-public interface PlayInitView extends IsWidget {
-	
-	HasTapHandlers getBackButton();
-	
-	HasText getBackButtonText();
-	
-	HasTapHandlers getPlayButton();
-	
-	HasText getPlayButtonText();
-	
-	HasTapHandlers getDancoButton();
-	
-	HasSelectGameModeHandler getGameModeList();
-	
-	void renderOpponent(User opponent);
-	
-	HasTapHandlers getSelectOpponentButton();
-	
-	MListBox getLevelList();
+public class InvitationActionEvent extends GwtEvent<InvitationActionHandler> {
+
+	public final static Type<InvitationActionHandler> TYPE = new Type<InvitationActionHandler>();
+	private boolean accept;
+	private int selectedIndex;
+
+	/**
+	 * 
+	 */
+	public InvitationActionEvent(int selectedIndex, boolean accept) {
+		this.selectedIndex = selectedIndex;
+		this.accept = accept;
+	}
+
+	public int getSelectedIndex() {
+		return selectedIndex;
+	}
+
+	public boolean isAccept() {
+		return accept;
+	}
+
+	@Override
+	public Type<InvitationActionHandler> getAssociatedType() {
+		return TYPE;
+	}
+
+	@Override
+	protected void dispatch(InvitationActionHandler handler) {
+		handler.onAction(this);
+	}
+
 }

@@ -21,6 +21,8 @@
  */
 package com.sangnd.gwt.faceme.client.model;
 
+import java.util.List;
+
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
 import com.sangnd.gwt.faceme.client.channel.ChannelEvent;
@@ -28,8 +30,12 @@ import com.sangnd.gwt.faceme.client.channel.ChannelEventHandler;
 import com.sangnd.gwt.faceme.client.channel.ChannelMessage;
 import com.sangnd.gwt.faceme.client.channel.ChannelUtility;
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
-import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Match;
+import com.sangnd.gwt.faceme.client.event.InvitationActionEvent;
+import com.sangnd.gwt.faceme.client.event.InvitationActionHandler;
+import com.sangnd.gwt.faceme.client.event.InviteUserEvent;
+import com.sangnd.gwt.faceme.client.event.InviteUserHandler;
+import com.sangnd.gwt.faceme.client.event.NewInvitationEvent;
 import com.sangnd.gwt.faceme.client.event.StartPlayEvent;
 
 /**
@@ -60,7 +66,7 @@ public class RoomImpl implements Room {
 	}
 	
 	@Override
-	public void setCurrentId(String currentId, final RoomListener roomListener) {
+	public void createRoom(String currentId) {
 		this.currentId = currentId;
 		
 		clientFactory.getEventBus().addHandler(ChannelEvent.TYPE, new ChannelEventHandler() {
@@ -70,14 +76,48 @@ public class RoomImpl implements Room {
 				ChannelMessage message = event.getMessage();
 				String content = message.getContent();
 				if (content.equals("invite")) {
-					roomListener.onInvited(message.getSenderId());
+					System.out.println("Receive invitation from: " + message.getSenderId());
+					clientFactory.getGameSession().getInvitations().add(new Invitation(message.getSenderId()));
+					clientFactory.getEventBus().fireEvent(new NewInvitationEvent());
 				} else if (content.equals("agree")) {
-					roomListener.onAgree();
+					clientFactory.getUserListDialog().hide();
+					doStartMatch();
 				} else if (content.equals("refuse")) {
-					roomListener.onRefuse();
 				}
 			}
 		});
+		
+		clientFactory.getNotiDialogView().addInvitationActionHandler(new InvitationActionHandler() {
+			
+			@Override
+			public void onAction(InvitationActionEvent event) {
+				List<Invitation> invis = clientFactory.getGameSession().getInvitations();
+				String fromUserId = invis.get(event.getSelectedIndex()).getFromUserId();
+				if (event.isAccept()) {
+					agreeInvitationFrom(fromUserId);
+					clientFactory.getNotiDialogView().hide();
+				} else {
+					refuseInvitationFrom(fromUserId);
+				}
+				invis.remove(event.getSelectedIndex());
+			}
+		});
+		
+		clientFactory.getUserListDialog().addInviteUserHandler(new InviteUserHandler() {
+			
+			@Override
+			public void onInvite(InviteUserEvent event) {
+				List<User> users = clientFactory.getUserDb().getAllUser();
+				String userId = users.get(event.getSelectedIndex()).getId();
+				System.out.println(userId + event.getSelectedIndex());
+				inviteOpponent(userId);
+			}
+		});
+	}
+	
+	private void doStartMatch() {
+		match = new Match();
+		clientFactory.getPlaceController().goTo(new PlayPlace());
 	}
 
 	@Override
@@ -104,6 +144,7 @@ public class RoomImpl implements Room {
 	public void agreeInvitationFrom(String userId) {
 		this.opponentId = userId;
 		channelUtility.sendMessage(userId, ChannelMessage.create(currentId, "agree"));
+		doStartMatch();
 	}
 
 	@Override

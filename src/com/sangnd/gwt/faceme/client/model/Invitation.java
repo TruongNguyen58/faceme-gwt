@@ -19,36 +19,27 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.playinit;
-
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.MListBox;
-import com.sangnd.gwt.faceme.client.event.HasSelectGameModeHandler;
-import com.sangnd.gwt.faceme.client.model.User;
+package com.sangnd.gwt.faceme.client.model;
 
 /**
  * @author heroandtn3
  *
  */
-public interface PlayInitView extends IsWidget {
+public class Invitation {
+
+	private String fromUserId;
+
+	/**
+	 * 
+	 */
 	
-	HasTapHandlers getBackButton();
+	public Invitation(String fromUserId) {
+		this.fromUserId = fromUserId;
+		
+	}
 	
-	HasText getBackButtonText();
-	
-	HasTapHandlers getPlayButton();
-	
-	HasText getPlayButtonText();
-	
-	HasTapHandlers getDancoButton();
-	
-	HasSelectGameModeHandler getGameModeList();
-	
-	void renderOpponent(User opponent);
-	
-	HasTapHandlers getSelectOpponentButton();
-	
-	MListBox getLevelList();
+	public String getFromUserId() {
+		return fromUserId;
+	}
+
 }

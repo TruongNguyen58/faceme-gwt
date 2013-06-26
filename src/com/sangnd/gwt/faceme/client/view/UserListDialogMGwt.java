@@ -27,116 +27,98 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.ui.client.dialog.PopinDialog;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.CellList;
+import com.googlecode.mgwt.ui.client.widget.ProgressBar;
 import com.googlecode.mgwt.ui.client.widget.RoundPanel;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
-import com.sangnd.gwt.faceme.client.event.InvitationActionEvent;
-import com.sangnd.gwt.faceme.client.event.InvitationActionHandler;
-import com.sangnd.gwt.faceme.client.model.Invitation;
+import com.sangnd.gwt.faceme.client.event.InviteUserEvent;
+import com.sangnd.gwt.faceme.client.event.InviteUserHandler;
+import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
  * 
  */
-public class NotiDialogViewMGwt implements NotiDialogView {
+public class UserListDialogMGwt implements UserListDialog {
 
 	private PopinDialog dialog;
-	private CellList<Invitation> inviCell;
-	private RoundPanel roundPanel;
-	private Button butAccept;
-	private Button butDelice;
+	private CellList<User> userCell;
+	private Button butInvite;
 	private HandlerManager handlerManager;
 	private int selectedIndex;
+	private RoundPanel rp;
+	private ProgressBar progressBar;
 
 	/**
 	 * 
 	 */
-
-	public NotiDialogViewMGwt() {
+	public UserListDialogMGwt() {
 		handlerManager = new HandlerManager(this);
 		selectedIndex = -1;
-		
+
 		dialog = new PopinDialog();
-		dialog.setHideOnBackgroundClick(true);
 		dialog.setShadow(true);
-		
-		roundPanel = new RoundPanel();
-		dialog.add(roundPanel);
-		roundPanel.add(new HTML("People invite you play"));
-		ScrollPanel scrollPanel = new ScrollPanel();
-		inviCell = new CellList<Invitation>(new InvitationCell());
-		inviCell.setGroup(false);
-		inviCell.setRound(true);
-		scrollPanel.add(inviCell);
-		roundPanel.add(scrollPanel);
-		
-		HorizontalPanel horizontalPanel = new HorizontalPanel();
-		butAccept = new Button("Accept");
-		horizontalPanel.add(butAccept);
-		butDelice = new Button("Delice");
-		horizontalPanel.add(butDelice);
-		
-		roundPanel.add(horizontalPanel);
-		
+		dialog.setHideOnBackgroundClick(true);
+
+		rp = new RoundPanel();
+		dialog.add(rp);
+		rp.add(new HTML("Chon mot nguoi de choi"));
+
+		ScrollPanel sp = new ScrollPanel();
+		rp.add(sp);
+		sp.setHeight("300px");
+		sp.setWidth("300px");
+
+		userCell = new CellList<User>(new UserCell());
+		userCell.setRound(true);
+		userCell.setGroup(false);
+		sp.add(userCell);
+
+		butInvite = new Button("Moi");
+		butInvite.setSmall(true);
+		rp.add(butInvite);
+
+		progressBar = new ProgressBar();
+
 		initHandler();
 	}
-	
+
 	private void initHandler() {
-		inviCell.addCellSelectedHandler(new CellSelectedHandler() {
-			
+		butInvite.addTapHandler(new TapHandler() {
+
+			@Override
+			public void onTap(TapEvent event) {
+				if (selectedIndex != -1) {
+					rp.add(progressBar);
+					butInvite.setText("Cancel");
+					dialog.setHideOnBackgroundClick(false);
+					fireEvent(new InviteUserEvent(selectedIndex));
+				}
+			}
+		});
+
+		userCell.addCellSelectedHandler(new CellSelectedHandler() {
+
 			@Override
 			public void onCellSelected(CellSelectedEvent event) {
 				if (selectedIndex != -1) {
-					inviCell.setSelectedIndex(selectedIndex, false);
+					userCell.setSelectedIndex(selectedIndex, false);
 				}
 				selectedIndex = event.getIndex();
-				inviCell.setSelectedIndex(selectedIndex, true);
-				
-			}
-		});
-		
-		butAccept.addTapHandler(new TapHandler() {
-			@Override
-			public void onTap(TapEvent event) {
-				if (selectedIndex != -1) {
-					fireEvent(new InvitationActionEvent(selectedIndex, true));
-					System.out.println("Accept");
-				}
-			}
-		});
-		
-		butDelice.addTapHandler(new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent event) {
-				if (selectedIndex != -1) {
-					fireEvent(new InvitationActionEvent(selectedIndex, false));
-				}
+				userCell.setSelectedIndex(selectedIndex, true);
 			}
 		});
 	}
 
 	@Override
-	public void renderInvitations(List<Invitation> invitations) {
-		if (invitations == null) {
-			dialog.hide();
-			return;
-		}
-		inviCell.render(invitations);
-		dialog.center();
-	}
-
-	@Override
-	public HandlerRegistration addInvitationActionHandler(
-			InvitationActionHandler handler) {
-		return handlerManager.addHandler(InvitationActionEvent.TYPE, handler);
+	public HandlerRegistration addInviteUserHandler(InviteUserHandler handler) {
+		return handlerManager.addHandler(InviteUserEvent.TYPE, handler);
 	}
 
 	@Override
@@ -145,8 +127,17 @@ public class NotiDialogViewMGwt implements NotiDialogView {
 	}
 
 	@Override
+	public void renderUserList(List<User> users) {
+		userCell.render(users);
+		dialog.center();
+	}
+
+	@Override
 	public void hide() {
 		dialog.hide();
+		progressBar.removeFromParent();
+		butInvite.setText("Invite");
+		dialog.setHideOnBackgroundClick(true);
 	}
 
 }

@@ -31,7 +31,7 @@ import com.sangnd.gwt.faceme.client.core.model.Match;
  */
 public interface Room {
 	
-	public void setCurrentId(String currentId, RoomListener roomListener);
+	public void createRoom(String currentId);
 	
 	void sendPos(ChessPosition pos);
 	

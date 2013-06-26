@@ -73,16 +73,9 @@ public class PlayActivity extends MGWTAbstractActivity {
 				}));
 		
 		System.out.println("Start PlayActivity");
-
-		addHandlerRegistration(eventBus.addHandler(StartPlayEvent.TYPE, new StartPlayHandler() {
-			
-			@Override
-			public void onStart(StartPlayEvent event) {
-				match = event.getMatch();
-				System.out.println("start");
-				doStartPlay(match, view);
-			}
-		}));
+		match = clientFactory.getRoom().getMatch();
+		System.out.println("start");
+		doStartPlay(match, view);
 
 		panel.setWidget(view.asWidget());
 	}

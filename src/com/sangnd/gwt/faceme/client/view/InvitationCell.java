@@ -21,18 +21,43 @@
  */
 package com.sangnd.gwt.faceme.client.view;
 
-import java.util.List;
-
-import com.sangnd.gwt.faceme.client.event.HasInvitationActionHandler;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
 import com.sangnd.gwt.faceme.client.model.Invitation;
-
 
 /**
  * @author heroandtn3
  *
  */
-public interface NotiDialogView extends HasInvitationActionHandler {
-	void renderInvitations(List<Invitation> invitations);
-	void hide();
+public class InvitationCell implements Cell<Invitation> {
 	
+	private static Template TEMPLATE = GWT.create(Template.class);
+	
+	public interface Template extends SafeHtmlTemplates {
+		 @SafeHtmlTemplates.Template("{0}")
+		 SafeHtml content(String name);
+	}
+
+	/**
+	 * 
+	 */
+	public InvitationCell() {
+	}
+
+	@Override
+	public void render(SafeHtmlBuilder safeHtmlBuilder, Invitation model) {
+		if (model == null) return;
+		SafeHtml content = TEMPLATE.content(model.getFromUserId());
+		safeHtmlBuilder.append(content);
+		
+	}
+
+	@Override
+	public boolean canBeSelected(Invitation model) {
+		return true;
+	}
+
 }

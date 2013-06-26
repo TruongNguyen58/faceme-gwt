@@ -19,28 +19,17 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.view;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.HasHandlers;
 
 /**
  * @author heroandtn3
  *
  */
-public interface BaseView extends IsWidget {
+public interface HasInvitationActionHandler extends HasHandlers {
 	
-	public HasText getTitle();
-	
-	public HasTapHandlers getNotiWidget();
-	
-	public HasText getNotiText();
-	
-	public HasTapHandlers getBackButton();
-	
-	public HasText getBackButtonText();
-	
-	public NotiDialogView getNotiDialogView();
+	HandlerRegistration addInvitationActionHandler(InvitationActionHandler handler);
 
 }

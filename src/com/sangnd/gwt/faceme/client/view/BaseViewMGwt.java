@@ -29,6 +29,7 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
+import com.sangnd.gwt.faceme.client.activities.BaseView;
 
 /**
  * @author heroandtn3
@@ -41,7 +42,6 @@ public class BaseViewMGwt implements BaseView {
 	protected ScrollPanel scrollPanel;
 	protected HeaderButton notiWidget;
 	protected HTML title;
-	private NotiDialogView notiDialog;
 
 	/**
 	 * 
@@ -65,8 +65,6 @@ public class BaseViewMGwt implements BaseView {
 		
 		scrollPanel = new ScrollPanel();
 		panel.add(scrollPanel);
-		
-		notiDialog = new NotiDialogViewMGwt();
 	}
 
 	@Override
@@ -97,11 +95,6 @@ public class BaseViewMGwt implements BaseView {
 	@Override
 	public HasText getTitle() {
 		return title;
-	}
-
-	@Override
-	public NotiDialogView getNotiDialogView() {
-		return notiDialog;
 	}
 
 }

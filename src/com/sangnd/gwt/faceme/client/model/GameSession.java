@@ -21,6 +21,9 @@
  */
 package com.sangnd.gwt.faceme.client.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author heroandtn3
  *
@@ -28,16 +31,22 @@ package com.sangnd.gwt.faceme.client.model;
 public class GameSession {
 
 	private User user;
+	private List<Invitation> invitations;
 	/**
 	 * 
 	 */
 	public GameSession() {
+		invitations = new ArrayList<Invitation>();
 	}
 	public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public List<Invitation> getInvitations() {
+		return invitations;
 	}
 
 }

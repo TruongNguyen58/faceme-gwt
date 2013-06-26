@@ -21,8 +21,6 @@
  */
 package com.sangnd.gwt.faceme.client.activities.playinit;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -32,11 +30,8 @@ import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
 import com.sangnd.gwt.faceme.client.core.model.Level;
-import com.sangnd.gwt.faceme.client.event.InviteUserEvent;
-import com.sangnd.gwt.faceme.client.event.InviteUserHandler;
 import com.sangnd.gwt.faceme.client.event.SelectGameModeEvent;
 import com.sangnd.gwt.faceme.client.event.SelectGameModeHandler;
-import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
@@ -103,16 +98,7 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				view.renderUserList(clientFactory.getUserDb().getAllUser());
-			}
-		}));
-		
-		addHandlerRegistration(view.getInviteUserWidget().addInviteUserHandler(new InviteUserHandler() {
-			
-			@Override
-			public void onInvite(InviteUserEvent event) {
-				List<User> users = clientFactory.getUserDb().getAllUser();
-				view.renderOpponent(users.get(event.getSelectedIndex()));
+				clientFactory.getUserListDialog().renderUserList(clientFactory.getUserDb().getAllUser());
 			}
 		}));
 		

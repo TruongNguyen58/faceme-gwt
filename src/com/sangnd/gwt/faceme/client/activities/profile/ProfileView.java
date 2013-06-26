@@ -27,8 +27,8 @@ import com.google.gwt.user.client.ui.HasText;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
 import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
+import com.sangnd.gwt.faceme.client.activities.BaseView;
 import com.sangnd.gwt.faceme.client.model.User;
-import com.sangnd.gwt.faceme.client.view.BaseView;
 
 /**
  * @author heroandtn3

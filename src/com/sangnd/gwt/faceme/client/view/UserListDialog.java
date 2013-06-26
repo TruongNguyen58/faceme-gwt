@@ -19,49 +19,20 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.model.dao;
+package com.sangnd.gwt.faceme.client.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.client.Random;
+import com.sangnd.gwt.faceme.client.event.HasInviteUserHandler;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
  *
  */
-public class UserDb {
+public interface UserListDialog extends HasInviteUserHandler {
 
-	/**
-	 * 
-	 */
-	public UserDb() {
-		// TODO Auto-generated constructor stub
-	}
+	void renderUserList(List<User> users);
 	
-	public List<User> getAllUser() {
-		List<User> list = new ArrayList<User>();
-		for (int i = 0; i < 10; i++) {
-			User user = new User();
-			user.setName("Player " + i);
-			user.setEmail("user" + i + "@gmail.com");
-			user.setId("user" + i + "@gmail.com");
-			user.setAge(i);
-			user.setLogon(Random.nextBoolean());
-			user.setPlaying(Random.nextBoolean());
-			list.add(user);
-		}
-		return list;
-	}
-
-	public User getUserById(String id) {
-		User user = new User();
-		user.setId("user" + id + "@gmail.com");
-		user.setName("Player " + id);
-		user.setEmail("user" + id + "@gmail.com");
-		user.setAge(99);
-		return user;
-	}
-
+	void hide();
 }
