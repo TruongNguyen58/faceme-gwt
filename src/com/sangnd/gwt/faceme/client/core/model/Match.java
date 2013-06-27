@@ -320,6 +320,10 @@ public class Match {
 
 	public Side getCurrentSide() {
 		return currentSide;
+	}	
+
+	public void setCurrentSide(Side currentSide) {
+		this.currentSide = currentSide;
 	}
 
 	public boolean isWarnKing() {

@@ -34,6 +34,7 @@ import com.sangnd.gwt.faceme.client.channel.PositionMessage;
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
 import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Match;
+import com.sangnd.gwt.faceme.client.core.model.Side;
 import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
 import com.sangnd.gwt.faceme.client.event.InvitationActionEvent;
 import com.sangnd.gwt.faceme.client.event.InvitationActionHandler;
@@ -84,7 +85,7 @@ public class RoomImpl implements Room {
 					clientFactory.getEventBus().fireEvent(new NewInvitationEvent());
 				} else if (content.equals("agree")) {
 					clientFactory.getUserListDialog().hide();
-					doStartMatch();
+					doStartMatch(new Match());
 				} else if (content.equals("refuse")) {
 				} else {
 					PositionMessage pm = PositionMessage.fromJson(content);
@@ -123,8 +124,8 @@ public class RoomImpl implements Room {
 		});
 	}
 	
-	private void doStartMatch() {
-		match = new Match();
+	private void doStartMatch(Match match) {
+		this.match = match;
 		match.setGameMode(GameMode.TWO_PLAYER_ONLINE);
 		clientFactory.getPlaceController().goTo(new PlayPlace());
 	}
@@ -163,7 +164,9 @@ public class RoomImpl implements Room {
 	public void agreeInvitationFrom(String userId) {
 		this.opponentId = userId;
 		channelUtility.sendMessage(userId, ChannelMessage.create(currentId, "agree"));
-		doStartMatch();
+		Match match = new Match();
+		match.setCurrentSide(Side.ENERMY);
+		doStartMatch(match);
 	}
 
 	@Override

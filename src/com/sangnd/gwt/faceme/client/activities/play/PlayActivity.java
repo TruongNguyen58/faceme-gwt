@@ -28,6 +28,7 @@ import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
+import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
 import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Match;
 import com.sangnd.gwt.faceme.client.core.model.Side;
@@ -96,7 +97,7 @@ public class PlayActivity extends MGWTAbstractActivity {
 						if (match.getGameMode() == GameMode.TWO_PLAYER_ONLINE) {
 							clientFactory.getRoom().sendPos(event.getPos());
 						}
-						doChessSelectEvent(event, view);
+						doChessSelectEvent(event.getPos(), view);
 					}
 				}));
 		
@@ -105,7 +106,11 @@ public class PlayActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onSelect(ChessSelectEvent event) {
-				doChessSelectEvent(event, view);
+				ChessPosition pos = new ChessPosition();
+				pos.setRow(9 - event.getPos().getRow());
+				pos.setCol(8 - event.getPos().getCol());
+				pos.setKillable(event.getPos().isKillable());
+				doChessSelectEvent(pos, view);
 			}
 		}));
 		
@@ -113,7 +118,7 @@ public class PlayActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onSelect(ChessSelectEvent event) {
-				doChessSelectEvent(event, view);
+				doChessSelectEvent(event.getPos(), view);
 			}
 		}));
 		
@@ -130,8 +135,8 @@ public class PlayActivity extends MGWTAbstractActivity {
 		}));
 	}
 	
-	private void doChessSelectEvent(ChessSelectEvent event, PlayView view) {
-		match.setPos(event.getPos());
+	private void doChessSelectEvent(ChessPosition pos, PlayView view) {
+		match.setPos(pos);
 		
 		// This must be before moving chess!!!
 		view.getBoardView().renderWarnKing(match.isWarnKing());
