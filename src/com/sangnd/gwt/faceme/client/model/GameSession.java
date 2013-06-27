@@ -35,6 +35,7 @@ public class GameSession {
 	private User user;
 	private Match match;
 	private List<Invitation> invitations;
+	private boolean playonline;
 
 	/**
 	 * 
@@ -67,4 +68,13 @@ public class GameSession {
 		this.invitations = invitations;
 	}
 
+	public boolean isPlayonline() {
+		return playonline;
+	}
+
+	public void setPlayonline(boolean playonline) {
+		this.playonline = playonline;
+	}
+
+	
 }

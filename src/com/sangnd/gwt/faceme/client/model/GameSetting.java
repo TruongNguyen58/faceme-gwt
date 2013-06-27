@@ -23,6 +23,7 @@ package com.sangnd.gwt.faceme.client.model;
 
 import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Level;
+import com.sangnd.gwt.faceme.client.core.model.Side;
 
 /**
  * @author heroandtn3
@@ -31,6 +32,7 @@ import com.sangnd.gwt.faceme.client.core.model.Level;
 public class GameSetting {
 
 	private Level level;
+	private Side currentSide;
 	private GameMode gameMode;
 
 	/**
@@ -38,6 +40,8 @@ public class GameSetting {
 	 */
 	public GameSetting() {
 		level = new Level();
+		currentSide = Side.FRIEND;
+		gameMode = GameMode.PLAY_WITH_COMPUTER;
 	}
 
 	public GameMode getGameMode() {
@@ -55,5 +59,15 @@ public class GameSetting {
 	public void setLevel(Level level) {
 		this.level = level;
 	}
+
+	public Side getCurrentSide() {
+		return currentSide;
+	}
+
+	public void setCurrentSide(Side currentSide) {
+		this.currentSide = currentSide;
+	}
+	
+	
 
 }

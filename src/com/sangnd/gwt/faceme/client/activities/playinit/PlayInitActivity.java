@@ -34,6 +34,10 @@ import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
 import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Level;
+import com.sangnd.gwt.faceme.client.core.model.Side;
+import com.sangnd.gwt.faceme.client.event.InvitationActionEvent;
+import com.sangnd.gwt.faceme.client.event.InvitationActionHandler;
+import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
@@ -53,10 +57,28 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
+		clientFactory.getGameSession().newMatch();
 		
 		final PlayInitView view = clientFactory.getPlayInitView();
 		view.getBackButtonText().setText("Home");
 		view.getPlayButtonText().setText("Play");
+		
+		if (clientFactory.getGameSession().isPlayonline()) {
+			view.getGameModeList().setItemSelected(2, true);
+			view.getGameModeList().setEnabled(false);
+			view.renderOpponent(clientFactory.getUserDb().getUserById("sang"));
+		}
+		
+		addHandlerRegistration(eventBus.addHandler(InvitationActionEvent.TYPE, new InvitationActionHandler() {
+			
+			@Override
+			public void onAction(InvitationActionEvent event) {
+				if (event.isAccept()) {
+					User user = clientFactory.getUserDb().getAllUser().get(event.getSelectedIndex());
+					view.renderOpponent(user);
+				}
+			}
+		}));
 		
 		addHandlerRegistration(view.getBackButton().addTapHandler(new TapHandler() {
 			
@@ -75,22 +97,21 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 				switch(mode) {
 					case 0:
 						gameMode = GameMode.PLAY_WITH_COMPUTER;
+						int levelIndex = view.getLevelList().getSelectedIndex();
+						clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
 						break;
 					case 1:
 						gameMode = GameMode.TWO_PLAYER_OFFLINE;
 						break;
 					case 2:
 						gameMode = GameMode.TWO_PLAYER_ONLINE;
+						Side currentSide = clientFactory.getGameSetting().getCurrentSide();
+						clientFactory.getGameSession().getMatch().setCurrentSide(currentSide);
 						break;
 				}
-				clientFactory.getGameSession().newMatch();
+				
 				clientFactory.getGameSession().getMatch().setGameMode(gameMode);
-				
-				if (gameMode == GameMode.PLAY_WITH_COMPUTER) {
-					int levelIndex = view.getLevelList().getSelectedIndex();
-					clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
-				}
-				
+
 				clientFactory.getPlaceController().goTo(new PlayPlace());
 				
 			}

@@ -22,7 +22,6 @@
 package com.sangnd.gwt.faceme.client.model;
 
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
-import com.sangnd.gwt.faceme.client.core.model.Match;
 
 
 /**
@@ -42,7 +41,5 @@ public interface Room {
 	void agreeInvitationFrom(String userId);
 	
 	void refuseInvitationFrom(String userId);
-	
-	Match getMatch();
 	
 }

@@ -25,15 +25,13 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.sangnd.gwt.faceme.client.ClientFactory;
-import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
+import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitPlace;
 import com.sangnd.gwt.faceme.client.channel.ChannelEvent;
 import com.sangnd.gwt.faceme.client.channel.ChannelEventHandler;
 import com.sangnd.gwt.faceme.client.channel.ChannelMessage;
 import com.sangnd.gwt.faceme.client.channel.ChannelUtility;
 import com.sangnd.gwt.faceme.client.channel.PositionMessage;
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
-import com.sangnd.gwt.faceme.client.core.model.GameMode;
-import com.sangnd.gwt.faceme.client.core.model.Match;
 import com.sangnd.gwt.faceme.client.core.model.Side;
 import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
 import com.sangnd.gwt.faceme.client.event.InvitationActionEvent;
@@ -53,7 +51,6 @@ public class RoomImpl implements Room {
 	private boolean inviting;
 	private ChannelUtility channelUtility;
 	private ClientFactory clientFactory;
-	private Match match;
 
 	/**
 	 * 
@@ -63,11 +60,7 @@ public class RoomImpl implements Room {
 		this.channelUtility = clientFactory.getChannelUtility();
 		
 	}
-	
-	@Override
-	public Match getMatch() {
-		return match;
-	}
+
 	
 	@Override
 	public void createRoom(String currentId) {
@@ -85,8 +78,9 @@ public class RoomImpl implements Room {
 					clientFactory.getEventBus().fireEvent(new NewInvitationEvent());
 				} else if (content.equals("agree")) {
 					clientFactory.getUserListDialog().hide();
-					doStartMatch(new Match());
+					clientFactory.getEventBus().fireEvent(new InvitationActionEvent(true));
 				} else if (content.equals("refuse")) {
+					clientFactory.getEventBus().fireEvent(new InvitationActionEvent(false));
 				} else {
 					PositionMessage pm = PositionMessage.fromJson(content);
 					ChessPosition pos = new ChessPosition(pm.getRow(), pm.getCol());
@@ -104,7 +98,6 @@ public class RoomImpl implements Room {
 				String fromUserId = invis.get(event.getSelectedIndex()).getFromUserId();
 				if (event.isAccept()) {
 					agreeInvitationFrom(fromUserId);
-					clientFactory.getNotiDialogView().hide();
 				} else {
 					refuseInvitationFrom(fromUserId);
 				}
@@ -118,16 +111,9 @@ public class RoomImpl implements Room {
 			public void onInvite(InviteUserEvent event) {
 				List<User> users = clientFactory.getUserDb().getAllUser();
 				String userId = users.get(event.getSelectedIndex()).getId();
-				System.out.println(userId + event.getSelectedIndex());
 				inviteOpponent(userId);
 			}
 		});
-	}
-	
-	private void doStartMatch(Match match) {
-		this.match = match;
-		match.setGameMode(GameMode.TWO_PLAYER_ONLINE);
-		clientFactory.getPlaceController().goTo(new PlayPlace());
 	}
 
 	@Override
@@ -163,10 +149,16 @@ public class RoomImpl implements Room {
 	@Override
 	public void agreeInvitationFrom(String userId) {
 		this.opponentId = userId;
+		try {
 		channelUtility.sendMessage(userId, ChannelMessage.create(currentId, "agree"));
-		Match match = new Match();
-		match.setCurrentSide(Side.ENERMY);
-		doStartMatch(match);
+		clientFactory.getGameSetting().setCurrentSide(Side.ENERMY);
+		clientFactory.getGameSession().setPlayonline(true);
+		clientFactory.getNotiDialogView().hide();
+		
+		clientFactory.getPlaceController().goTo(new PlayInitPlace());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override

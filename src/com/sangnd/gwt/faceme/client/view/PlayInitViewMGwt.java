@@ -175,7 +175,7 @@ public class PlayInitViewMGwt implements PlayInitView{
 		opponentPanel.add(new HTML(opponent.getName()));
 		opponentPanel.add(butSelectOpp);
 		butSelectOpp.setText("Chọn người khác");
-
+		formOpponent.setWidget("Đối thủ", opponentPanel);
 	}
 
 	@Override

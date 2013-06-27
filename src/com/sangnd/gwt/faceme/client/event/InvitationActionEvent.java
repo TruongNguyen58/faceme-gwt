@@ -36,6 +36,10 @@ public class InvitationActionEvent extends GwtEvent<InvitationActionHandler> {
 	/**
 	 * 
 	 */
+	public InvitationActionEvent(boolean accept) {
+		this.accept = accept;
+	}
+	
 	public InvitationActionEvent(int selectedIndex, boolean accept) {
 		this.selectedIndex = selectedIndex;
 		this.accept = accept;
