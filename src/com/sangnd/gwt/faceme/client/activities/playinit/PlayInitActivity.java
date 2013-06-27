@@ -26,8 +26,11 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
+import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
 import com.sangnd.gwt.faceme.client.core.model.Level;
 import com.sangnd.gwt.faceme.client.event.SelectGameModeEvent;
@@ -98,7 +101,24 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				clientFactory.getUserListDialog().renderUserList(clientFactory.getUserDb().getAllUser());
+				if (clientFactory.getGameSession().getUser() == null) {
+					Dialogs.confirm("Thong bao", "Ban chua dang nhap", new ConfirmCallback() {
+						
+						@Override
+						public void onOk() {
+							clientFactory.getPlaceController().goTo(new LoginPlace());
+						}
+						
+						@Override
+						public void onCancel() {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				} else {
+					clientFactory.getUserListDialog().renderUserList(clientFactory.getUserDb().getAllUser());
+				}
+				
 			}
 		}));
 		

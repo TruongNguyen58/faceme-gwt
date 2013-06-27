@@ -95,9 +95,9 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 		gameModeList = new MListBox();
 		settingList.add(new FormListEntry("Chế độ chơi", gameModeList
 				.asWidget()));
-		gameModeList.addItem("Play offline with computer");
-		gameModeList.addItem("Play offline with a friend");
-		gameModeList.addItem("Play online with a friend");
+		gameModeList.addItem("Chơi với máy");
+		gameModeList.addItem("Chơi với bạn bè");
+		gameModeList.addItem("Chơi trực tuyến");
 
 		gameModeList.addChangeHandler(new ChangeHandler() {
 
@@ -133,7 +133,7 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 		formOpponent = new FormListEntry("Đối thủ", levelList);
 		settingList.add(formOpponent);
 
-		butSelectOpp = new Button("Chon");
+		butSelectOpp = new Button("Mời bạn bè");
 		butSelectOpp.setSmall(true);
 
 		opponentPanel = new HorizontalPanel();
@@ -196,7 +196,7 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 		opponentPanel.clear();
 		opponentPanel.add(new HTML(opponent.getName()));
 		opponentPanel.add(butSelectOpp);
-		butSelectOpp.setText("Select other");
+		butSelectOpp.setText("Chọn người khác");
 
 	}
 
