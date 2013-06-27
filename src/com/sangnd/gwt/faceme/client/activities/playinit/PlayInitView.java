@@ -25,7 +25,6 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
-import com.sangnd.gwt.faceme.client.event.HasSelectGameModeHandler;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
@@ -44,7 +43,7 @@ public interface PlayInitView extends IsWidget {
 	
 	HasTapHandlers getDancoButton();
 	
-	HasSelectGameModeHandler getGameModeList();
+	MListBox getGameModeList();
 	
 	void renderOpponent(User opponent);
 	

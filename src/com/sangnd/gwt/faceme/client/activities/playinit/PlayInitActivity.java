@@ -32,9 +32,8 @@ import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
+import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Level;
-import com.sangnd.gwt.faceme.client.event.SelectGameModeEvent;
-import com.sangnd.gwt.faceme.client.event.SelectGameModeHandler;
 
 /**
  * @author heroandtn3
@@ -71,29 +70,29 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
+				int mode = view.getGameModeList().getSelectedIndex();
+				GameMode gameMode = GameMode.PLAY_WITH_COMPUTER;
+				switch(mode) {
+					case 0:
+						gameMode = GameMode.PLAY_WITH_COMPUTER;
+						break;
+					case 1:
+						gameMode = GameMode.TWO_PLAYER_OFFLINE;
+						break;
+					case 2:
+						gameMode = GameMode.TWO_PLAYER_ONLINE;
+						break;
+				}
+				clientFactory.getGameSession().newMatch();
+				clientFactory.getGameSession().getMatch().setGameMode(gameMode);
 				
-				int levelIndex = view.getLevelList().getSelectedIndex();
-				clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
+				if (gameMode == GameMode.PLAY_WITH_COMPUTER) {
+					int levelIndex = view.getLevelList().getSelectedIndex();
+					clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
+				}
 				
 				clientFactory.getPlaceController().goTo(new PlayPlace());
 				
-			}
-		}));
-		
-		addHandlerRegistration(view.getGameModeList().addSelectGameModeHanlder(new SelectGameModeHandler() {
-			
-			@Override
-			public void onSelect(SelectGameModeEvent event) {
-				switch (event.getMode()) {
-					case PLAY_WITH_COMPUTER:
-						break;
-					case TWO_PLAYER_OFFLINE:
-						break;
-					case TWO_PLAYER_ONLINE:
-						break;
-					default:
-						break;
-				}
 			}
 		}));
 		

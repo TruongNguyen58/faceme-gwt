@@ -24,29 +24,47 @@ package com.sangnd.gwt.faceme.client.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sangnd.gwt.faceme.client.core.model.Match;
+
 /**
  * @author heroandtn3
- *
+ * 
  */
 public class GameSession {
 
 	private User user;
+	private Match match;
 	private List<Invitation> invitations;
+
 	/**
 	 * 
 	 */
 	public GameSession() {
 		invitations = new ArrayList<Invitation>();
 	}
+
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public List<Invitation> getInvitations() {
 		return invitations;
+	}
+
+	public Match getMatch() {
+		return match;
+	}
+
+	public void newMatch() {
+		this.match = new Match();
+	}
+
+	public void setInvitations(List<Invitation> invitations) {
+		this.invitations = invitations;
 	}
 
 }

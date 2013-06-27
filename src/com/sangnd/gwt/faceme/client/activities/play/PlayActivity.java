@@ -72,7 +72,7 @@ public class PlayActivity extends MGWTAbstractActivity {
 				}));
 		
 		System.out.println("Start PlayActivity");
-		match = clientFactory.getRoom().getMatch();
+		match = clientFactory.getGameSession().getMatch();
 		System.out.println("start");
 		doStartPlay(match, view);
 

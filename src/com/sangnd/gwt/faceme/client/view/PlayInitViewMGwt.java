@@ -23,9 +23,6 @@ package com.sangnd.gwt.faceme.client.view;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -40,17 +37,13 @@ import com.googlecode.mgwt.ui.client.widget.MListBox;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
-import com.sangnd.gwt.faceme.client.core.model.GameMode;
-import com.sangnd.gwt.faceme.client.event.HasSelectGameModeHandler;
-import com.sangnd.gwt.faceme.client.event.SelectGameModeEvent;
-import com.sangnd.gwt.faceme.client.event.SelectGameModeHandler;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
  * 
  */
-public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler {
+public class PlayInitViewMGwt implements PlayInitView{
 
 	private HeaderButton butBack;
 	private Button butPlay;
@@ -60,7 +53,6 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 	private MListBox gameModeList;
 	private MListBox levelList;
 	private Button butSelectOpp;
-	private HandlerManager handlerManager;
 
 	private HorizontalPanel opponentPanel;
 
@@ -68,7 +60,6 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 	 * 
 	 */
 	public PlayInitViewMGwt() {
-		handlerManager = new HandlerManager(this);
 
 		panel = new LayoutPanel();
 
@@ -101,24 +92,18 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 
 			@Override
 			public void onChange(ChangeEvent event) {
-				GameMode mode;
 				switch (gameModeList.getSelectedIndex()) {
 				case 0:
 					formOpponent.setWidget("Đối thủ", levelList);
-					mode = GameMode.PLAY_WITH_COMPUTER;
 					break;
 				case 1:
-					mode = GameMode.TWO_PLAYER_OFFLINE;
 					break;
 				case 2:
 					formOpponent.setWidget("Đối thủ", opponentPanel);
-					mode = GameMode.TWO_PLAYER_ONLINE;
 					break;
 				default:
-					mode = GameMode.PLAY_WITH_COMPUTER;
+					break;
 				}
-
-				fireEvent(new SelectGameModeEvent(mode));
 			}
 		});
 
@@ -179,19 +164,8 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 	}
 
 	@Override
-	public HasSelectGameModeHandler getGameModeList() {
-		return this;
-	}
-
-	@Override
-	public HandlerRegistration addSelectGameModeHanlder(
-			SelectGameModeHandler handler) {
-		return handlerManager.addHandler(SelectGameModeEvent.TYPE, handler);
-	}
-
-	@Override
-	public void fireEvent(GwtEvent<?> event) {
-		handlerManager.fireEvent(event);
+	public MListBox getGameModeList() {
+		return gameModeList;
 	}
 
 	@Override
