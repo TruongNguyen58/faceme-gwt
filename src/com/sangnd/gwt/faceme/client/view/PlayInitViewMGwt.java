@@ -97,6 +97,7 @@ public class PlayInitViewMGwt implements PlayInitView{
 					formOpponent.setWidget("Đối thủ", levelList);
 					break;
 				case 1:
+					formOpponent.setWidget("Đối thủ", new HTML("Ban cua ban"));
 					break;
 				case 2:
 					formOpponent.setWidget("Đối thủ", opponentPanel);
