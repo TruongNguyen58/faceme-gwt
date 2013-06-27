@@ -23,20 +23,23 @@ package com.sangnd.gwt.faceme.client.model;
 
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
 import com.sangnd.gwt.faceme.client.channel.ChannelEvent;
 import com.sangnd.gwt.faceme.client.channel.ChannelEventHandler;
 import com.sangnd.gwt.faceme.client.channel.ChannelMessage;
 import com.sangnd.gwt.faceme.client.channel.ChannelUtility;
+import com.sangnd.gwt.faceme.client.channel.PositionMessage;
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
+import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Match;
+import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
 import com.sangnd.gwt.faceme.client.event.InvitationActionEvent;
 import com.sangnd.gwt.faceme.client.event.InvitationActionHandler;
 import com.sangnd.gwt.faceme.client.event.InviteUserEvent;
 import com.sangnd.gwt.faceme.client.event.InviteUserHandler;
 import com.sangnd.gwt.faceme.client.event.NewInvitationEvent;
-import com.sangnd.gwt.faceme.client.event.StartPlayEvent;
 
 /**
  * @author heroandtn3
@@ -83,6 +86,11 @@ public class RoomImpl implements Room {
 					clientFactory.getUserListDialog().hide();
 					doStartMatch();
 				} else if (content.equals("refuse")) {
+				} else {
+					PositionMessage pm = PositionMessage.fromJson(content);
+					ChessPosition pos = new ChessPosition(pm.getRow(), pm.getCol());
+					pos.setKillable(pm.isKillable());
+					clientFactory.getEventBus().fireEvent(new ChessSelectEvent(pos));
 				}
 			}
 		});
@@ -117,12 +125,23 @@ public class RoomImpl implements Room {
 	
 	private void doStartMatch() {
 		match = new Match();
+		match.setGameMode(GameMode.TWO_PLAYER_ONLINE);
 		clientFactory.getPlaceController().goTo(new PlayPlace());
 	}
 
 	@Override
 	public void sendPos(ChessPosition pos) {
-		channelUtility.sendMessage(opponentId, null);
+		System.out.println("Sending message to other player...");
+		try {
+		PositionMessage pm = (PositionMessage) JavaScriptObject.createObject().cast();
+		pm.setRow(pos.getRow());
+		pm.setCol(pos.getCol());
+		pm.setKillable(pos.isKillable());
+		ChannelMessage message = ChannelMessage.create(currentId, pm.toJson());
+		channelUtility.sendMessage(opponentId, message);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override

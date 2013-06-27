@@ -35,8 +35,6 @@ import com.sangnd.gwt.faceme.client.event.ChessSelectEvent;
 import com.sangnd.gwt.faceme.client.event.ChessSelectHandler;
 import com.sangnd.gwt.faceme.client.event.MoveCompleteEvent;
 import com.sangnd.gwt.faceme.client.event.MoveCompleteHandler;
-import com.sangnd.gwt.faceme.client.event.StartPlayEvent;
-import com.sangnd.gwt.faceme.client.event.StartPlayHandler;
 
 /**
  * @author heroandtn3
@@ -94,9 +92,22 @@ public class PlayActivity extends MGWTAbstractActivity {
 									return;
 								}
 							}
+						// send to other player when play online
+						if (match.getGameMode() == GameMode.TWO_PLAYER_ONLINE) {
+							clientFactory.getRoom().sendPos(event.getPos());
+						}
 						doChessSelectEvent(event, view);
 					}
 				}));
+		
+		// call when receive message from other player
+		addHandlerRegistration(clientFactory.getEventBus().addHandler(ChessSelectEvent.TYPE, new ChessSelectHandler() {
+			
+			@Override
+			public void onSelect(ChessSelectEvent event) {
+				doChessSelectEvent(event, view);
+			}
+		}));
 		
 		addHandlerRegistration(match.getComputer().addChessSelectHandler(new ChessSelectHandler() {
 			

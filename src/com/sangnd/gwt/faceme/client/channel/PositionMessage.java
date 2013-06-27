@@ -28,31 +28,39 @@ import com.google.gwt.json.client.JSONObject;
  * @author heroandtn3
  * 
  */
-public class ChannelMessage extends JavaScriptObject {
+public class PositionMessage extends JavaScriptObject {
 
 	/**
 	 * 
 	 */
-	protected ChannelMessage() {
+	protected PositionMessage() {
 	}
 
-	public final native String getSenderId() /*-{
-		return this.senderId;
-	}-*/;
-	
-	public final native void setSenderId(String senderId) /*-{
-		this.senderId = senderId;
+	public final native int getRow() /*-{
+		return this.row;
 	}-*/;
 
-	public final native String getContent() /*-{
-		return this.content;
+	public final native void setRow(int row) /*-{
+		this.row = row;
 	}-*/;
-	
-	public final native void setContent(String content) /*-{
-		this.content = content;
+
+	public final native int getCol() /*-{
+		return this.col;
 	}-*/;
-	
-	public static final native ChannelMessage fromJson(String json) /*-{
+
+	public final native void setCol(int col) /*-{
+		this.col = col;
+	}-*/;
+
+	public final native boolean isKillable() /*-{
+		return this.killable;
+	}-*/;
+
+	public final native void setKillable(boolean killable) /*-{
+		this.killable = killable;
+	}-*/;
+
+	public static final native PositionMessage fromJson(String json) /*-{
 		return JSON.parse(json, function(key, value) {
 			return value;
 		});
@@ -60,14 +68,6 @@ public class ChannelMessage extends JavaScriptObject {
 
 	public final String toJson() {
 		return new JSONObject(this).toString();
-	}
-	
-	public static final ChannelMessage create(String senderId, String content) {
-		//return fromJson("({\"senderId\":\""+senderId+"\",\"content\":\""+content+"\"})");
-		ChannelMessage message = (ChannelMessage) JavaScriptObject.createObject().cast();
-		message.setSenderId(senderId);
-		message.setContent(content);
-		return message;
 	}
 
 }
