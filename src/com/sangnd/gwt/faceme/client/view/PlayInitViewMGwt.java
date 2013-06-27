@@ -53,7 +53,7 @@ import com.sangnd.gwt.faceme.client.model.User;
 public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler {
 
 	private HeaderButton butBack;
-	private HeaderButton butPlay;
+	private Button butPlay;
 	private Button butDanCo;
 	private LayoutPanel panel;
 	private FormListEntry formOpponent;
@@ -79,9 +79,7 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 		butBack.setBackButton(true);
 		headerPanel.setLeftWidget(butBack);
 
-		butPlay = new HeaderButton();
-		butPlay.setForwardButton(true);
-		headerPanel.setRightWidget(butPlay);
+		
 
 		ScrollPanel scrollPanel = new ScrollPanel();
 		panel.add(scrollPanel);
@@ -138,6 +136,11 @@ public class PlayInitViewMGwt implements PlayInitView, HasSelectGameModeHandler 
 
 		opponentPanel = new HorizontalPanel();
 		opponentPanel.add(butSelectOpp);
+		
+		butPlay = new Button();
+		butPlay.setConfirm(true);
+		butPlay.setSmall(true);
+		container.add(butPlay);
 	}
 
 	@Override
