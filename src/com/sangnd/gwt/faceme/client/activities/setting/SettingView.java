@@ -21,10 +21,25 @@
  */
 package com.sangnd.gwt.faceme.client.activities.setting;
 
+import com.google.gwt.user.client.ui.HasText;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.sangnd.gwt.faceme.client.activities.BaseView;
+
 /**
  * @author heroandtn3
  *
  */
-public interface SettingView {
+public interface SettingView extends BaseView {
+	
+	HasText getEmail();
+	
+	HasText getPass();
 
+	HasTapHandlers getLoginButton();
+	
+	HasTapHandlers getLogoutButton();
+	
+	HasTapHandlers getRegisterButton();
+	
+	void setLogon(boolean logon);
 }

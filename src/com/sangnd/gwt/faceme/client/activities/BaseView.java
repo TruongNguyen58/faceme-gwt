@@ -33,12 +33,12 @@ public interface BaseView extends IsWidget {
 	
 	public HasText getTitle();
 	
-	public HasTapHandlers getNotiWidget();
+	public HasTapHandlers getRightButton();
 	
-	public HasText getNotiText();
+	public HasText getRightButtonText();
 	
-	public HasTapHandlers getBackButton();
+	public HasTapHandlers getLeftButton();
 	
-	public HasText getBackButtonText();
+	public HasText getLeftButtonText();
 
 }

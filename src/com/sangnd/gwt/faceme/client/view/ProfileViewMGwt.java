@@ -46,7 +46,7 @@ public class ProfileViewMGwt extends BaseViewMGwt implements ProfileView {
 	 */
 	public ProfileViewMGwt() {
 
-		butBack.setText("Home");
+		butLeft.setText("Home");
 
 		userCell = new CellList<User>(new UserCell());
 		userCell.setRound(true);

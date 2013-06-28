@@ -19,29 +19,22 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.login;
+package com.sangnd.gwt.faceme.client.activities.register;
 
-import com.google.gwt.place.shared.Place;
-import com.google.gwt.place.shared.PlaceTokenizer;
+import com.google.gwt.user.client.ui.HasText;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.sangnd.gwt.faceme.client.activities.BaseView;
 
 /**
  * @author heroandtn3
  *
  */
-public class LoginPlace extends Place {
-
-	public static class Tokenizer implements PlaceTokenizer<LoginPlace> {
-
-		@Override
-		public LoginPlace getPlace(String token) {
-			return new LoginPlace();
-		}
-
-		@Override
-		public String getToken(LoginPlace place) {
-			return "index";
-		}
-		
-	} 
+public interface RegisterView extends BaseView {
+	
+	HasTapHandlers getRegisterButton();
+	
+	HasText getEmail();
+	
+	HasText getPass();
 
 }

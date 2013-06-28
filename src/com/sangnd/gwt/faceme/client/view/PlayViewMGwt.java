@@ -21,25 +21,15 @@
  */
 package com.sangnd.gwt.faceme.client.view;
 
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.Widget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
-import com.googlecode.mgwt.ui.client.widget.HeaderButton;
-import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
-import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.sangnd.gwt.faceme.client.activities.play.PlayView;
 
 /**
  * @author heroandtn3
  * 
  */
-public class PlayViewMGwt implements PlayView {
+public class PlayViewMGwt extends BaseViewMGwt implements PlayView {
 
-	private LayoutPanel panel;
-	private HeaderButton butBack;
-	private ScrollPanel scrollPanel;
-	private LayoutPanel container;
 	private BoardViewMGwt boardView;
 
 	/**
@@ -47,42 +37,13 @@ public class PlayViewMGwt implements PlayView {
 	 */
 	public PlayViewMGwt() {
 
-		panel = new LayoutPanel();
-
-		HeaderPanel headerPanel = new HeaderPanel();
-		panel.add(headerPanel);
-		butBack = new HeaderButton();
-		butBack.setBackButton(true);
-		headerPanel.setLeftWidget(butBack);
-
-		scrollPanel = new ScrollPanel();
-		panel.add(scrollPanel);
-
-		container = new LayoutPanel();
+		LayoutPanel container = new LayoutPanel();
 		scrollPanel.add(container);
-		initPlayPanel();
-	}
-
-	private void initPlayPanel() {
-
+		scrollPanel.setScrollingEnabledX(false);
+		scrollPanel.setScrollingEnabledY(false);
+		
 		boardView = new BoardViewMGwt();
 		container.add(boardView.asWidget());
-
-	}
-
-	@Override
-	public Widget asWidget() {
-		return panel;
-	}
-
-	@Override
-	public HasTapHandlers getBackButton() {
-		return butBack;
-	}
-
-	@Override
-	public HasText getBackButtonText() {
-		return butBack;
 	}
 
 	@Override

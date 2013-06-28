@@ -25,23 +25,19 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
-import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
-import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
+import com.sangnd.gwt.faceme.client.activities.BaseActivity;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitPlace;
-import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
-import com.sangnd.gwt.faceme.client.model.User;
+import com.sangnd.gwt.faceme.client.activities.setting.SettingPlace;
 
 /**
  * @author heroandtn3
  * 
  */
-public class HomeActivity extends MGWTAbstractActivity {
-
-	private ClientFactory clientFactory;
+public class HomeActivity extends BaseActivity {
 
 	public HomeActivity(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+		super(clientFactory);
 	}
 
 	@Override
@@ -53,22 +49,16 @@ public class HomeActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				clientFactory.getPlaceController().goTo(new PlayInitPlace());
+				goTo(new PlayInitPlace());
 				
 			}
 		}));
-		
-		addHandlerRegistration(view.getPlayOnlineButton().addTapHandler(new TapHandler() {
+
+		addHandlerRegistration(view.getSettingButton().addTapHandler(new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				User user = clientFactory.getGameSession().getUser();
-				if (user == null) {
-					clientFactory.getPlaceController().goTo(new LoginPlace());
-				} else {
-					clientFactory.getPlaceController().goTo(new ProfilePlace(user.getEmail()));
-				}
-				
+				goTo(new SettingPlace());
 			}
 		}));
 

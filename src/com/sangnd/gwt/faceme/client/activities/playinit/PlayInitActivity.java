@@ -25,14 +25,14 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
-import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.sangnd.gwt.faceme.client.ClientFactory;
+import com.sangnd.gwt.faceme.client.activities.BaseActivity;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
-import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
 import com.sangnd.gwt.faceme.client.activities.play.PlayPlace;
+import com.sangnd.gwt.faceme.client.activities.setting.SettingPlace;
 import com.sangnd.gwt.faceme.client.core.model.GameMode;
 import com.sangnd.gwt.faceme.client.core.model.Level;
 import com.sangnd.gwt.faceme.client.core.model.Side;
@@ -46,15 +46,13 @@ import com.sangnd.gwt.faceme.client.model.User;
  * @author heroandtn3
  * 
  */
-public class PlayInitActivity extends MGWTAbstractActivity {
-
-	private ClientFactory clientFactory;
+public class PlayInitActivity extends BaseActivity {
 
 	/**
 	 * 
 	 */
 	public PlayInitActivity(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+		super(clientFactory);
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 		clientFactory.getGameSession().newMatch();
 		
 		final PlayInitView view = clientFactory.getPlayInitView();
-		view.getBackButtonText().setText("Home");
+		view.getLeftButtonText().setText("Home");
 		view.getPlayButtonText().setText("Play");
 		
 		if (clientFactory.getGameSession().isPlayonline()) {
@@ -84,11 +82,11 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			}
 		}));
 		
-		addHandlerRegistration(view.getBackButton().addTapHandler(new TapHandler() {
+		addHandlerRegistration(view.getLeftButton().addTapHandler(new TapHandler() {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				clientFactory.getPlaceController().goTo(new HomePlace());
+				goTo(new HomePlace());
 			}
 		}));
 		
@@ -96,7 +94,6 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				clientFactory.getRoom().startPlay();
 				doStart(view);
 			}
 		}));
@@ -118,7 +115,7 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 						
 						@Override
 						public void onOk() {
-							clientFactory.getPlaceController().goTo(new LoginPlace());
+							goTo(new SettingPlace());
 						}
 						
 						@Override
@@ -134,6 +131,7 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			}
 		}));
 		
+		super.initBaseHandler(view, clientFactory);
 		panel.setWidget(view.asWidget());
 	}
 	
@@ -151,13 +149,14 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 				break;
 			case 2:
 				gameMode = GameMode.TWO_PLAYER_ONLINE;
+				clientFactory.getRoom().startPlay();
 				Side currentSide = clientFactory.getGameSetting().getCurrentSide();
 				clientFactory.getGameSession().getMatch().setCurrentSide(currentSide);
 				break;
 		}
 		
 		clientFactory.getGameSession().getMatch().setGameMode(gameMode);
-		clientFactory.getPlaceController().goTo(new PlayPlace());
+		goTo(new PlayPlace());
 	}
 
 }

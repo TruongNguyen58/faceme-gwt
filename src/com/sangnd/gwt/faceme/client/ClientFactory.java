@@ -21,10 +21,11 @@ package com.sangnd.gwt.faceme.client;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.sangnd.gwt.faceme.client.activities.home.HomeView;
-import com.sangnd.gwt.faceme.client.activities.login.LoginView;
 import com.sangnd.gwt.faceme.client.activities.play.PlayView;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfileView;
+import com.sangnd.gwt.faceme.client.activities.register.RegisterView;
+import com.sangnd.gwt.faceme.client.activities.setting.SettingView;
 import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailView;
 import com.sangnd.gwt.faceme.client.channel.ChannelUtility;
 import com.sangnd.gwt.faceme.client.model.GameSession;
@@ -52,7 +53,7 @@ public interface ClientFactory {
 
 	public GameSetting getGameSetting();
 
-	public LoginView getLoginView();
+	public RegisterView getLoginView();
 
 	public ProfileView getProfileView();
 
@@ -69,5 +70,7 @@ public interface ClientFactory {
 	public NotiDialogView getNotiDialogView();
 	
 	public UserListDialog getUserListDialog();
+
+	public SettingView getSettingView();
 
 }

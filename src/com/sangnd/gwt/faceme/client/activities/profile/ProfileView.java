@@ -38,7 +38,7 @@ public interface ProfileView extends BaseView {
 
 	HasText getTitle();
 	
-	HasTapHandlers getBackButton();
+	HasTapHandlers getLeftButton();
 	
 	HasText getName();
 	

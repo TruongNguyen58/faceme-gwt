@@ -19,28 +19,29 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.login;
+package com.sangnd.gwt.faceme.client.activities.register;
 
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceTokenizer;
 
 /**
  * @author heroandtn3
  *
  */
-public interface LoginView extends IsWidget {
-	
-	HasTapHandlers getBackButton();
-	
-	HasTapHandlers getLoginButton();
-	
-	HasTapHandlers getRegisterButton();
-	
-	HasText getEmail();
-	
-	HasText getPass();
-	
-	HasText getTitle();
+public class RegisterPlace extends Place {
+
+	public static class Tokenizer implements PlaceTokenizer<RegisterPlace> {
+
+		@Override
+		public RegisterPlace getPlace(String token) {
+			return new RegisterPlace();
+		}
+
+		@Override
+		public String getToken(RegisterPlace place) {
+			return "index";
+		}
+		
+	} 
 
 }

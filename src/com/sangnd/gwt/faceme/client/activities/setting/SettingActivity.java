@@ -23,28 +23,100 @@ package com.sangnd.gwt.faceme.client.activities.setting;
 
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
+import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.sangnd.gwt.faceme.client.ClientFactory;
+import com.sangnd.gwt.faceme.client.activities.BaseActivity;
+import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
+import com.sangnd.gwt.faceme.client.activities.register.RegisterPlace;
+import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
  * 
  */
-public class SettingActivity extends MGWTAbstractActivity {
-
-	private ClientFactory clientFactory;
+public class SettingActivity extends BaseActivity {
 
 	/**
 	 * 
 	 */
 	public SettingActivity(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+		super(clientFactory);
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-
+		final SettingView view = clientFactory.getSettingView();
+		view.getTitle().setText("Setting");
+		view.getLeftButtonText().setText("Home");
+		
+		addHandlerRegistration(view.getLeftButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				goTo(new HomePlace());
+			}
+		}));
+		
+		User user = clientFactory.getGameSession().getUser();
+		if (user == null) {
+			((HeaderButton) view.getRightButton()).setVisible(false);
+			view.setLogon(false);
+		} else {
+			((HeaderButton) view.getRightButton()).setVisible(true);
+			view.getEmail().setText(user.getEmail());
+			view.getPass().setText(user.getPass());
+			view.setLogon(true);
+		}
+		
+		addHandlerRegistration(view.getLoginButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				String email = view.getEmail().getText();
+				String pass = view.getPass().getText();
+				
+				if (email.length() == 0 || pass.length() == 0) {
+					return;
+				}
+				
+				if (email.equals(pass)) {
+					User user = new User();
+					user.setName(email);
+					user.setEmail(email);
+					user.setId(email);
+					user.setPass(pass);
+					clientFactory.getGameSession().setUser(user);
+					clientFactory.getChannelUtility().initChannel(user);
+					clientFactory.getRoom().createRoom(user.getId());
+					
+					view.getEmail().setText(email);
+					view.getPass().setText(pass);
+					view.setLogon(true);
+				}
+			}
+		}));
+		
+		addHandlerRegistration(view.getLogoutButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				clientFactory.getGameSession().setUser(null);
+				view.setLogon(false);
+			}
+		}));
+		
+		addHandlerRegistration(view.getRegisterButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				goTo(new RegisterPlace());
+			}
+		}));
+		
+		super.initBaseHandler(view, clientFactory);
+		panel.setWidget(view.asWidget());
 	}
-
 }

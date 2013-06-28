@@ -40,29 +40,24 @@ import com.sangnd.gwt.faceme.client.model.dao.UserDb;
  */
 public class ProfileActivity extends BaseActivity {
 
-	private ClientFactory clientFactory;
-
 	/**
 	 * 
 	 */
 	public ProfileActivity(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+		super(clientFactory);
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, final EventBus eventBus) {
 		super.start(panel, eventBus);
 		final ProfileView view = clientFactory.getProfileView();
-		panel.setWidget(view.asWidget());
 
-		addHandlerRegistration(view.getBackButton().addTapHandler(
+		addHandlerRegistration(view.getLeftButton().addTapHandler(
 				new TapHandler() {
 
 					@Override
 					public void onTap(TapEvent event) {
-
-						clientFactory.getPlaceController()
-								.goTo(new HomePlace());
+						goTo(new HomePlace());
 					}
 				}));
 
@@ -71,7 +66,6 @@ public class ProfileActivity extends BaseActivity {
 			return;
 		}
 		view.getTitle().setText(user.getName());
-		super.initCommonHandler(view, clientFactory);
 
 		UserDb udb = clientFactory.getUserDb();
 		view.renderUserList(udb.getAllUser());
@@ -81,10 +75,11 @@ public class ProfileActivity extends BaseActivity {
 
 					@Override
 					public void onCellSelected(CellSelectedEvent event) {
-						clientFactory.getPlaceController().goTo(
-								new UserDetailPlace("" + event.getIndex()));
+						goTo(new UserDetailPlace("" + event.getIndex()));
 					}
 				}));
 
+		super.initBaseHandler(view, clientFactory);
+		panel.setWidget(view.asWidget());
 	}
 }

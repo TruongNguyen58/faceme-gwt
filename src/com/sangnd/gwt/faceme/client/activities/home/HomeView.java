@@ -34,8 +34,6 @@ public interface HomeView extends IsWidget {
 	
 	HasTapHandlers getCotheButton();
 	
-	HasTapHandlers getPlayOnlineButton();
-	
 	HasTapHandlers getSettingButton();
 	
 	HasTapHandlers getAboutButton();

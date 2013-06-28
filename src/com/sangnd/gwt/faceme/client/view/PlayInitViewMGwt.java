@@ -26,15 +26,11 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
-import com.googlecode.mgwt.ui.client.widget.HeaderButton;
-import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
-import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
 import com.sangnd.gwt.faceme.client.model.User;
@@ -43,12 +39,10 @@ import com.sangnd.gwt.faceme.client.model.User;
  * @author heroandtn3
  * 
  */
-public class PlayInitViewMGwt implements PlayInitView{
+public class PlayInitViewMGwt extends BaseViewMGwt implements PlayInitView {
 
-	private HeaderButton butBack;
 	private Button butPlay;
 	private Button butDanCo;
-	private LayoutPanel panel;
 	private FormListEntry formOpponent;
 	private MListBox gameModeList;
 	private MListBox levelList;
@@ -60,20 +54,6 @@ public class PlayInitViewMGwt implements PlayInitView{
 	 * 
 	 */
 	public PlayInitViewMGwt() {
-
-		panel = new LayoutPanel();
-
-		HeaderPanel headerPanel = new HeaderPanel();
-		panel.add(headerPanel);
-
-		butBack = new HeaderButton();
-		butBack.setBackButton(true);
-		headerPanel.setLeftWidget(butBack);
-
-		
-
-		ScrollPanel scrollPanel = new ScrollPanel();
-		panel.add(scrollPanel);
 		LayoutPanel container = new LayoutPanel();
 		scrollPanel.add(container);
 
@@ -122,26 +102,11 @@ public class PlayInitViewMGwt implements PlayInitView{
 
 		opponentPanel = new HorizontalPanel();
 		opponentPanel.add(butSelectOpp);
-		
+
 		butPlay = new Button();
 		butPlay.setConfirm(true);
 		butPlay.setSmall(true);
 		container.add(butPlay);
-	}
-
-	@Override
-	public Widget asWidget() {
-		return panel;
-	}
-
-	@Override
-	public HasTapHandlers getBackButton() {
-		return butBack;
-	}
-
-	@Override
-	public HasText getBackButtonText() {
-		return butBack;
 	}
 
 	@Override

@@ -19,73 +19,56 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.activities.login;
+package com.sangnd.gwt.faceme.client.activities.register;
 
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
-import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
+import com.sangnd.gwt.faceme.client.activities.BaseActivity;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
-import com.sangnd.gwt.faceme.client.activities.profile.ProfilePlace;
-import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
  *
  */
-public class LoginActivity extends MGWTAbstractActivity {
+public class RegisterActivity extends BaseActivity {
 
-	private ClientFactory clientFactory;
 
 	/**
 	 * 
 	 */
-	public LoginActivity(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+	public RegisterActivity(ClientFactory clientFactory) {
+		super(clientFactory);
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		final LoginView view = clientFactory.getLoginView();
+		final RegisterView view = clientFactory.getLoginView();
+		view.getTitle().setText("Register Account");
+		view.getLeftButtonText().setText("Home");
+		
+		addHandlerRegistration(view.getLeftButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				goTo(new HomePlace());
+			}
+		}));
+		
+		addHandlerRegistration(view.getRegisterButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+		}));
+		
+		super.initBaseHandler(view, clientFactory);
 		panel.setWidget(view.asWidget());
-		
-		view.getTitle().setText("Login");
-		
-		addHandlerRegistration(view.getBackButton().addTapHandler(new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent event) {
-				clientFactory.getPlaceController().goTo(new HomePlace());
-			}
-		}));
-		
-		addHandlerRegistration(view.getLoginButton().addTapHandler(new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent event) {
-				String email = view.getEmail().getText();
-				String pass = view.getPass().getText();
-				
-				if (email.length() == 0 || pass.length() == 0) {
-					return;
-				}
-				
-				if (email.equals(pass)) {
-					User user = new User();
-					user.setName(email);
-					user.setEmail(email);
-					user.setId(email);
-					user.setPass(pass);
-					clientFactory.getGameSession().setUser(user);
-					clientFactory.getChannelUtility().initChannel(user);
-					clientFactory.getRoom().createRoom(user.getId());
-					clientFactory.getPlaceController().goTo(new ProfilePlace());
-				}
-			}
-		}));
 	}
 	
 	

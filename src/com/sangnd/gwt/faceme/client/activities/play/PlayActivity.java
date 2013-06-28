@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
-import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.sangnd.gwt.faceme.client.ClientFactory;
+import com.sangnd.gwt.faceme.client.activities.BaseActivity;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
 import com.sangnd.gwt.faceme.client.core.model.GameMode;
@@ -41,27 +41,24 @@ import com.sangnd.gwt.faceme.client.event.MoveCompleteHandler;
  * @author heroandtn3
  * 
  */
-public class PlayActivity extends MGWTAbstractActivity {
+public class PlayActivity extends BaseActivity {
 
-	private ClientFactory clientFactory;
 	private Match match;
 
 	/**
 	 * 
 	 */
 	public PlayActivity(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+		super(clientFactory);
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
 		final PlayView view = clientFactory.getPlayView();
-		view.getBackButtonText().setText("Home");
 		
-		
-		
-		addHandlerRegistration(view.getBackButton().addTapHandler(
+		view.getLeftButtonText().setText("Home");
+		addHandlerRegistration(view.getLeftButton().addTapHandler(
 				new TapHandler() {
 
 					@Override
@@ -76,6 +73,7 @@ public class PlayActivity extends MGWTAbstractActivity {
 		System.out.println("start");
 		doStartPlay(match, view);
 
+		super.initBaseHandler(view, clientFactory);
 		panel.setWidget(view.asWidget());
 	}
 	

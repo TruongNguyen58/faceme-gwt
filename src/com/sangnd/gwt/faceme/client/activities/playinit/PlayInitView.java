@@ -22,20 +22,16 @@
 package com.sangnd.gwt.faceme.client.activities.playinit;
 
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
+import com.sangnd.gwt.faceme.client.activities.BaseView;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
  *
  */
-public interface PlayInitView extends IsWidget {
-	
-	HasTapHandlers getBackButton();
-	
-	HasText getBackButtonText();
+public interface PlayInitView extends BaseView {
 	
 	HasTapHandlers getPlayButton();
 	

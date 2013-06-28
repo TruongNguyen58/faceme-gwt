@@ -38,9 +38,9 @@ import com.sangnd.gwt.faceme.client.activities.BaseView;
 public class BaseViewMGwt implements BaseView {
 
 	protected LayoutPanel panel;
-	protected HeaderButton butBack;
+	protected HeaderButton butLeft;
 	protected ScrollPanel scrollPanel;
-	protected HeaderButton notiWidget;
+	protected HeaderButton butRight;
 	protected HTML title;
 
 	/**
@@ -52,16 +52,16 @@ public class BaseViewMGwt implements BaseView {
 		HeaderPanel headerPanel = new HeaderPanel();
 		panel.add(headerPanel);
 		
-		butBack = new HeaderButton(); 
-		butBack.setBackButton(true);
-		headerPanel.setLeftWidget(butBack);
+		butLeft = new HeaderButton(); 
+		butLeft.setBackButton(true);
+		headerPanel.setLeftWidget(butLeft);
 		
 		title = new HTML();
 		headerPanel.setCenterWidget(title);
 		
-		notiWidget = new HeaderButton();
-		notiWidget.setRoundButton(true);
-		headerPanel.setRightWidget(notiWidget);
+		butRight = new HeaderButton();
+		butRight.setRoundButton(true);
+		headerPanel.setRightWidget(butRight);
 		
 		scrollPanel = new ScrollPanel();
 		panel.add(scrollPanel);
@@ -73,23 +73,23 @@ public class BaseViewMGwt implements BaseView {
 	}
 
 	@Override
-	public HasTapHandlers getNotiWidget() {
-		return notiWidget;
+	public HasTapHandlers getRightButton() {
+		return butRight;
 	}
 
 	@Override
-	public HasText getNotiText() {
-		return notiWidget;
+	public HasText getRightButtonText() {
+		return butRight;
 	}
 
 	@Override
-	public HasTapHandlers getBackButton() {
-		return butBack;
+	public HasTapHandlers getLeftButton() {
+		return butLeft;
 	}
 
 	@Override
-	public HasText getBackButtonText() {
-		return butBack;
+	public HasText getLeftButtonText() {
+		return butLeft;
 	}
 
 	@Override

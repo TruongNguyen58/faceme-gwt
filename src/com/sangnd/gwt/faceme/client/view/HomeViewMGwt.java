@@ -37,7 +37,6 @@ public class HomeViewMGwt implements HomeView {
 
 	private ScrollPanel panel;
 	private Button butPlay;
-	private Button butOnlinePlay;
 	private Button butCothePlay;
 	private Button butSetting;
 	private Button butAbout;
@@ -58,9 +57,6 @@ public class HomeViewMGwt implements HomeView {
 	private void initGui() {
 		butPlay = new Button("Chơi luôn");
 		container.add(butPlay);
-		
-		butOnlinePlay = new Button("Chơi trực tuyến");
-		container.add(butOnlinePlay);
 		
 		butCothePlay = new Button("Cờ thế");
 		container.add(butCothePlay);
@@ -86,11 +82,6 @@ public class HomeViewMGwt implements HomeView {
 	@Override
 	public HasTapHandlers getCotheButton() {
 		return butCothePlay;
-	}
-
-	@Override
-	public HasTapHandlers getPlayOnlineButton() {
-		return butOnlinePlay;
 	}
 
 	@Override

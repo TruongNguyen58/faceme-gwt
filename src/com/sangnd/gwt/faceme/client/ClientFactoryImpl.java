@@ -22,10 +22,11 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.sangnd.gwt.faceme.client.activities.home.HomeView;
-import com.sangnd.gwt.faceme.client.activities.login.LoginView;
 import com.sangnd.gwt.faceme.client.activities.play.PlayView;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
 import com.sangnd.gwt.faceme.client.activities.profile.ProfileView;
+import com.sangnd.gwt.faceme.client.activities.register.RegisterView;
+import com.sangnd.gwt.faceme.client.activities.setting.SettingView;
 import com.sangnd.gwt.faceme.client.activities.userdetail.UserDetailView;
 import com.sangnd.gwt.faceme.client.channel.ChannelUtility;
 import com.sangnd.gwt.faceme.client.channel.ChannelUtilityImpl;
@@ -35,12 +36,13 @@ import com.sangnd.gwt.faceme.client.model.Room;
 import com.sangnd.gwt.faceme.client.model.RoomImpl;
 import com.sangnd.gwt.faceme.client.model.dao.UserDb;
 import com.sangnd.gwt.faceme.client.view.HomeViewMGwt;
-import com.sangnd.gwt.faceme.client.view.LoginViewMGwt;
+import com.sangnd.gwt.faceme.client.view.RegisterViewMGwt;
 import com.sangnd.gwt.faceme.client.view.NotiDialogView;
 import com.sangnd.gwt.faceme.client.view.NotiDialogViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayInitViewMGwt;
 import com.sangnd.gwt.faceme.client.view.PlayViewMGwt;
 import com.sangnd.gwt.faceme.client.view.ProfileViewMGwt;
+import com.sangnd.gwt.faceme.client.view.SettingViewMGwt;
 import com.sangnd.gwt.faceme.client.view.UserDetailViewMGwt;
 import com.sangnd.gwt.faceme.client.view.UserListDialog;
 import com.sangnd.gwt.faceme.client.view.UserListDialogMGwt;
@@ -57,7 +59,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private PlayView playView;
 	private PlayInitView playInitView;
 	private GameSetting gameSetting;
-	private LoginView loginView;
+	private RegisterView registerView;
 	private ProfileView profileView;
 	private GameSession gameSession;
 	private UserDb userDb;
@@ -66,6 +68,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private Room room;
 	private NotiDialogView notiDialogView;
 	private UserListDialog userListDialog;
+	private SettingView settingView;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -118,11 +121,11 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 
 	@Override
-	public LoginView getLoginView() {
-		if (loginView == null) {
-			loginView = new LoginViewMGwt();
+	public RegisterView getLoginView() {
+		if (registerView == null) {
+			registerView = new RegisterViewMGwt();
 		}
-		return loginView;
+		return registerView;
 	}
 
 	@Override
@@ -187,6 +190,14 @@ public class ClientFactoryImpl implements ClientFactory {
 			userListDialog = new UserListDialogMGwt();
 		}
 		return userListDialog;
+	}
+
+	@Override
+	public SettingView getSettingView() {
+		if (settingView == null) {
+			settingView = new SettingViewMGwt();
+		}
+		return settingView;
 	}
 
 }
