@@ -11,5 +11,10 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/heroandtn3/stupid/programming/java/google/mFaceme/lib/bGwtChannelApi-0.1.1.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/objectify-4.0b2.jar" sourcepath="/home/heroandtn3/usr/lib/java/google/objectify/objectify-4.0b2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/heroandtn3/usr/lib/java/google/objectify/objectify-4.0b2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
