@@ -39,6 +39,7 @@ import com.sangnd.gwt.faceme.client.event.InvitationActionHandler;
 import com.sangnd.gwt.faceme.client.event.InviteUserEvent;
 import com.sangnd.gwt.faceme.client.event.InviteUserHandler;
 import com.sangnd.gwt.faceme.client.event.NewInvitationEvent;
+import com.sangnd.gwt.faceme.client.event.StartPlayEvent;
 
 /**
  * @author heroandtn3
@@ -81,6 +82,8 @@ public class RoomImpl implements Room {
 					clientFactory.getEventBus().fireEvent(new InvitationActionEvent(true));
 				} else if (content.equals("refuse")) {
 					clientFactory.getEventBus().fireEvent(new InvitationActionEvent(false));
+				} else if (content.equals("start")) {
+					clientFactory.getEventBus().fireEvent(new StartPlayEvent());
 				} else {
 					PositionMessage pm = PositionMessage.fromJson(content);
 					ChessPosition pos = new ChessPosition(pm.getRow(), pm.getCol());
@@ -164,6 +167,12 @@ public class RoomImpl implements Room {
 	@Override
 	public void refuseInvitationFrom(String userId) {
 		channelUtility.sendMessage(userId, ChannelMessage.create(currentId, "refuse"));
+	}
+
+
+	@Override
+	public void startPlay() {
+		channelUtility.sendMessage(opponentId, ChannelMessage.create(currentId, "start"));
 	}
 
 }

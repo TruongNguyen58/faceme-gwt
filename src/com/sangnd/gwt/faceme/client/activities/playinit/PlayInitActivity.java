@@ -28,6 +28,7 @@ import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
+import com.googlecode.mgwt.ui.client.widget.Button;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
 import com.sangnd.gwt.faceme.client.activities.login.LoginPlace;
@@ -37,6 +38,8 @@ import com.sangnd.gwt.faceme.client.core.model.Level;
 import com.sangnd.gwt.faceme.client.core.model.Side;
 import com.sangnd.gwt.faceme.client.event.InvitationActionEvent;
 import com.sangnd.gwt.faceme.client.event.InvitationActionHandler;
+import com.sangnd.gwt.faceme.client.event.StartPlayEvent;
+import com.sangnd.gwt.faceme.client.event.StartPlayHandler;
 import com.sangnd.gwt.faceme.client.model.User;
 
 /**
@@ -67,6 +70,7 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			view.getGameModeList().setItemSelected(2, true);
 			view.getGameModeList().setEnabled(false);
 			view.renderOpponent(clientFactory.getUserDb().getUserById("sang"));
+			((Button)view.getPlayButton()).setVisible(false);
 		}
 		
 		addHandlerRegistration(eventBus.addHandler(InvitationActionEvent.TYPE, new InvitationActionHandler() {
@@ -92,28 +96,16 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				int mode = view.getGameModeList().getSelectedIndex();
-				GameMode gameMode = GameMode.PLAY_WITH_COMPUTER;
-				switch(mode) {
-					case 0:
-						gameMode = GameMode.PLAY_WITH_COMPUTER;
-						int levelIndex = view.getLevelList().getSelectedIndex();
-						clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
-						break;
-					case 1:
-						gameMode = GameMode.TWO_PLAYER_OFFLINE;
-						break;
-					case 2:
-						gameMode = GameMode.TWO_PLAYER_ONLINE;
-						Side currentSide = clientFactory.getGameSetting().getCurrentSide();
-						clientFactory.getGameSession().getMatch().setCurrentSide(currentSide);
-						break;
-				}
-				
-				clientFactory.getGameSession().getMatch().setGameMode(gameMode);
-
-				clientFactory.getPlaceController().goTo(new PlayPlace());
-				
+				clientFactory.getRoom().startPlay();
+				doStart(view);
+			}
+		}));
+		
+		addHandlerRegistration(eventBus.addHandler(StartPlayEvent.TYPE, new StartPlayHandler() {
+			
+			@Override
+			public void onStart(StartPlayEvent event) {
+				doStart(view);
 			}
 		}));
 		
@@ -143,6 +135,29 @@ public class PlayInitActivity extends MGWTAbstractActivity {
 		}));
 		
 		panel.setWidget(view.asWidget());
+	}
+	
+	private void doStart(PlayInitView view) {
+		int mode = view.getGameModeList().getSelectedIndex();
+		GameMode gameMode = GameMode.PLAY_WITH_COMPUTER;
+		switch(mode) {
+			case 0:
+				gameMode = GameMode.PLAY_WITH_COMPUTER;
+				int levelIndex = view.getLevelList().getSelectedIndex();
+				clientFactory.getGameSetting().setLevel(new Level(levelIndex + 1));
+				break;
+			case 1:
+				gameMode = GameMode.TWO_PLAYER_OFFLINE;
+				break;
+			case 2:
+				gameMode = GameMode.TWO_PLAYER_ONLINE;
+				Side currentSide = clientFactory.getGameSetting().getCurrentSide();
+				clientFactory.getGameSession().getMatch().setCurrentSide(currentSide);
+				break;
+		}
+		
+		clientFactory.getGameSession().getMatch().setGameMode(gameMode);
+		clientFactory.getPlaceController().goTo(new PlayPlace());
 	}
 
 }

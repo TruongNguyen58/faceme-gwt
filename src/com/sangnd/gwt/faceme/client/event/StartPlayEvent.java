@@ -19,29 +19,25 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.model;
+package com.sangnd.gwt.faceme.client.event;
 
-import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
-
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * @author heroandtn3
- * 
+ *
  */
-public interface Room {
-	
-	public void createRoom(String currentId);
-	
-	void sendPos(ChessPosition pos);
-	
-	void inviteOpponent(String opId);
-	
-	void cancelInvitation();
-	
-	void agreeInvitationFrom(String userId);
-	
-	void refuseInvitationFrom(String userId);
-	
-	void startPlay();
-	
+public class StartPlayEvent extends GwtEvent<StartPlayHandler>{
+
+	public final static Type<StartPlayHandler> TYPE = new Type<StartPlayHandler>();
+	@Override
+	public Type<StartPlayHandler> getAssociatedType() {
+		return TYPE;
+	}
+
+	@Override
+	protected void dispatch(StartPlayHandler handler) {
+		handler.onStart(this);
+	}
+
 }
