@@ -77,7 +77,7 @@ public class RoomImpl implements Room {
 				if (content.equals("invite")) {
 					System.out.println("Receive invitation from: " + message.getSenderId());
 					
-					clientFactory.getUserDb().getUserById(message.getSenderId(), new AsyncCallback<User>() {
+					clientFactory.getUserDb().getUserById(Long.parseLong(message.getSenderId()), new AsyncCallback<User>() {
 
 						@Override
 						public void onFailure(Throwable caught) {
@@ -156,7 +156,7 @@ public class RoomImpl implements Room {
 		pm.setRow(pos.getRow());
 		pm.setCol(pos.getCol());
 		pm.setKillable(pos.isKillable());
-		ChannelMessage message = ChannelMessage.create(currentUser.getId(), pm.toJson());
+		ChannelMessage message = ChannelMessage.create(currentUser.getId().toString(), pm.toJson());
 		channelUtility.sendMessage(opponent.getId(), message);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -167,7 +167,7 @@ public class RoomImpl implements Room {
 	public void inviteOpponent(User user) {
 		opponent = user;
 		if (inviting == false) {
-			channelUtility.sendMessage(opponent, ChannelMessage.create(currentUser.getId(), "invite"));
+			channelUtility.sendMessage(opponent, ChannelMessage.create(currentUser.getId().toString(), "invite"));
 			inviting = true;
 		}
 	}
@@ -182,7 +182,7 @@ public class RoomImpl implements Room {
 	public void agreeInvitationFrom(User user) {
 		opponent = user;
 		try {
-		channelUtility.sendMessage(opponent.getId(), ChannelMessage.create(currentUser.getId(), "agree"));
+		channelUtility.sendMessage(opponent.getId(), ChannelMessage.create(currentUser.getId().toString(), "agree"));
 		clientFactory.getGameSetting().setCurrentSide(Side.ENERMY);
 		clientFactory.getGameSession().setPlayonline(true);
 		clientFactory.getNotiDialogView().hide();
@@ -195,13 +195,13 @@ public class RoomImpl implements Room {
 
 	@Override
 	public void refuseInvitationFrom(User user) {
-		channelUtility.sendMessage(user, ChannelMessage.create(currentUser.getId(), "refuse"));
+		channelUtility.sendMessage(user, ChannelMessage.create(currentUser.getId().toString(), "refuse"));
 	}
 
 
 	@Override
 	public void startPlay() {
-		channelUtility.sendMessage(opponent, ChannelMessage.create(currentUser.getId(), "start"));
+		channelUtility.sendMessage(opponent, ChannelMessage.create(currentUser.getId().toString(), "start"));
 	}
 
 

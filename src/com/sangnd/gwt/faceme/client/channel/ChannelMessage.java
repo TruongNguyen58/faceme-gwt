@@ -36,11 +36,11 @@ public class ChannelMessage extends JavaScriptObject {
 	protected ChannelMessage() {
 	}
 
-	public final native Long getSenderId() /*-{
+	public final native String getSenderId() /*-{
 		return this.senderId;
 	}-*/;
 	
-	public final native void setSenderId(Long senderId) /*-{
+	public final native void setSenderId(String senderId) /*-{
 		this.senderId = senderId;
 	}-*/;
 
@@ -62,7 +62,7 @@ public class ChannelMessage extends JavaScriptObject {
 		return new JSONObject(this).toString();
 	}
 	
-	public static final ChannelMessage create(Long senderId, String content) {
+	public static final ChannelMessage create(String senderId, String content) {
 		//return fromJson("({\"senderId\":\""+senderId+"\",\"content\":\""+content+"\"})");
 		ChannelMessage message = (ChannelMessage) JavaScriptObject.createObject().cast();
 		message.setSenderId(senderId);
