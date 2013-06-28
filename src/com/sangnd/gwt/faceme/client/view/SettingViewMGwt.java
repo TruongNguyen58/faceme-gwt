@@ -53,7 +53,9 @@ public class SettingViewMGwt extends BaseViewMGwt implements SettingView {
 		LayoutPanel container = new LayoutPanel();
 		scrollPanel.add(container);
 		
-		container.add(new HTML("Account"));
+		HTML accountTitle = new HTML("Account");
+		accountTitle.addStyleName("title");
+		container.add(accountTitle);
 		WidgetList accountBox = new WidgetList();
 		accountBox.setRound(true);
 		container.add(accountBox);
@@ -65,6 +67,7 @@ public class SettingViewMGwt extends BaseViewMGwt implements SettingView {
 		accountBox.add(new FormListEntry("Password", pass));
 		
 		actionWidget = new HorizontalPanel();
+		actionWidget.getElement().setAttribute("width", "100%");
 		container.add(actionWidget);
 		
 		butLogin = new Button("Login");
