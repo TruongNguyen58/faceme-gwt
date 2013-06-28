@@ -95,6 +95,8 @@ public class SettingActivity extends BaseActivity {
 					view.getEmail().setText(email);
 					view.getPass().setText(pass);
 					view.setLogon(true);
+					((HeaderButton) view.getRightButton()).setVisible(true);
+					initBaseHandler(view, clientFactory);
 				}
 			}
 		}));

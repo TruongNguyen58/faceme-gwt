@@ -31,6 +31,7 @@ import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
+import com.googlecode.mgwt.ui.client.widget.ProgressBar;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitView;
 import com.sangnd.gwt.faceme.client.model.User;
@@ -49,12 +50,16 @@ public class PlayInitViewMGwt extends BaseViewMGwt implements PlayInitView {
 	private Button butSelectOpp;
 
 	private HorizontalPanel opponentPanel;
+	private ProgressBar progressBar;
+	private LayoutPanel container;
+	private HTML waitTitle;
+	private Button butCancel;
 
 	/**
 	 * 
 	 */
 	public PlayInitViewMGwt() {
-		LayoutPanel container = new LayoutPanel();
+		container = new LayoutPanel();
 		scrollPanel.add(container);
 
 		final WidgetList settingList = new WidgetList();
@@ -107,6 +112,20 @@ public class PlayInitViewMGwt extends BaseViewMGwt implements PlayInitView {
 		butPlay.setConfirm(true);
 		butPlay.setSmall(true);
 		container.add(butPlay);
+		
+		waitTitle = new HTML("Waiting to start game...");
+		waitTitle.addStyleName("title");
+		waitTitle.setVisible(false);
+		container.add(waitTitle);
+		
+		progressBar = new ProgressBar();
+		progressBar.setVisible(false);
+		container.add(progressBar);
+		
+		butCancel = new Button("Cancel");
+		butCancel.setVisible(false);
+		butCancel.setImportant(true);
+		container.add(butCancel);
 	}
 
 	@Override
@@ -137,15 +156,49 @@ public class PlayInitViewMGwt extends BaseViewMGwt implements PlayInitView {
 	@Override
 	public void renderOpponent(User opponent) {
 		opponentPanel.clear();
-		opponentPanel.add(new HTML(opponent.getName()));
-		opponentPanel.add(butSelectOpp);
-		butSelectOpp.setText("Chọn người khác");
+		if (opponent != null) {
+			opponentPanel.add(new HTML(opponent.getName()));
+			butSelectOpp.setText("Chọn người khác");
+		} else {
+			butSelectOpp.setText("Mời bạn bè");
+		}
 		formOpponent.setWidget("Đối thủ", opponentPanel);
+		opponentPanel.add(butSelectOpp);
+		
+		
 	}
 
 	@Override
 	public HasTapHandlers getSelectOpponentButton() {
 		return butSelectOpp;
+	}
+
+	@Override
+	public void setWaiting(boolean waiting) {
+		if (waiting) {
+			butPlay.setVisible(false);
+			butSelectOpp.setVisible(false);
+			waitTitle.setVisible(true);
+			progressBar.setVisible(true);
+			butCancel.setVisible(true);
+			
+		} else {
+			butPlay.setVisible(true);
+			butSelectOpp.setVisible(true);
+			waitTitle.setVisible(false);
+			progressBar.setVisible(false);
+			butCancel.setVisible(false);
+		}
+	}
+
+	@Override
+	public HasTapHandlers getCancelButton() {
+		return butCancel;
+	}
+
+	@Override
+	public HasText getCancelButtonText() {
+		return butCancel;
 	}
 
 }

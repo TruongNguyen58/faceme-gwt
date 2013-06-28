@@ -27,7 +27,6 @@ import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.ConfirmCallback;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
-import com.googlecode.mgwt.ui.client.widget.Button;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.BaseActivity;
 import com.sangnd.gwt.faceme.client.activities.home.HomePlace;
@@ -64,11 +63,34 @@ public class PlayInitActivity extends BaseActivity {
 		view.getLeftButtonText().setText("Home");
 		view.getPlayButtonText().setText("Play");
 		
+		addHandlerRegistration(view.getLeftButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				if (clientFactory.getGameSession().isPlayonline()) {
+					Dialogs.confirm("Thong bao", "Ban that su muon huy tran dau nay?", new ConfirmCallback() {
+						
+						@Override
+						public void onOk() {
+							doCancelMatch(view);
+							goTo(new HomePlace());
+						}
+						
+						@Override
+						public void onCancel() {
+						}
+					});
+				} else {
+					doCancelMatch(view);
+				}
+			}
+		}));
+		
 		if (clientFactory.getGameSession().isPlayonline()) {
 			view.getGameModeList().setItemSelected(2, true);
 			view.getGameModeList().setEnabled(false);
 			view.renderOpponent(clientFactory.getUserDb().getUserById("sang"));
-			((Button)view.getPlayButton()).setVisible(false);
+			view.setWaiting(true);
 		}
 		
 		addHandlerRegistration(eventBus.addHandler(InvitationActionEvent.TYPE, new InvitationActionHandler() {
@@ -82,16 +104,7 @@ public class PlayInitActivity extends BaseActivity {
 			}
 		}));
 		
-		addHandlerRegistration(view.getLeftButton().addTapHandler(new TapHandler() {
-			
-			@Override
-			public void onTap(TapEvent event) {
-				goTo(new HomePlace());
-			}
-		}));
-		
 		addHandlerRegistration(view.getPlayButton().addTapHandler(new TapHandler() {
-			
 			@Override
 			public void onTap(TapEvent event) {
 				doStart(view);
@@ -102,6 +115,7 @@ public class PlayInitActivity extends BaseActivity {
 			
 			@Override
 			public void onStart(StartPlayEvent event) {
+				view.setWaiting(false);
 				doStart(view);
 			}
 		}));
@@ -131,8 +145,36 @@ public class PlayInitActivity extends BaseActivity {
 			}
 		}));
 		
+		addHandlerRegistration(view.getCancelButton().addTapHandler(new TapHandler() {
+			
+			@Override
+			public void onTap(TapEvent event) {
+				Dialogs.confirm("Thong bao", "Ban that su muon huy?", new ConfirmCallback() {
+					
+					@Override
+					public void onOk() {
+						doCancelMatch(view);
+					}
+					
+					@Override
+					public void onCancel() {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+		}));
+		
 		super.initBaseHandler(view, clientFactory);
 		panel.setWidget(view.asWidget());
+	}
+	
+	private void doCancelMatch(PlayInitView view) {
+		clientFactory.getGameSession().setPlayonline(false);
+		view.setWaiting(false);
+		view.getGameModeList().setItemSelected(2, true);
+		view.getGameModeList().setEnabled(true);
+		view.renderOpponent(null);
 	}
 	
 	private void doStart(PlayInitView view) {

@@ -37,13 +37,19 @@ public interface PlayInitView extends BaseView {
 	
 	HasText getPlayButtonText();
 	
+	HasTapHandlers getCancelButton();
+	
+	HasText getCancelButtonText();
+	
 	HasTapHandlers getDancoButton();
 	
 	MListBox getGameModeList();
+	
+	MListBox getLevelList();
 	
 	void renderOpponent(User opponent);
 	
 	HasTapHandlers getSelectOpponentButton();
 	
-	MListBox getLevelList();
+	void setWaiting(boolean waiting);
 }
