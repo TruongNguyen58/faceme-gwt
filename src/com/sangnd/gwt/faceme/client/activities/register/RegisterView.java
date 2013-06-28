@@ -23,6 +23,7 @@ package com.sangnd.gwt.faceme.client.activities.register;
 
 import com.google.gwt.user.client.ui.HasText;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs.AlertCallback;
 import com.sangnd.gwt.faceme.client.activities.BaseView;
 
 /**
@@ -33,8 +34,12 @@ public interface RegisterView extends BaseView {
 	
 	HasTapHandlers getRegisterButton();
 	
+	HasText getName();
+	
 	HasText getEmail();
 	
 	HasText getPass();
+	
+	void alert(String title, String text, AlertCallback callback);
 
 }

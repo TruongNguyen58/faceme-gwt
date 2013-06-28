@@ -44,14 +44,19 @@ public class ChannelUtilityImpl implements ChannelUtility {
 
 	@Override
 	public void sendMessage(User receiver, ChannelMessage message) {
-		channel.sendMessage(receiver.getId(), message.toJson());
+		this.sendMessage(receiver.getId(), message);
+	}
+	
+	@Override
+	public void sendMessage(Long receiverId, ChannelMessage message) {
+		channel.sendMessage(receiverId.toString(), message.toJson());
 	}
 
 	@Override
 	public void initChannel(final User user) {
 		// workaround: avoid being multiple event firing
 		if (channel != null) return;
-		channel = new Channel(user.getId());
+		channel = new Channel(user.getId().toString());
 		channel.join(new ChannelListener() {
 			
 			@Override
@@ -87,9 +92,6 @@ public class ChannelUtilityImpl implements ChannelUtility {
 		});
 	}
 
-	@Override
-	public void sendMessage(String receiverId, ChannelMessage message) {
-		channel.sendMessage(receiverId, message.toJson());
-	}
+	
 
 }

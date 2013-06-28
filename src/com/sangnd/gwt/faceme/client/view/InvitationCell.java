@@ -50,7 +50,7 @@ public class InvitationCell implements Cell<Invitation> {
 	@Override
 	public void render(SafeHtmlBuilder safeHtmlBuilder, Invitation model) {
 		if (model == null) return;
-		SafeHtml content = TEMPLATE.content(model.getFromUserId());
+		SafeHtml content = TEMPLATE.content(model.getFromUser().getName());
 		safeHtmlBuilder.append(content);
 		
 	}

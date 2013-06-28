@@ -21,47 +21,50 @@
  */
 package com.sangnd.gwt.faceme.client.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.client.Random;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sangnd.gwt.faceme.client.model.User;
+import com.sangnd.gwt.faceme.shared.UserDbService;
+import com.sangnd.gwt.faceme.shared.UserDbServiceAsync;
 
 /**
  * @author heroandtn3
  *
  */
 public class UserDb {
+	
+	UserDbServiceAsync udbService;
 
 	/**
 	 * 
 	 */
 	public UserDb() {
-		// TODO Auto-generated constructor stub
+		udbService = GWT.create(UserDbService.class);
 	}
 	
-	public List<User> getAllUser() {
-		List<User> list = new ArrayList<User>();
-		for (int i = 0; i < 10; i++) {
-			User user = new User();
-			user.setName("Player " + i);
-			user.setEmail("user" + i + "@gmail.com");
-			user.setId("user" + i + "@gmail.com");
-			user.setAge(i);
-			user.setLogon(Random.nextBoolean());
-			user.setPlaying(Random.nextBoolean());
-			list.add(user);
-		}
-		return list;
+	public void insert(User user, AsyncCallback<Boolean> callback) {
+		udbService.insertUser(user, callback);
+	}
+	
+	public void updateUser(User user, AsyncCallback<Boolean> callback) {
+		udbService.updateUser(user, callback);
+	}
+	
+	public void getUserById(Long id, AsyncCallback<User> callback) {
+		udbService.getUserById(id, callback);
+	}
+	
+	public void getUserByEmail(String email, AsyncCallback<User> callback) {
+		udbService.getUserByEmail(email, callback);
+	}
+	
+	
+	public void getOnlineUser(AsyncCallback<List<User>> callback) {
+		udbService.getOnlineUser(callback);
 	}
 
-	public User getUserById(String id) {
-		User user = new User();
-		user.setId("user" + id + "@gmail.com");
-		user.setName("Player " + id);
-		user.setEmail("user" + id + "@gmail.com");
-		user.setAge(99);
-		return user;
-	}
+	
 
 }

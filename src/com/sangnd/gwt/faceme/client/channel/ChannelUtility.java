@@ -33,5 +33,5 @@ public interface ChannelUtility {
 
 	void sendMessage(User receiver, ChannelMessage message);
 	
-	void sendMessage(String receiverId, ChannelMessage message);
+	void sendMessage(Long receiverId, ChannelMessage message);
 }

@@ -24,6 +24,7 @@ package com.sangnd.gwt.faceme.client.model;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sangnd.gwt.faceme.client.ClientFactory;
 import com.sangnd.gwt.faceme.client.activities.playinit.PlayInitPlace;
 import com.sangnd.gwt.faceme.client.channel.ChannelEvent;
@@ -47,8 +48,8 @@ import com.sangnd.gwt.faceme.client.event.StartPlayEvent;
  */
 public class RoomImpl implements Room {
 
-	private String opponentId;
-	private String currentId;
+	private User opponent;
+	private User currentUser;
 	private boolean inviting;
 	private ChannelUtility channelUtility;
 	private ClientFactory clientFactory;
@@ -64,8 +65,8 @@ public class RoomImpl implements Room {
 
 	
 	@Override
-	public void createRoom(String currentId) {
-		this.currentId = currentId;
+	public void createRoom(User currentUser) {
+		this.currentUser = currentUser;
 		
 		clientFactory.getEventBus().addHandler(ChannelEvent.TYPE, new ChannelEventHandler() {
 			
@@ -75,8 +76,25 @@ public class RoomImpl implements Room {
 				String content = message.getContent();
 				if (content.equals("invite")) {
 					System.out.println("Receive invitation from: " + message.getSenderId());
-					clientFactory.getGameSession().getInvitations().add(new Invitation(message.getSenderId()));
-					clientFactory.getEventBus().fireEvent(new NewInvitationEvent());
+					
+					clientFactory.getUserDb().getUserById(message.getSenderId(), new AsyncCallback<User>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							caught.printStackTrace();
+						}
+
+						@Override
+						public void onSuccess(User u) {
+							if (u != null) {
+								clientFactory.getGameSession().getInvitations().add(new Invitation(u));
+								clientFactory.getEventBus().fireEvent(new NewInvitationEvent());
+							}
+						}
+						
+					});
+					
+					
 				} else if (content.equals("agree")) {
 					clientFactory.getUserListDialog().hide();
 					clientFactory.getEventBus().fireEvent(new InvitationActionEvent(true));
@@ -98,11 +116,11 @@ public class RoomImpl implements Room {
 			@Override
 			public void onAction(InvitationActionEvent event) {
 				List<Invitation> invis = clientFactory.getGameSession().getInvitations();
-				String fromUserId = invis.get(event.getSelectedIndex()).getFromUserId();
+				User fromUser = invis.get(event.getSelectedIndex()).getFromUser();
 				if (event.isAccept()) {
-					agreeInvitationFrom(fromUserId);
+					agreeInvitationFrom(fromUser);
 				} else {
-					refuseInvitationFrom(fromUserId);
+					refuseInvitationFrom(fromUser);
 				}
 				invis.remove(event.getSelectedIndex());
 			}
@@ -111,10 +129,21 @@ public class RoomImpl implements Room {
 		clientFactory.getUserListDialog().addInviteUserHandler(new InviteUserHandler() {
 			
 			@Override
-			public void onInvite(InviteUserEvent event) {
-				List<User> users = clientFactory.getUserDb().getAllUser();
-				String userId = users.get(event.getSelectedIndex()).getId();
-				inviteOpponent(userId);
+			public void onInvite(final InviteUserEvent event) {
+				clientFactory.getUserDb().getOnlineUser(new AsyncCallback<List<User>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						caught.printStackTrace();
+					}
+
+					@Override
+					public void onSuccess(List<User> users) {
+						User u = users.get(event.getSelectedIndex());
+						inviteOpponent(u);
+					}
+				});
+				
 			}
 		});
 	}
@@ -127,33 +156,33 @@ public class RoomImpl implements Room {
 		pm.setRow(pos.getRow());
 		pm.setCol(pos.getCol());
 		pm.setKillable(pos.isKillable());
-		ChannelMessage message = ChannelMessage.create(currentId, pm.toJson());
-		channelUtility.sendMessage(opponentId, message);
+		ChannelMessage message = ChannelMessage.create(currentUser.getId(), pm.toJson());
+		channelUtility.sendMessage(opponent.getId(), message);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	@Override
-	public void inviteOpponent(String opId) {
-		this.opponentId = opId;
+	public void inviteOpponent(User user) {
+		opponent = user;
 		if (inviting == false) {
-			channelUtility.sendMessage(opId, ChannelMessage.create(currentId, "invite"));
+			channelUtility.sendMessage(opponent, ChannelMessage.create(currentUser.getId(), "invite"));
 			inviting = true;
 		}
 	}
 
 	@Override
 	public void cancelInvitation() {
-		opponentId = null;
+		opponent = null;
 		inviting = false;
 	}
 
 	@Override
-	public void agreeInvitationFrom(String userId) {
-		this.opponentId = userId;
+	public void agreeInvitationFrom(User user) {
+		opponent = user;
 		try {
-		channelUtility.sendMessage(userId, ChannelMessage.create(currentId, "agree"));
+		channelUtility.sendMessage(opponent.getId(), ChannelMessage.create(currentUser.getId(), "agree"));
 		clientFactory.getGameSetting().setCurrentSide(Side.ENERMY);
 		clientFactory.getGameSession().setPlayonline(true);
 		clientFactory.getNotiDialogView().hide();
@@ -165,14 +194,20 @@ public class RoomImpl implements Room {
 	}
 
 	@Override
-	public void refuseInvitationFrom(String userId) {
-		channelUtility.sendMessage(userId, ChannelMessage.create(currentId, "refuse"));
+	public void refuseInvitationFrom(User user) {
+		channelUtility.sendMessage(user, ChannelMessage.create(currentUser.getId(), "refuse"));
 	}
 
 
 	@Override
 	public void startPlay() {
-		channelUtility.sendMessage(opponentId, ChannelMessage.create(currentId, "start"));
+		channelUtility.sendMessage(opponent, ChannelMessage.create(currentUser.getId(), "start"));
+	}
+
+
+	@Override
+	public User getOpponent() {
+		return opponent;
 	}
 
 }

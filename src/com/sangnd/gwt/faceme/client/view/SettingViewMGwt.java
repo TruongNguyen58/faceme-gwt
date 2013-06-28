@@ -25,6 +25,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs.AlertCallback;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
@@ -115,6 +117,11 @@ public class SettingViewMGwt extends BaseViewMGwt implements SettingView {
 			email.setText("");
 			pass.setText("");
 		}
+	}
+
+	@Override
+	public void alert(String title, String text, AlertCallback callback) {
+		Dialogs.alert(title, text, callback);
 	}
 
 }

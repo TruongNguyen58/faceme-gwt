@@ -35,6 +35,16 @@
 		<url-pattern>/_ah/spi/*</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>userDbService</servlet-name>
+		<servlet-class>com.sangnd.gwt.faceme.server.UserDbServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>userDbService</servlet-name>
+		<url-pattern>/mfaceme/userDbService</url-pattern>
+	</servlet-mapping>
+	
 	<filter>
 		<filter-name>ObjectifyFilter</filter-name>
 		<filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>

@@ -21,6 +21,7 @@
  */
 package com.sangnd.gwt.faceme.client.activities.setting;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -75,29 +76,57 @@ public class SettingActivity extends BaseActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				String email = view.getEmail().getText();
-				String pass = view.getPass().getText();
+				final String email = view.getEmail().getText();
+				final String pass = view.getPass().getText();
 				
 				if (email.length() == 0 || pass.length() == 0) {
-					return;
+					view.alert("Co loi xay ra", "Ban chua nhap du truong du lieu", null);
+				} else {
+					clientFactory.getUserDb().getUserByEmail(email, new AsyncCallback<User>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							caught.printStackTrace();
+						}
+
+						@Override
+						public void onSuccess(User u) {
+							if (u != null) {
+								if (u.getPass().equals(pass)) {
+									clientFactory.getGameSession().setUser(u);
+									clientFactory.getChannelUtility().initChannel(u);
+									clientFactory.getRoom().createRoom(u);
+									u.setLogon(true);
+									clientFactory.getUserDb().updateUser(u, new AsyncCallback<Boolean>() {
+
+										@Override
+										public void onFailure(Throwable caught) {
+											caught.printStackTrace();
+										}
+
+										@Override
+										public void onSuccess(Boolean result) {
+											view.alert("Thong bao", "Dang nhap thanh cong", null);
+										}
+									});
+									
+									view.getEmail().setText(email);
+									view.getPass().setText(pass);
+									
+									view.setLogon(true);
+									((HeaderButton) view.getRightButton()).setVisible(true);
+									initBaseHandler(view, clientFactory);
+									
+									return;
+								}
+							}
+							view.alert("Dang nhap that bai", "Thong tin email va pass cua ban khong dung. Xin hay nhap lai", null);
+						}
+						
+					});
+					
 				}
 				
-				if (email.equals(pass)) {
-					User user = new User();
-					user.setName(email);
-					user.setEmail(email);
-					user.setId(email);
-					user.setPass(pass);
-					clientFactory.getGameSession().setUser(user);
-					clientFactory.getChannelUtility().initChannel(user);
-					clientFactory.getRoom().createRoom(user.getId());
-					
-					view.getEmail().setText(email);
-					view.getPass().setText(pass);
-					view.setLogon(true);
-					((HeaderButton) view.getRightButton()).setVisible(true);
-					initBaseHandler(view, clientFactory);
-				}
 			}
 		}));
 		
@@ -105,8 +134,24 @@ public class SettingActivity extends BaseActivity {
 			
 			@Override
 			public void onTap(TapEvent event) {
-				clientFactory.getGameSession().setUser(null);
-				view.setLogon(false);
+				final User u = clientFactory.getGameSession().getUser();
+				u.setLogon(false);
+				clientFactory.getUserDb().updateUser(u, new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						caught.printStackTrace();
+					}
+
+					@Override
+					public void onSuccess(Boolean result) {
+						if (result == true) {
+							clientFactory.getGameSession().setUser(null);
+							view.setLogon(false);
+							view.alert("Thong bao", "Dang xuat thanh cong", null);
+						}
+					}
+				});
 			}
 		}));
 		

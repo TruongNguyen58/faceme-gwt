@@ -21,20 +21,40 @@
  */
 package com.sangnd.gwt.faceme.client.model;
 
+import java.io.Serializable;
+
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+
 /**
  * @author heroandtn3
  * 
  */
-public class User {
 
-	private String id;
+@Entity
+public class User implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
+	private Long id;
+	@Index
 	private String name;
+	@Index
 	private String pass;
+	@Index
 	private String email;
-	private int notiNumber;
+	@Index
 	private int age;
+	@Index
 	private boolean playing;
+	@Index
 	private boolean logon;
+
+	private int notiNumber;
 
 	/**
 	 * 
@@ -42,12 +62,8 @@ public class User {
 	public User() {
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {

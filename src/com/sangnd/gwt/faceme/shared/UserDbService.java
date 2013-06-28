@@ -19,31 +19,25 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.model;
+package com.sangnd.gwt.faceme.shared;
 
-import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
+import java.util.List;
 
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
- * 
+ *
  */
-public interface Room {
+
+@RemoteServiceRelativePath("userDbService")
+public interface UserDbService extends RemoteService {
 	
-	public void createRoom(User currentUser);
-	
-	void sendPos(ChessPosition pos);
-	
-	User getOpponent();
-	
-	void inviteOpponent(User user);
-	
-	void cancelInvitation();
-	
-	void agreeInvitationFrom(User user);
-	
-	void refuseInvitationFrom(User user);
-	
-	void startPlay();
-	
+	public boolean insertUser(User user);
+	public User getUserById(Long id);
+	public User getUserByEmail(String email);
+	public List<User> getOnlineUser();
+	public boolean updateUser(User user);
 }

@@ -19,31 +19,27 @@
 /**
  * 
  */
-package com.sangnd.gwt.faceme.client.model;
+package com.sangnd.gwt.faceme.shared;
 
-import com.sangnd.gwt.faceme.client.core.model.ChessPosition;
+import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sangnd.gwt.faceme.client.model.User;
 
 /**
  * @author heroandtn3
- * 
+ *
  */
-public interface Room {
-	
-	public void createRoom(User currentUser);
-	
-	void sendPos(ChessPosition pos);
-	
-	User getOpponent();
-	
-	void inviteOpponent(User user);
-	
-	void cancelInvitation();
-	
-	void agreeInvitationFrom(User user);
-	
-	void refuseInvitationFrom(User user);
-	
-	void startPlay();
-	
+public interface UserDbServiceAsync {
+
+	void getOnlineUser(AsyncCallback<List<User>> callback);
+
+	void getUserByEmail(String email, AsyncCallback<User> callback);
+
+	void getUserById(Long id, AsyncCallback<User> callback);
+
+	void insertUser(User user, AsyncCallback<Boolean> callback);
+
+	void updateUser(User user, AsyncCallback<Boolean> callback);
+
 }

@@ -21,6 +21,9 @@
  */
 package com.sangnd.gwt.faceme.client.activities.profile;
 
+import java.util.List;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -68,7 +71,19 @@ public class ProfileActivity extends BaseActivity {
 		view.getTitle().setText(user.getName());
 
 		UserDb udb = clientFactory.getUserDb();
-		view.renderUserList(udb.getAllUser());
+		udb.getOnlineUser(new AsyncCallback<List<User>>() {
+			
+			@Override
+			public void onSuccess(List<User> result) {
+				view.renderUserList(result);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				caught.printStackTrace();
+			}
+		});
+		
 
 		addHandlerRegistration(view.getUserList().addCellSelectedHandler(
 				new CellSelectedHandler() {

@@ -22,6 +22,7 @@
 package com.sangnd.gwt.faceme.client.activities.userdetail;
 
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -51,7 +52,7 @@ public class UserDetailActivity extends MGWTAbstractActivity {
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
-		UserDetailView view = clientFactory.getUserDetailView();
+		final UserDetailView view = clientFactory.getUserDetailView();
 		panel.setWidget(view.asWidget());
 		
 		addHandlerRegistration(view.getBackButton().addTapHandler(new TapHandler() {
@@ -67,32 +68,46 @@ public class UserDetailActivity extends MGWTAbstractActivity {
 		if (place instanceof UserDetailPlace) {
 			UserDetailPlace userDetailPlace = (UserDetailPlace) place;
 			UserDb udb = clientFactory.getUserDb();
-			final User user = udb.getUserById(userDetailPlace.getId());
-			view.getTitle().setText(user.getName());
-			view.getName().setText(user.getName());
-			view.getAge().setText("" + user.getAge());
-			if (user.isLogon()) {
-				if (user.isPlaying()) {
-					view.getStatusWidget().setStatus(Status.BUSY);
-				} else {
-					view.getStatusWidget().setStatus(Status.AVAI);
-				}
-			} else {
-				view.getStatusWidget().setStatus(Status.OFFLINE);
-			}
 			
-			addHandlerRegistration(view.getInviteButton().addTapHandler(new TapHandler() {
+			udb.getUserById(Long.valueOf(userDetailPlace.getId()), new AsyncCallback<User>() {
 				
 				@Override
-				public void onTap(TapEvent event) {
-					invitePlay(user);
+				public void onSuccess(final User user) {
+					view.getTitle().setText(user.getName());
+					view.getName().setText(user.getName());
+					view.getAge().setText("" + user.getAge());
+					if (user.isLogon()) {
+						if (user.isPlaying()) {
+							view.getStatusWidget().setStatus(Status.BUSY);
+						} else {
+							view.getStatusWidget().setStatus(Status.AVAI);
+						}
+					} else {
+						view.getStatusWidget().setStatus(Status.OFFLINE);
+					}
+					
+					addHandlerRegistration(view.getInviteButton().addTapHandler(new TapHandler() {
+						
+						@Override
+						public void onTap(TapEvent event) {
+							invitePlay(user);
+						}
+					}));
 				}
-			}));
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+				}
+			});
+			
+			
+			
 		}
 	}
 
 	private void invitePlay(User user) {
-		clientFactory.getRoom().inviteOpponent(user.getId());
+		clientFactory.getRoom().inviteOpponent(user);
 		
 	}
 	

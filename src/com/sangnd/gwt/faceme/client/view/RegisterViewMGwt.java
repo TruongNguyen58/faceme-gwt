@@ -23,6 +23,8 @@ package com.sangnd.gwt.faceme.client.view;
 
 import com.google.gwt.user.client.ui.HasText;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs.AlertCallback;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
@@ -40,6 +42,7 @@ public class RegisterViewMGwt extends BaseViewMGwt implements RegisterView {
 	private MTextBox email;
 	private MTextBox pass;
 	private Button butRegister;
+	private MTextBox name;
 
 	/**
 	 * 
@@ -51,6 +54,9 @@ public class RegisterViewMGwt extends BaseViewMGwt implements RegisterView {
 		WidgetList list = new WidgetList();
 		list.setRound(true);
 		container.add(list);
+		
+		name = new MTextBox();
+		list.add(new FormListEntry("Name", name));
 		
 		email = new MTextBox();
 		list.add(new FormListEntry("Email", email));
@@ -76,6 +82,16 @@ public class RegisterViewMGwt extends BaseViewMGwt implements RegisterView {
 	@Override
 	public HasText getPass() {
 		return pass;
+	}
+
+	@Override
+	public void alert(String title, String text, AlertCallback callback) {
+		Dialogs.alert(title, text, callback);
+	}
+
+	@Override
+	public HasText getName() {
+		return name;
 	}
 		
 

@@ -27,19 +27,19 @@ package com.sangnd.gwt.faceme.client.model;
  */
 public class Invitation {
 
-	private String fromUserId;
+	private User fromUser;
 
 	/**
 	 * 
 	 */
 	
-	public Invitation(String fromUserId) {
-		this.fromUserId = fromUserId;
+	public Invitation(User fromUser) {
+		this.fromUser = fromUser;
 		
 	}
 	
-	public String getFromUserId() {
-		return fromUserId;
+	public User getFromUser() {
+		return fromUser;
 	}
 
 }

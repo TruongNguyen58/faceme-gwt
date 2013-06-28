@@ -21,6 +21,9 @@
  */
 package com.sangnd.gwt.faceme.client.activities.playinit;
 
+import java.util.List;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -89,17 +92,29 @@ public class PlayInitActivity extends BaseActivity {
 		if (clientFactory.getGameSession().isPlayonline()) {
 			view.getGameModeList().setItemSelected(2, true);
 			view.getGameModeList().setEnabled(false);
-			view.renderOpponent(clientFactory.getUserDb().getUserById("sang"));
+			view.renderOpponent(clientFactory.getRoom().getOpponent());
 			view.setWaiting(true);
 		}
 		
 		addHandlerRegistration(eventBus.addHandler(InvitationActionEvent.TYPE, new InvitationActionHandler() {
 			
 			@Override
-			public void onAction(InvitationActionEvent event) {
+			public void onAction(final InvitationActionEvent event) {
 				if (event.isAccept()) {
-					User user = clientFactory.getUserDb().getAllUser().get(event.getSelectedIndex());
-					view.renderOpponent(user);
+					clientFactory.getUserDb().getOnlineUser( new AsyncCallback<List<User>>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							caught.printStackTrace();
+						}
+
+						@Override
+						public void onSuccess(List<User> result) {
+							User user = result.get(event.getSelectedIndex());
+							view.renderOpponent(user);
+						}
+						
+					});
 				}
 			}
 		}));
@@ -139,7 +154,19 @@ public class PlayInitActivity extends BaseActivity {
 						}
 					});
 				} else {
-					clientFactory.getUserListDialog().renderUserList(clientFactory.getUserDb().getAllUser());
+					clientFactory.getUserDb().getOnlineUser(new AsyncCallback<List<User>>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							caught.printStackTrace();
+						}
+
+						@Override
+						public void onSuccess(List<User> result) {
+							clientFactory.getUserListDialog().renderUserList(result);
+						}
+						
+					});
 				}
 				
 			}
