@@ -92,7 +92,7 @@ public class UserDbServiceImpl extends RemoteServiceServlet implements UserDbSer
 	public List<User> getOnlineUser() {
 		ObjectifyService.register(User.class);
 		List<User> users = new ArrayList<User>();
-		List<User> q = ofy().load().type(User.class).filter("online", "true")
+		List<User> q = ofy().load().type(User.class).filter("logon", true)
 				.list();
 		if (q != null) {
 			for (User user : q) {
