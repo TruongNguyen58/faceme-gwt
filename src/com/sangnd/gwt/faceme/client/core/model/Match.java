@@ -119,7 +119,52 @@ public class Match {
 				return GameState.FRIEND_WON;
 			}
 		}
-
+		
+		// het co khi: sau khi di chuyen thi bi lo mat tuong
+		// tim vi tri tuong cua 2 ben
+		int enermyKingRow = -1, enermyKingCol = -1;
+		for (int row = 0; row <= 2; row++) {
+			for (int col = 3; col <= 5; col++) {
+				if (board.getTable()[row][col] == -1) {
+					enermyKingRow = row;
+					enermyKingCol = col;
+					break;
+				}
+			}
+		}
+		
+		int friendKingRow = -1, friendKingCol = -1;
+		for (int row = 7; row <= 9; row++) {
+			for (int col = 3; col <= 5; col++) {
+				if (board.getTable()[row][col] == 1) {
+					friendKingRow = row;
+					friendKingCol = col;
+				}
+			}
+		}
+		
+		System.out.println("Vi tri tuong: " + enermyKingRow + enermyKingCol + friendKingRow + friendKingCol);
+		boolean kingMeeting = true;
+		if (enermyKingRow != -1 && friendKingRow != -1) {
+			if (enermyKingCol == friendKingCol) {
+				int col = enermyKingCol;
+				for (int row = enermyKingRow + 1; row < friendKingRow; row++) {
+					if (board.getTable()[row][col] != 0) {
+						kingMeeting = false;
+						break;
+					}
+				}
+			}
+		}
+		if (kingMeeting) {
+			System.out.println("Lo mat tuong :(");
+			if (nextSide == Side.ENERMY) {
+				return GameState.ENERMY_WON;
+			} else {
+				return GameState.FRIEND_WON;
+			}
+		}
+		
 		// het co khi: doi phuong khong co nuoc nao de di
 		List<ChessPosition[]> allPos = moveGenerator.getMoves(board, nextSide);
 		if (allPos.size() == 0) {
@@ -173,15 +218,14 @@ public class Match {
 	private boolean checkWarnKing(Side side) {
 		return checkWarnKing(null, null, side);
 	}
-
-	private boolean checkWarnKing(int[][] table, List<ChessPosition[]> allPos,
-			Side side) {
+	
+	private boolean checkWarnKing(int[][] table, List<ChessPosition[]> allPos, Side currentSide) {
 		if (table == null) {
 			table = board.getTable();
 		}
 
 		if (allPos == null) {
-			allPos = moveGenerator.getMoves(board, side);
+			allPos = moveGenerator.getMoves(board, currentSide);
 		}
 
 		// tim vi tri tuong cua doi phuong
@@ -189,10 +233,9 @@ public class Match {
 		int startCol = 3, endCol = 5;
 		int kingCode = -1;
 		int kingRow = -1, kingCol = -1;
-
-		if (side == Side.ENERMY) {
-			startRow = 7;
-			endRow = 9;
+		
+		if (currentSide== Side.ENERMY) {
+			startRow = 7; endRow = 9;
 			kingCode = 1;
 		}
 		for (int row = startRow; row <= endRow; row++) {
