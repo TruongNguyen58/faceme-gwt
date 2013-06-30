@@ -68,6 +68,7 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 	private double topPadding;
 	private double boardWidth;
 	private double boardHeight;
+	private String finishMessage;
 
 	public BoardViewMGwt() {
 		init();
@@ -312,7 +313,7 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 			}
 
 			if (matchFinish) {
-				Dialogs.alert("Hết cờ!", "Bạn hoặc đối phương đã dành chiến thắng!", null);
+				Dialogs.alert("Hết cờ!", finishMessage, null);
 			}
 			
 			fireEvent(new MoveCompleteEvent());
@@ -372,9 +373,15 @@ public class BoardViewMGwt extends TouchPanel implements BoardView,
 
 	@Override
 	public void renderMatchFinish(GameState state) {
-		if (state == GameState.ENERMY_WON || state == GameState.FRIEND_WON) {
+		if (state == GameState.ENERMY_WON) {
 			matchFinish = true;
+			finishMessage = "Bạn đã thua :(, có lẽ bạn cần thêm thời gian để luyện tập :v";
+		} else if (state == GameState.FRIEND_WON) {
+			matchFinish = true;
+			finishMessage = "Bạn đã dành chiến thắng! Nhưng biết đâu lại ăn may, thử chơi lại ván nữa xem :3";
 		}
+		
+		
 
 	}
 
